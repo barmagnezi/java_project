@@ -13,6 +13,8 @@ public class MyView extends Observable implements View {
 	@Override
 	public void start() {
 		System.out.println("start");
+		this.setChanged();
+		this.setChanged();
 		this.notifyObservers();
 	}
 

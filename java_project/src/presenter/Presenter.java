@@ -28,18 +28,28 @@ public class Presenter implements Observer{
 			Command c=view.getUserCommand();
 			c.doCommand((String) arg);
 		}
-			
-	//commands
-		public class TestMVPCommand implements Command {
-
-			@Override
-			public void doCommand(String arg) {
-				
-
+		if(o==model){
+			if(arg==null)
+				return;
+			else{
+				if(((String)arg).equals("generateMazeCompleted") ){
+					view.displayMaze(model.getMaze());
+				}
 			}
-
+							
 		}
-			
-		
 	}
+	//commands
+	class TestMVPCommand implements Command {
+
+		@Override
+		public void doCommand(String arg) {
+			System.out.println("TestMVPCommand");
+				model.generateMaze();
+		}
+
+	}
+
+				
+			
 }

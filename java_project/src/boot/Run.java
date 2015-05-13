@@ -10,6 +10,11 @@ public class Run {
 		MyModel m = new MyModel();
 		MyView v = new MyView();
 		Presenter p=new Presenter(v, m);
+		v.addObserver(p);
+		m.addObserver(p);
+		
+		
+		v.start();
 	}
 
 }
