@@ -56,7 +56,7 @@ public class Presenter implements Observer{
 
 		@Override
 		public void doCommand(String arg) {
-			System.out.println("TestMVPCommand");
+			System.out.println("generateMaze");
 			model.generateMaze();
 		}
 		
