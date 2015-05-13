@@ -24,30 +24,42 @@ public class Presenter implements Observer{
 	
 	@Override
 	public void update(Observable o, Object arg) {
-		if(o == view){
-			Command c=view.getUserCommand();
-			c.doCommand((String) arg);
-		}
-		if(o==model){
-			if(arg==null)
-				return;
-			else{
-				if(((String)arg).equals("generateMazeCompleted") ){
-					view.displayMaze(model.getMaze());
-				}
+		if(((String)arg).equals("start"))
+			return;
+		else{
+			if(o == view){
+				Command c=view.getUserCommand();
+				c.doCommand((String) arg);
 			}
-							
+			if(o==model){
+				if(arg==null)
+					return;
+				else{
+					if(((String)arg).equals("generateMazeCompleted") ){
+						view.displayMaze(model.getMaze());
+					}
+				}					
+			}
 		}
 	}
 	//commands
-	class TestMVPCommand implements Command {
+	public class TestMVPCommand implements Command {
 
 		@Override
 		public void doCommand(String arg) {
 			System.out.println("TestMVPCommand");
-				model.generateMaze();
+			model.generateMaze(10,10);
 		}
+		
+	}
+	public class generateMaze implements Command {
 
+		@Override
+		public void doCommand(String arg) {
+			System.out.println("TestMVPCommand");
+			model.generateMaze(10,10);
+		}
+		
 	}
 
 				

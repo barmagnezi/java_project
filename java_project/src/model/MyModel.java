@@ -8,7 +8,7 @@ import algorithms.search.Solution;
 public class MyModel extends Observable implements Model {
 
 	@Override
-	public void generateMaze() {
+	public void generateMaze(int rows,int Columns) {
 		System.out.println("generateMaze");
 		this.setChanged();
 		this.notifyObservers("generateMazeCompleted");

@@ -12,8 +12,6 @@ public class Run {
 		Presenter p=new Presenter(v, m);
 		v.addObserver(p);
 		m.addObserver(p);
-		
-		
 		v.start();
 	}
 
