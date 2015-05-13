@@ -8,14 +8,14 @@ import algorithms.search.Solution;
 public class MyModel extends Observable implements Model {
 
 	@Override
-	public void generateMaze(int rows,int cols) {
+	public void generateMaze(String name, int rows,int cols) {
 		System.out.println("generateMaze");
 		this.setChanged();
 		this.notifyObservers("generateMazeCompleted");
 	}
 
 	@Override
-	public Maze getMaze() {
+	public Maze getMaze(String name) {
 		System.out.println("getMaze");
 		return null;
 	}
@@ -27,7 +27,7 @@ public class MyModel extends Observable implements Model {
 	}
 
 	@Override
-	public Solution getSolution() {
+	public Solution getSolution(String name) {
 		System.out.println("getSolution");
 		return null;
 	}

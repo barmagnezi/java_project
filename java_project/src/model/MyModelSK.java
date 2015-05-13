@@ -29,7 +29,7 @@ public class MyModelSK extends Observable implements Model {
 	ExecutorService executor;
 
 	@Override
-	public void generateMaze(int col,int row) {
+	public void generateMaze(String name,int col,int row) {
 		//System.out.println("generateMaze");
 		this.cols=col;
 		this.rows=row;
@@ -53,7 +53,7 @@ public class MyModelSK extends Observable implements Model {
 	}
 
 	@Override
-	public Maze getMaze() {
+	public Maze getMaze(String name) {
 		return maze;
 	}
 
@@ -80,7 +80,7 @@ public class MyModelSK extends Observable implements Model {
 	}
 
 	@Override
-	public Solution getSolution() {
+	public Solution getSolution(String mame) {
 		return sol;
 	}
 
