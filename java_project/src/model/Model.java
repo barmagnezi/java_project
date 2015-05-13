@@ -8,5 +8,5 @@ public interface Model {
 	Maze getMaze(String name); 
 	void solveMaze(Maze m); 
 	Solution getSolution(String name); 
-	void stop(); 
+	void stop();
 }

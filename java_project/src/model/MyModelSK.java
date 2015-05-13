@@ -1,5 +1,12 @@
 package model;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.util.HashMap;
 import java.util.Observable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -23,17 +30,15 @@ public class MyModelSK extends Observable implements Model {
 	Maze maze;
 	Solution sol;
 	int AllowedThreads;
-	int cols;
-	int rows;
 	boolean diag;
 	ExecutorService executor;
+	HashMap<String, Maze> nameMaze=new HashMap<>();
+	HashMap<Maze, Solution> MazeSol=new HashMap<>();
 
 	@Override
 	public void generateMaze(String name,int col,int row) {
 		//System.out.println("generateMaze");
-		this.cols=col;
-		this.rows=row;
-		Future<Maze> f = executor.submit(new MazeCallable(MGenerator,cols,rows));
+		Future<Maze> f = executor.submit(new MazeCallable(MGenerator,col,row));
 		try {
 			maze = f.get();
 		} catch (InterruptedException e) {
@@ -49,64 +54,122 @@ public class MyModelSK extends Observable implements Model {
 		} catch (ExecutionException e) {
 			e.printStackTrace();
 		}
+		nameMaze.put(name, maze);
 		//NOTIFY
 	}
 
 	@Override
 	public Maze getMaze(String name) {
-		return maze;
+		return nameMaze.get(name);
 	}
 
 	@Override
 	public void solveMaze(Maze m) {
-		//System.out.println("solveMaze");
-		Future<Solution> f = executor.submit(new MazeSolveCallable(m,diag,MSolver));
-		try {
-			sol = f.get();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		} catch (ExecutionException e) {
-			e.printStackTrace();
-		} // w is still null…
-		// wait till the maze is solved after the callable was submitted to a thread
-		try {
-			sol = f.get();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		} catch (ExecutionException e) {
-			e.printStackTrace();
+		if(!MazeSol.containsKey(m)){
+			Future<Solution> f = executor.submit(new MazeSolveCallable(m,diag,MSolver));
+			try {
+				sol = f.get();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			} catch (ExecutionException e) {
+				e.printStackTrace();
+			} // w is still null…
+			// wait till the maze is solved after the callable was submitted to a thread
+			try {
+				sol = f.get();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			} catch (ExecutionException e) {
+				e.printStackTrace();
+			}
+			MazeSol.put(m, sol);
+		}
+		else{
+			sol=MazeSol.get(m);
 		}
 		//NOTIFY
 	}
 
 	@Override
-	public Solution getSolution(String mame) {
-		return sol;
+	public Solution getSolution(String name) {
+		return MazeSol.get(nameMaze.get(name));
 	}
 
 	@Override
 	public void stop() {
 		System.out.println("Stop");
+		executor.shutdown();	// ??
+		//Huffman vs ZIP ??
+		//From Hash maps to "resources/data.bin".
+		FileOutputStream out = null;
+		ObjectOutputStream out2 = null;
+		try {
+			out = (new FileOutputStream("resources/data.bin"));
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		try {
+			out2 = new ObjectOutputStream(out);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		try {
+			out2.writeObject(nameMaze);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		try {
+			out2.writeObject(MazeSol);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void start(){
+		//Reading from "resources/data.bin" to Hash maps.
+		FileInputStream in = null;
+		ObjectInputStream in2=null;
+		try {
+			in = (new FileInputStream("resources/data.bin"));
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		try {
+			in2 = new ObjectInputStream(in);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		try {
+			this.MazeSol=(HashMap<Maze, Solution>) in2.readObject();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		try {
+			this.nameMaze=(HashMap<String, Maze>) in2.readObject();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	
-	public int setGeneralProperties(String str){	//"X col row" - X for number of Allowed Threads.
+	public int setGeneralProperties(String str){	//"X" - X for number of Allowed Threads.
 		/**
 		 * Receives a String containing the general values of MyModel
-		 * str="5 9 8 ...etc"
+		 * str="5 ....etc"
 		 * 5 as the number of allowed threads.
-		 * 9 as the number of cols.
-		 * 8 as the number of rows.
 		 */
 		String splited[] = str.split(" ");
 		AllowedThreads = Integer.parseInt(splited[0]);
 		executor = Executors.newFixedThreadPool(AllowedThreads);
-		cols = Integer.parseInt(splited[1]);
-		rows = Integer.parseInt(splited[2]);
+		
 		return 1;
 	}
 	
-	public int setMazeProperties(String str){	//"DFS BFS 1"(1 for allowed diag), "Random Astar Air 0"(Air-for AirDistance, 0 for no diag).
+	public int setMazeProperties(String str){	//"DFS BFS 1"(1 for diag), "Random Astar Air 0"(Air-for AirDistance, 0 for no diag).
 		/**
 		 * Receives a String containing the values of how we Generate a maze and how we Solve it and a boolean representing if its with(1) or without(0) diagonals.
 		 * str="DFS/Random BFS/Astar 1", if Astar chosen we need to specify what Heuristic it will use - "Air/Man".(for example - "DFS Astar Man 0")
@@ -160,7 +223,6 @@ public class MyModelSK extends Observable implements Model {
 		
 	}
 
-	
 	public MazeGenerator getMGenerator() {
 		return MGenerator;
 	}
