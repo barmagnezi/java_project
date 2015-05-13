@@ -1,12 +1,14 @@
 package view;
 
+import java.util.HashMap;
+
 import algorithms.mazeGenerators.Maze;
 import algorithms.search.Solution;
-import controller.Command;
+import presenter.Command;
 
 public interface View {
 	void start(); 
-	void setCommands(/* a collection of Commands*/); 
+	void setCommands(HashMap<String, Command> commands); 
 	Command getUserCommand(); 
 	void displayMaze(Maze m); 
 	void displaySolution(Solution s);

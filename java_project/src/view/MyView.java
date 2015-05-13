@@ -1,27 +1,32 @@
 package view;
 
+import java.util.HashMap;
+import java.util.Observable;
+
 import algorithms.mazeGenerators.Maze;
 import algorithms.search.Solution;
-import controller.Command;
+import presenter.Command;
 
-public class MyView implements View {
+public class MyView extends Observable implements View {
+	HashMap<String, Command> commands;
 
 	@Override
 	public void start() {
 		System.out.println("start");
-
+		this.notifyObservers();
 	}
 
 	@Override
-	public void setCommands() {
+	public void setCommands(HashMap<String, Command> commands) {
 		System.out.println("setCommands");
-
+		this.commands=commands;
+		
 	}
 
 	@Override
 	public Command getUserCommand() {
 		System.out.println("getUserCommand");
-		return null;
+		return commands.get("test");
 	}
 
 	@Override
