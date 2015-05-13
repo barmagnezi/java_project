@@ -35,8 +35,9 @@ public class Presenter implements Observer{
 				if(arg==null)
 					return;
 				else{
-					if(((String)arg).equals("generateMazeCompleted") ){
-						view.displayMaze(model.getMaze());
+					String[] detailAndName=((String)arg).split(" ");
+					if(detailAndName[0].equals("generateMazeCompleted")){
+						view.displayMaze(model.getMaze(detailAndName[1]));
 					}
 				}					
 			}
@@ -48,20 +49,30 @@ public class Presenter implements Observer{
 		@Override
 		public void doCommand(String arg) {
 			System.out.println("TestMVPCommand");
-			model.generateMaze();
 		}
 		
 	}
-	public class generateMaze implements Command {
+	//the argument must be name (int rows),(int cols)
+	public class generateMazeCommand implements Command {
 
 		@Override
 		public void doCommand(String arg) {
+			String[] nameAndArguments=arg.split(" ");
+			String[] rowAndcol=nameAndArguments[2].split(","); 
 			System.out.println("generateMaze");
-			model.generateMaze();
+			int rows=Integer.parseInt(rowAndcol[0]);
+			int cols=Integer.parseInt(rowAndcol[1]);
+			model.generateMaze(nameAndArguments[0],rows,cols);
+			model.generateMaze(nameAndArguments[0],rows, cols);
 		}
-		
 	}
+	
+	public class displaymazeCommand implements Command {
 
-				
+		@Override
+		public void doCommand(String arg) {
 			
+		}
+	}
+		
 }

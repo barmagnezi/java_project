@@ -10,8 +10,6 @@ import java.util.Observable;
 
 import java.util.Queue;
 
-import javax.management.Query;
-
 import algorithms.mazeGenerators.Maze;
 import algorithms.search.Solution;
 import presenter.Command;
