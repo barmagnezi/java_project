@@ -29,8 +29,10 @@ public class MyModelSK extends Observable implements Model {
 	ExecutorService executor;
 
 	@Override
-	public void generateMaze() {
+	public void generateMaze(int col,int row) {
 		//System.out.println("generateMaze");
+		this.cols=col;
+		this.rows=row;
 		Future<Maze> f = executor.submit(new MazeCallable(MGenerator,cols,rows));
 		try {
 			maze = f.get();
