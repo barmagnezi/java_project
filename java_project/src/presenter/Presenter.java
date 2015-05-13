@@ -48,7 +48,7 @@ public class Presenter implements Observer{
 		@Override
 		public void doCommand(String arg) {
 			System.out.println("TestMVPCommand");
-			model.generateMaze(10,10);
+			model.generateMaze();
 		}
 		
 	}
@@ -57,7 +57,7 @@ public class Presenter implements Observer{
 		@Override
 		public void doCommand(String arg) {
 			System.out.println("TestMVPCommand");
-			model.generateMaze(10,10);
+			model.generateMaze();
 		}
 		
 	}
