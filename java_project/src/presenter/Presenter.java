@@ -18,8 +18,8 @@ public class Presenter implements Observer{
 		model=m;
 		view=v;
 		commands=new HashMap<String, Command>();
-		commands.put("test", new TestMVPCommand());
-		v.setCommands(commands);
+		addAllCommands();
+		view.setCommands(commands);
 	}
 	
 	@Override
@@ -39,39 +39,64 @@ public class Presenter implements Observer{
 					if(detailAndName[0].equals("generateMazeCompleted")){
 						view.displayMaze(model.getMaze(detailAndName[1]));
 					}
+					if(detailAndName[0].equals("solveMazeCompleted")){
+						view.displaySolution(model.getSolution(detailAndName[1]));
+					}
 				}					
 			}
 		}
 	}
-	//commands
-	public class TestMVPCommand implements Command {
+	
 
-		@Override
-		public void doCommand(String arg) {
-			System.out.println("TestMVPCommand");
-		}
-		
+	//create commands
+	private void addAllCommands(){
+		commands.put("generateMaze", new generateMazeCommand());
+		commands.put("displayMaze", new displaymazeCommand());
+		commands.put("solveMaze", new solvemazeCommand());
+		commands.put("displaySolution", new displaysolutionCommand());
+		commands.put("exit", new exitCommand());
 	}
-	//the argument must be name (int rows),(int cols)
+	//commands
+	
+	//the argument must be (name) (int rows),(int cols)
 	public class generateMazeCommand implements Command {
 
 		@Override
 		public void doCommand(String arg) {
 			String[] nameAndArguments=arg.split(" ");
-			String[] rowAndcol=nameAndArguments[2].split(","); 
-			System.out.println("generateMaze");
+			if(nameAndArguments.length!=2)
+				return;
+			String[] rowAndcol=nameAndArguments[1].split(","); 
+			if(rowAndcol.length!=2)
+				return;
 			int rows=Integer.parseInt(rowAndcol[0]);
 			int cols=Integer.parseInt(rowAndcol[1]);
 			model.generateMaze(nameAndArguments[0],rows,cols);
-			model.generateMaze(nameAndArguments[0],rows, cols);
 		}
 	}
 	
 	public class displaymazeCommand implements Command {
-
 		@Override
 		public void doCommand(String arg) {
-			
+			view.displayMaze(model.getMaze(arg));
+		}
+	}
+	public class solvemazeCommand  implements Command {
+		@Override
+		public void doCommand(String arg) {
+			model.solveMaze(model.getMaze(arg));
+		}
+	}
+	public class displaysolutionCommand  implements Command {
+		@Override
+		public void doCommand(String arg) {
+			view.displaySolution(model.getSolution(arg));
+		}
+	}
+	public class exitCommand  implements Command {
+		@Override
+		public void doCommand(String arg) {
+			//close all we need
 		}
 	}
 		

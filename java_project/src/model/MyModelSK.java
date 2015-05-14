@@ -34,7 +34,7 @@ public class MyModelSK extends Observable implements Model {
 	ExecutorService executor;
 	HashMap<String, Maze> nameMaze=new HashMap<>();
 	HashMap<Maze, Solution> MazeSol=new HashMap<>();
-
+	
 	@Override
 	public void generateMaze(String name,int col,int row) {
 		//System.out.println("generateMaze");
@@ -106,23 +106,21 @@ public class MyModelSK extends Observable implements Model {
 		try {
 			out = (new FileOutputStream("resources/data.bin"));
 		} catch (FileNotFoundException e) {
+			System.out.println("Can't edit/create resources/data.bin");
 			e.printStackTrace();
 		}
 		try {
 			out2 = new ObjectOutputStream(out);
 		} catch (IOException e) {
-			e.printStackTrace();
+			System.out.println("Can't edit resources/data.bin");
 		}
 		try {
 			out2.writeObject(nameMaze);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		try {
 			out2.writeObject(MazeSol);
 		} catch (IOException e) {
-			e.printStackTrace();
+			System.out.println("Can't write to resources/data.bin");
 		}
+
 	}
 	
 	public void start(){
@@ -132,25 +130,23 @@ public class MyModelSK extends Observable implements Model {
 		try {
 			in = (new FileInputStream("resources/data.bin"));
 		} catch (FileNotFoundException e) {
+			System.out.println("file resources/data.bin not found");
 			e.printStackTrace();
 		}
 		try {
 			in2 = new ObjectInputStream(in);
 		} catch (IOException e) {
+			System.out.println("Something wrong in resources/data.bin");
 			e.printStackTrace();
 		}
 		try {
 			this.MazeSol=(HashMap<Maze, Solution>) in2.readObject();
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		try {
 			this.nameMaze=(HashMap<String, Maze>) in2.readObject();
 		} catch (ClassNotFoundException e) {
+			System.out.println("Something wrong in resources/data.bin");
 			e.printStackTrace();
 		} catch (IOException e) {
+			System.out.println("Something wrong in resources/data.bin");
 			e.printStackTrace();
 		}
 	}
@@ -164,8 +160,7 @@ public class MyModelSK extends Observable implements Model {
 		 */
 		String splited[] = str.split(" ");
 		AllowedThreads = Integer.parseInt(splited[0]);
-		executor = Executors.newFixedThreadPool(AllowedThreads);
-		
+		executor = Executors.newFixedThreadPool(AllowedThreads);		
 		return 1;
 	}
 	

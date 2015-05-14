@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Observable;
 
 
@@ -18,7 +19,7 @@ public class MyView extends Observable implements View {
 	NewCLI myCLI;
 	BufferedReader in;
 	PrintStream out;
-	Queue<Command> commands;
+	Queue<Command> commandsList;
 	/**
 	 * This constructor create view by using the arguments for input and output 
 	 * @param r The input for the user
@@ -28,6 +29,7 @@ public class MyView extends Observable implements View {
 		super();
 		this.in=r;
 		this.out=out;
+		commandsList=new LinkedList<Command>();
 	}
 	/**
 	 * This constructor create view by using the default system output and input
@@ -36,6 +38,7 @@ public class MyView extends Observable implements View {
 		super();
 		this.in=new BufferedReader(new InputStreamReader(System.in));
 		this.out=System.out;
+		commandsList=new LinkedList<Command>();
 	}
 	
 	@Override
@@ -43,7 +46,8 @@ public class MyView extends Observable implements View {
 		System.out.println("start");
 		this.setChanged();
 		this.notifyObservers("start");
-		myCLI.start();
+		Thread t=new Thread(new NewCLIRunnable(myCLI));
+		t.start();
 	}
 
 	@Override
@@ -55,7 +59,7 @@ public class MyView extends Observable implements View {
 	@Override
 	public Command getUserCommand() {
 		System.out.println("getUserCommand");
-		return commands.poll();
+		return commandsList.poll();
 	}
 
 	@Override

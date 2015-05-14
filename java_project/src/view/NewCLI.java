@@ -45,7 +45,7 @@ public class NewCLI {
 			
 			while (!line.equals("exit"))
 			{
-				String[] sp = line.split(" ");
+				String[] sp = line.split(" ", 2);
 								
 				String commandName = sp[0];
 				String arg = null;
@@ -59,7 +59,8 @@ public class NewCLI {
 					if(arg==null)
 						out.println("No argument has been entered");
 					else{
-						view.commands.add(command);
+						view.commandsList.isEmpty();
+						view.commandsList.add(command);
 						view.Notify(arg);
 					}
 				
@@ -67,7 +68,8 @@ public class NewCLI {
 				line = in.readLine();
 			}
 			out.print("Goodbye");
-						
+			view.commandsList.add(Commands.get("exit"));
+			view.Notify(null);			
 		} catch (IOException e) {			
 			System.out.println("can't read/write from/to in/out streams");
 		} finally {

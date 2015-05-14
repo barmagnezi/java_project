@@ -11,7 +11,7 @@ public class MyModel extends Observable implements Model {
 	public void generateMaze(String name, int rows,int cols) {
 		System.out.println("generateMaze");
 		this.setChanged();
-		this.notifyObservers("generateMazeCompleted");
+		this.notifyObservers("generateMazeCompleted "+name);
 	}
 
 	@Override
@@ -23,7 +23,9 @@ public class MyModel extends Observable implements Model {
 	@Override
 	public void solveMaze(Maze m) {
 		System.out.println("solveMaze");
-
+		this.setChanged();
+		this.notifyObservers("solveMazeCompleted "+"mazeName"); //only for example
+		//this.notifyObservers("solveMazeCompleted "+name);
 	}
 
 	@Override
