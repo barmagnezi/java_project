@@ -3,19 +3,17 @@ package presenter;
 import java.beans.XMLDecoder;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.io.Serializable;
-import java.util.HashMap;
 
 import algorithms.mazeGenerators.DFSMazeGenerator;
-import algorithms.mazeGenerators.Maze;
 import algorithms.mazeGenerators.MazeGenerator;
 import algorithms.search.Searcher;
-import algorithms.search.Solution;
 import algorithms.search.aStar.AstarSearcher;
 import algorithms.search.aStar.Heuristic;
 import algorithms.search.aStar.MazeAirDistance;
 
-public class Properties implements Serializable {
+public class PropertiesModel implements Serializable {
 	/**
 	 * 
 	 */
@@ -25,20 +23,14 @@ public class Properties implements Serializable {
 	Searcher MSolver;
 	Heuristic Hue;
 	boolean diag;
-	HashMap<String, Maze> nameMaze=new HashMap<>();
-	HashMap<Maze, Solution> MazeSol=new HashMap<>();
 	
-	public Properties() {
+	public PropertiesModel() {
 	}
 	
-	public Properties(String path) {
+	public PropertiesModel(InputStream from) {
 		XMLDecoder XML = null;
-		try {
-			XML = new XMLDecoder(new FileInputStream(path));
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
-		Properties prop=(Properties) XML.readObject();
+		XML = new XMLDecoder(from);
+		PropertiesModel prop=(PropertiesModel) XML.readObject();
 		if(XML==null || prop==null){
 			this.setAllowedThreads(3);				//Setting default values for not found XML.
 			this.setMGenerator(new DFSMazeGenerator());
@@ -46,10 +38,6 @@ public class Properties implements Serializable {
 			this.setHue(Hur);
 			this.setMSolver(new AstarSearcher(Hur));
 			this.setDiag(true);
-			HashMap<String, Maze> nameMaze = null;
-			this.setNameMaze(nameMaze);
-			HashMap<Maze, Solution> mazeSol = null;
-			this.setMazeSol(mazeSol);
 		}
 		else{
 			this.setAllowedThreads(prop.getAllowedThreads());
@@ -57,8 +45,6 @@ public class Properties implements Serializable {
 			this.setHue(prop.getHue());
 			this.setMSolver(prop.getMSolver());
 			this.setDiag(prop.isDiag());
-			this.setMazeSol(prop.getMazeSol());
-			this.setNameMaze(prop.getNameMaze());
 		}
 		XML.close();
 	}
@@ -100,18 +86,6 @@ public class Properties implements Serializable {
 	}
 	public void setDiag(boolean diag) {
 		this.diag = diag;
-	}
-	public HashMap<String, Maze> getNameMaze() {
-		return nameMaze;
-	}
-	public void setNameMaze(HashMap<String, Maze> nameMaze) {
-		this.nameMaze = nameMaze;
-	}
-	public HashMap<Maze, Solution> getMazeSol() {
-		return MazeSol;
-	}
-	public void setMazeSol(HashMap<Maze, Solution> mazeSol) {
-		MazeSol = mazeSol;
 	}
 
 	

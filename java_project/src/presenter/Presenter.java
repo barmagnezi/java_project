@@ -1,5 +1,8 @@
 package presenter;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Observable;
 import java.util.Observer;
@@ -20,9 +23,12 @@ public class Presenter implements Observer{
 		commands=new HashMap<String, Command>();
 		addAllCommands();
 		view.setCommands(commands);
-		//Senia
-		Properties properties = new Properties("resources/Properties.xml");
-		//Senia
+		InputStream from = null;
+		try {
+			from = new FileInputStream("resources/properties.xml");
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();}
+		PropertiesModel Mproperties = new PropertiesModel(from);
 	}
 	
 	@Override
