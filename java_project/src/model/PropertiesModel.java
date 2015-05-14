@@ -1,8 +1,10 @@
-package presenter;
+package model;
 
 import java.beans.XMLDecoder;
 import java.io.InputStream;
 import java.io.Serializable;
+
+import org.xml.sax.SAXParseException;
 
 import algorithms.mazeGenerators.DFSMazeGenerator;
 import algorithms.mazeGenerators.MazeGenerator;
@@ -26,26 +28,31 @@ public class PropertiesModel implements Serializable {
 	}
 	
 	public PropertiesModel(InputStream from) {
-		XMLDecoder XML = null;
-		XML = new XMLDecoder(from);
-		if(XML==null){
+		
+		try{
+			XMLDecoder XML = null;
+			XML = new XMLDecoder(from);
+			PropertiesModel prop=null;
+			prop=(PropertiesModel) XML.readObject();
+			this.setAllowedThreads(prop.getAllowedThreads());
+			this.setMGenerator(getMGenerator());
+			this.setHue(prop.getHue());
+			this.setMSolver(prop.getMSolver());
+			this.setDiag(prop.isDiag());
+			XML.close();
+		}catch(ArrayIndexOutOfBoundsException e ){
+			System.out.println("no found prop//run default values");
 			this.setAllowedThreads(3);				//Setting default values for not found XML.
 			this.setMGenerator(new DFSMazeGenerator());
 			Heuristic Hur = new MazeAirDistance();
 			this.setHue(Hur);
 			this.setMSolver(new AstarSearcher(Hur));
 			this.setDiag(true);
-		}
-		else{
-			PropertiesModel prop=(PropertiesModel) XML.readObject();
-			this.setAllowedThreads(prop.getAllowedThreads());
-			this.setMGenerator(getMGenerator());
-			this.setHue(prop.getHue());
-			this.setMSolver(prop.getMSolver());
-			this.setDiag(prop.isDiag());
-		}
-		XML.close();
+		}finally{
+			
+		}	
 	}
+
 
 	public String toString(){
 		String str="";

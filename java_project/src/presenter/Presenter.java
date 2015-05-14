@@ -11,6 +11,7 @@ import view.MyView;
 import view.View;
 import model.Model;
 import model.MyModel;
+import model.PropertiesModel;
 
 public class Presenter implements Observer{
 	Model model;
