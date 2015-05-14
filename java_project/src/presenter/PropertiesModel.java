@@ -1,8 +1,6 @@
 package presenter;
 
 import java.beans.XMLDecoder;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.Serializable;
 
@@ -30,8 +28,7 @@ public class PropertiesModel implements Serializable {
 	public PropertiesModel(InputStream from) {
 		XMLDecoder XML = null;
 		XML = new XMLDecoder(from);
-		PropertiesModel prop=(PropertiesModel) XML.readObject();
-		if(XML==null || prop==null){
+		if(XML==null){
 			this.setAllowedThreads(3);				//Setting default values for not found XML.
 			this.setMGenerator(new DFSMazeGenerator());
 			Heuristic Hur = new MazeAirDistance();
@@ -40,6 +37,7 @@ public class PropertiesModel implements Serializable {
 			this.setDiag(true);
 		}
 		else{
+			PropertiesModel prop=(PropertiesModel) XML.readObject();
 			this.setAllowedThreads(prop.getAllowedThreads());
 			this.setMGenerator(getMGenerator());
 			this.setHue(prop.getHue());
