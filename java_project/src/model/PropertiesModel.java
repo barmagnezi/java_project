@@ -40,7 +40,7 @@ public class PropertiesModel implements Serializable {
 			this.setMSolver(prop.getMSolver());
 			this.setDiag(prop.isDiag());
 			XML.close();
-		}catch(ArrayIndexOutOfBoundsException e ){
+		}catch(Exception e ){
 			System.out.println("no found prop//run default values");			
 			this.setAllowedThreads(3);				//Setting default values for not found XML.
 			this.setMGenerator(new DFSMazeGenerator());
