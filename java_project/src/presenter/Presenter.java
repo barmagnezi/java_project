@@ -14,7 +14,7 @@ import model.MyModel;
 import model.PropertiesModel;
 
 public class Presenter implements Observer{
-	Model model;
+	MyModel model;
 	View view;
 	HashMap<String, Command> commands;
 	
@@ -30,6 +30,7 @@ public class Presenter implements Observer{
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();}
 		PropertiesModel Mproperties = new PropertiesModel(from);
+		model.setProperties(Mproperties);
 	}
 	
 	@Override
