@@ -24,7 +24,7 @@ public class Presenter implements Observer{
 	
 	@Override
 	public void update(Observable o, Object arg) {
-		if(((String)arg).equals("start"))
+		if(arg!=null && ((String)arg).equals("start"))
 			return;
 		else{
 			if(o == view){
@@ -96,6 +96,7 @@ public class Presenter implements Observer{
 	public class exitCommand  implements Command {
 		@Override
 		public void doCommand(String arg) {
+			model.stop();
 			//close all we need
 		}
 	}

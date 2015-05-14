@@ -67,7 +67,7 @@ public class NewCLI {
 				out.print("Enter command: ");
 				line = in.readLine();
 			}
-			out.print("Goodbye");
+			out.println("Goodbye");
 			view.commandsList.add(Commands.get("exit"));
 			view.Notify(null);			
 		} catch (IOException e) {			
