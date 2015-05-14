@@ -1,5 +1,6 @@
 package boot;
 
+import algorithms.mazeGenerators.Maze;
 import presenter.Presenter;
 import view.MyView;
 import model.MyModel;
@@ -16,3 +17,15 @@ public class Run {
 	}
 
 }
+/* 
+ * new function for mymodelsk
+ * private String getname(Maze maze)
+	{
+       for (String name : nameMaze.keySet()) {
+           if (nameMaze.get(name).equals(maze)) {
+               return name;
+           }
+       }
+	   return null;
+	}
+	*/
