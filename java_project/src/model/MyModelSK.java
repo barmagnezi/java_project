@@ -1,5 +1,7 @@
 package model;
 
+import java.beans.XMLDecoder;
+import java.beans.XMLEncoder;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -13,6 +15,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
+import presenter.Properties;
 import algorithms.mazeGenerators.DFSMazeGenerator;
 import algorithms.mazeGenerators.Maze;
 import algorithms.mazeGenerators.MazeGenerator;
@@ -25,20 +28,15 @@ import algorithms.search.aStar.MazeAirDistance;
 import algorithms.search.aStar.MazeManhhetenDistance;
 
 public class MyModelSK extends Observable implements Model {
-	MazeGenerator MGenerator;
-	Searcher MSolver;
 	Maze maze;
 	Solution sol;
-	int AllowedThreads;
-	boolean diag;
 	ExecutorService executor;
 	HashMap<String, Maze> nameMaze=new HashMap<>();
 	HashMap<Maze, Solution> MazeSol=new HashMap<>();
-	
+
 	@Override
-	public void generateMaze(String name,int col,int row) {
-		//System.out.println("generateMaze");
-		Future<Maze> f = executor.submit(new MazeCallable(MGenerator,col,row));
+	public void generateMaze(String name,int col,int row, Properties prop) {
+		Future<Maze> f = executor.submit(new MazeCallable(prop.getMGenerator(),col,row));
 		try {
 			maze = f.get();
 		} catch (InterruptedException e) {
@@ -56,6 +54,8 @@ public class MyModelSK extends Observable implements Model {
 		}
 		nameMaze.put(name, maze);
 		//NOTIFY
+		this.setChanged();
+		this.notifyObservers("generateMazeCompleted");
 	}
 
 	@Override
@@ -64,9 +64,9 @@ public class MyModelSK extends Observable implements Model {
 	}
 
 	@Override
-	public void solveMaze(Maze m) {
+	public void solveMaze(Maze m, Properties prop) {
 		if(!MazeSol.containsKey(m)){
-			Future<Solution> f = executor.submit(new MazeSolveCallable(m,diag,MSolver));
+			Future<Solution> f = executor.submit(new MazeSolveCallable(m,prop.isDiag(),prop.getMSolver()));
 			try {
 				sol = f.get();
 			} catch (InterruptedException e) {
@@ -96,7 +96,7 @@ public class MyModelSK extends Observable implements Model {
 	}
 
 	@Override
-	public void stop() {
+	public void stop(Properties prop) {
 		System.out.println("Stop");
 		executor.shutdown();	// ??
 		//Huffman vs ZIP ??
@@ -106,21 +106,30 @@ public class MyModelSK extends Observable implements Model {
 		try {
 			out = (new FileOutputStream("resources/data.bin"));
 		} catch (FileNotFoundException e) {
-			System.out.println("Can't edit/create resources/data.bin");
 			e.printStackTrace();
 		}
 		try {
 			out2 = new ObjectOutputStream(out);
 		} catch (IOException e) {
-			System.out.println("Can't edit resources/data.bin");
+			e.printStackTrace();
 		}
 		try {
 			out2.writeObject(nameMaze);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		try {
 			out2.writeObject(MazeSol);
 		} catch (IOException e) {
-			System.out.println("Can't write to resources/data.bin");
+			e.printStackTrace();
 		}
-
+		
+		//Senia - Get(from Model) & Set properties(To XML)		=== START ===
+		XMLEncoder e=new XMLEncoder(new FileOutputStream("resources/Properties.xml"));
+		e.writeObject(prop);
+		e.flush();
+		e.close();
+		//														===  END  ===
 	}
 	
 	public void start(){
@@ -130,100 +139,88 @@ public class MyModelSK extends Observable implements Model {
 		try {
 			in = (new FileInputStream("resources/data.bin"));
 		} catch (FileNotFoundException e) {
-			System.out.println("file resources/data.bin not found");
 			e.printStackTrace();
 		}
 		try {
 			in2 = new ObjectInputStream(in);
 		} catch (IOException e) {
-			System.out.println("Something wrong in resources/data.bin");
 			e.printStackTrace();
 		}
 		try {
 			this.MazeSol=(HashMap<Maze, Solution>) in2.readObject();
-			this.nameMaze=(HashMap<String, Maze>) in2.readObject();
 		} catch (ClassNotFoundException e) {
-			System.out.println("Something wrong in resources/data.bin");
 			e.printStackTrace();
 		} catch (IOException e) {
-			System.out.println("Something wrong in resources/data.bin");
+			e.printStackTrace();
+		}
+		try {
+			this.nameMaze=(HashMap<String, Maze>) in2.readObject();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 	
+}	//Class close
 	
-	public int setGeneralProperties(String str){	//"X" - X for number of Allowed Threads.
+	/*public int setProperties(String str){	//"5 DFS BFS 1"(5-Allowed threads,1-diag), "3 Random Astar Air 0"(3-threads,Air-for AirDistance, 0-diag).
 		/**
-		 * Receives a String containing the general values of MyModel
-		 * str="5 ....etc"
-		 * 5 as the number of allowed threads.
-		 */
-		String splited[] = str.split(" ");
-		AllowedThreads = Integer.parseInt(splited[0]);
-		executor = Executors.newFixedThreadPool(AllowedThreads);		
-		return 1;
-	}
-	
-	public int setMazeProperties(String str){	//"DFS BFS 1"(1 for diag), "Random Astar Air 0"(Air-for AirDistance, 0 for no diag).
-		/**
-		 * Receives a String containing the values of how we Generate a maze and how we Solve it and a boolean representing if its with(1) or without(0) diagonals.
-		 * str="DFS/Random BFS/Astar 1", if Astar chosen we need to specify what Heuristic it will use - "Air/Man".(for example - "DFS Astar Man 0")
+		 * Receives a String containing the values of how how much thereads we allow, how we Generate a maze and how we Solve it and
+		 * a boolean representing if its with(1) or without(0) diagonals.
+		 * str="3 DFS/Random BFS/Astar 1", if Astar chosen we need to specify what Heuristic it will use -
+		 * "Air/Man".(for example - "4 DFS Astar Man 0")
 		 * If finished successfully, returns 1.
-		 * if not enough arguments-for Astar, return 2.-for diag, return 3;
 		 * if error, returns -1.
-		 */
+		 
 		String splited[] = str.split(" ");
-		boolean flag1=false,flag2=false,flag3=false;
+		boolean flag1=false,flag2=false;
+		//Sets Threads:
+		AllowedThreads = Integer.parseInt(splited[0]);
+		if(AllowedThreads<1)
+			return -1;
+		executor = Executors.newFixedThreadPool(AllowedThreads);
 		//Sets Generator:
-		if(splited[0].equalsIgnoreCase("DFS")){
+		if(splited[1].equalsIgnoreCase("DFS")){
 			flag1=true;
 			MGenerator = new DFSMazeGenerator();
 		}
-		if(splited[0].equalsIgnoreCase("Random")){
+		if(splited[1].equalsIgnoreCase("Random")){
 			flag1=true;
 			MGenerator = new DFSMazeGenerator();
 		}
 		//Sets Solver:
-		if(splited[1].equalsIgnoreCase("BFS")){
+		if(splited[2].equalsIgnoreCase("BFS")){
 			flag2=true;
 			MSolver = new BFSSearcher();
 		}
-		if(splited[1].equalsIgnoreCase("Astar")){
-			flag2=true;
+		if(splited[2].equalsIgnoreCase("Astar")){
 			if(splited.length<2){
 				return 0;
 			}
 			Heuristic Hur = null;
-			if(splited[2].equalsIgnoreCase("Air"))
+			if(splited[3].equalsIgnoreCase("Air"))
 				Hur = new MazeAirDistance();
-			if(splited[2].equalsIgnoreCase("Man"))
+			if(splited[3].equalsIgnoreCase("Man"))
 				Hur = new MazeManhhetenDistance();
 			if(Hur==null)
-				return 2;
+				return -1;
+			flag2=true;
+			this.hur=Hur;
 			MSolver = new AstarSearcher(Hur);
 		}
-		if(Integer.parseInt(splited[3])==0 || Integer.parseInt(splited[3])==1){
-			flag3=true;
-			if(Integer.parseInt(splited[3])==0)
+		//Sets diagonal, 1-Allowed, 0 Forbidden.
+		if(Integer.parseInt(splited[4])==0 || Integer.parseInt(splited[3])==1){
+			if(Integer.parseInt(splited[4])==0)
 				diag=false;
 			else
 				diag=true;
 		}
+		else
+			return -1;
 		if(flag1==false || flag2==false)
 			return -1;
-		if(flag3==false)
-			return 3;
 		
 		return 1;
 		
-	}
-
-	public MazeGenerator getMGenerator() {
-		return MGenerator;
-	}
-
-	public Searcher getMSolver() {
-		return MSolver;
-	}
-
-}
+	}*/

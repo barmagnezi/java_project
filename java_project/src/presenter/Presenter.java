@@ -20,6 +20,9 @@ public class Presenter implements Observer{
 		commands=new HashMap<String, Command>();
 		addAllCommands();
 		view.setCommands(commands);
+		//Senia
+		Properties properties = new Properties("resources/Properties.xml");
+		//Senia
 	}
 	
 	@Override
