@@ -30,8 +30,8 @@ public class PropertiesModel implements Serializable {
 	public PropertiesModel(InputStream from) {
 		
 		try{
-			XMLDecoder XML = null;
-			XML = new XMLDecoder(from);
+			XMLDecoder XML = null;	
+			XML = new XMLDecoder(from);			
 			PropertiesModel prop=null;
 			prop=(PropertiesModel) XML.readObject();
 			this.setAllowedThreads(prop.getAllowedThreads());
@@ -41,7 +41,7 @@ public class PropertiesModel implements Serializable {
 			this.setDiag(prop.isDiag());
 			XML.close();
 		}catch(ArrayIndexOutOfBoundsException e ){
-			System.out.println("no found prop//run default values");
+			System.out.println("no found prop//run default values");			
 			this.setAllowedThreads(3);				//Setting default values for not found XML.
 			this.setMGenerator(new DFSMazeGenerator());
 			Heuristic Hur = new MazeAirDistance();
