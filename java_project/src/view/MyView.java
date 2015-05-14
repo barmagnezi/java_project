@@ -6,14 +6,10 @@ import java.io.PrintStream;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Observable;
-
-
-
 import java.util.Queue;
-
-import algorithms.mazeGenerators.Maze;
 import algorithms.search.Solution;
 import presenter.Command;
+import algorithms.mazeGenerators.Maze;
 
 public class MyView extends Observable implements View {
 	NewCLI myCLI;
@@ -65,13 +61,18 @@ public class MyView extends Observable implements View {
 	@Override
 	public void displayMaze(Maze m) {
 		System.out.println("displayMaze");
-
+		
+		MyMazeDispleyer md = new MyMazeDispleyer();
+		md.DisplayMaze(m, out);
 	}
 
 	@Override
 	public void displaySolution(Solution s) {
 		System.out.println("displaySolution");
-
+		
+		MySolutionDispleyer sd = new MySolutionDispleyer();
+		sd.DisplaySolution(s, out);
+		
 	}
 	public void Notify(String arg) {
 		this.setChanged();

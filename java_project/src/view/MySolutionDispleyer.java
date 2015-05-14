@@ -7,7 +7,7 @@ import java.util.Stack;
 import algorithms.search.Solution;
 import algorithms.search.State;
 
-public class mySolutionDispleyer implements SolutionDispleyer {
+public class MySolutionDispleyer implements SolutionDispleyer {
 
 	@Override
 	public void DisplaySolution(Solution solution, PrintStream out) {

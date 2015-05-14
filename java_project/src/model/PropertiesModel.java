@@ -1,17 +1,21 @@
 package model;
 
 import java.beans.XMLDecoder;
+import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.Serializable;
-
-import org.xml.sax.SAXParseException;
 
 import algorithms.mazeGenerators.DFSMazeGenerator;
 import algorithms.mazeGenerators.MazeGenerator;
+import algorithms.mazeGenerators.RandomMazeGenerator;
+import algorithms.search.BFSSearcher;
 import algorithms.search.Searcher;
 import algorithms.search.aStar.AstarSearcher;
 import algorithms.search.aStar.Heuristic;
 import algorithms.search.aStar.MazeAirDistance;
+import algorithms.search.aStar.MazeManhhetenDistance;
 
 public class PropertiesModel implements Serializable {
 	/**
@@ -35,15 +39,22 @@ public class PropertiesModel implements Serializable {
 			PropertiesModel prop=null;
 			prop=(PropertiesModel) XML.readObject();
 			this.setAllowedThreads(prop.getAllowedThreads());
-			this.setMGenerator(getMGenerator());
+			this.setMGenerator(prop.getMGenerator());
 			this.setHue(prop.getHue());
 			this.setMSolver(prop.getMSolver());
+			//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ (bar90) Doesnt put in the MSolver cuz error
 			this.setDiag(prop.isDiag());
 			XML.close();
 		}catch(Exception e ){
-			System.out.println("no found prop//run default values");			
+			System.out.println("no found prop//run default values");
+			/*try {
+				this.changeProps();
+			} catch (IOException e1) {
+				e1.printStackTrace();}	^^ ask the user to input data*/
 			this.setAllowedThreads(3);				//Setting default values for not found XML.
+			System.out.println("setting generator");
 			this.setMGenerator(new DFSMazeGenerator());
+			System.out.println("set as: "+this.getMGenerator());
 			Heuristic Hur = new MazeAirDistance();
 			this.setHue(Hur);
 			this.setMSolver(new AstarSearcher(Hur));
@@ -51,6 +62,71 @@ public class PropertiesModel implements Serializable {
 		}finally{
 			
 		}	
+	}
+	
+	public void changeProps(){
+		String str = null;
+		String str2 = null;
+		BufferedReader in =new BufferedReader(new InputStreamReader(System.in));
+		do{
+			System.out.println("Enter number of allowed threads:");
+			try {
+				str = in.readLine();
+			} catch (IOException e) {
+				e.printStackTrace();}
+			this.setAllowedThreads(Integer.parseInt(str));
+		}while(this.getAllowedThreads()<1);
+		do{
+			System.out.println("Enter a maze generator method(DFS/Random):");
+			try {
+				str = in.readLine();
+			} catch (IOException e) {
+				e.printStackTrace();}
+			if(str.equalsIgnoreCase("DFS"))
+				this.MGenerator = new DFSMazeGenerator();
+			if(str.equalsIgnoreCase("Random"))
+				this.MGenerator = new RandomMazeGenerator();
+		}while(!str.equalsIgnoreCase("DFS") && !str.equalsIgnoreCase("Random"));
+		do{
+			System.out.println("Enter a maze solver method(BFS/Astar):");
+			try {
+				str = in.readLine();
+			} catch (IOException e) {
+				e.printStackTrace();}
+			if(str.equalsIgnoreCase("BFS")){
+				this.MSolver = new BFSSearcher();
+				//I set the Hue-Altought I dont need to-Becuase bug of Solver(DOESNT SAVE MAZE SOLVER)
+				//^^^ Didnt work..
+			}
+			if(str.equalsIgnoreCase("Astar")){
+				do{
+					System.out.println("Enter a hueristic(Air/Man):");
+					try {
+						str2 = in.readLine();
+					} catch (IOException e) {
+						e.printStackTrace();}
+					if(str2.equalsIgnoreCase("Air")){
+						this.MSolver = new AstarSearcher(new MazeAirDistance());
+						this.setHue(new MazeAirDistance());
+					}
+					if(str2.equalsIgnoreCase("Man")){
+						this.MSolver = new AstarSearcher(new MazeManhhetenDistance());
+						this.setHue(new MazeManhhetenDistance());
+					}
+				}while(str.equalsIgnoreCase("Air") && str.equalsIgnoreCase("Man"));
+			}
+		}while(!str.equalsIgnoreCase("BFS") && !str.equalsIgnoreCase("Astar"));
+		do{
+			System.out.println("Enter if you want diagonals or not(0/1):");
+			try {
+				str = in.readLine();
+			} catch (IOException e) {
+				e.printStackTrace();}
+			if(Integer.parseInt(str)==0)
+				this.setDiag(false);
+			if(Integer.parseInt(str)==1)
+				this.setDiag(true);
+		}while(Integer.parseInt(str)!=0 && Integer.parseInt(str)!=1);
 	}
 
 

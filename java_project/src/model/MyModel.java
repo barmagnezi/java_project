@@ -17,17 +17,22 @@ import model.PropertiesModel;
 import algorithms.mazeGenerators.Maze;
 import algorithms.search.Solution;
 
+//For temp fix:
+import algorithms.search.BFSSearcher;
+import algorithms.search.aStar.AstarSearcher;
+import algorithms.search.aStar.MazeAirDistance;
+import algorithms.search.aStar.MazeManhhetenDistance;
+
 public class MyModel extends Observable implements Model {
 	ExecutorService executor;
 	HashMap<String, Maze> nameMaze=new HashMap<>();
 	HashMap<Maze, Solution> MazeSol=new HashMap<>();
 	PropertiesModel properties;
+	boolean flag;
 	Object fin;
 
 	@Override
 	public void generateMaze(String name, int col,int row) {
-		System.out.println("SENIA: "+properties.getAllowedThreads());
-		System.out.println(properties.getMGenerator());
 		Future<Maze> f = executor.submit(new MazeCallable(properties.getMGenerator(),col,row));
 		Maze maze = null;
 		try {
@@ -52,10 +57,10 @@ public class MyModel extends Observable implements Model {
 			name+=i;
 		}
 		nameMaze.put(name, maze);
-		//NOTIFY
 		this.setChanged();
-		this.notifyObservers("generateMazeCompleted");
-		fin.notify();
+		this.notifyObservers("generateMazeCompleted "+name);
+		if(flag==true)
+			fin.notify();
 	}
 
 	@Override
@@ -86,10 +91,10 @@ public class MyModel extends Observable implements Model {
 			MazeSol.put(m, sol);
 			nameMaze.put(getName(m), m);
 		}
-		//NOTIFY
 		this.setChanged();
 		this.notifyObservers("solveMazeCompleted "+getName(m));
-		fin.notify();
+		if(flag==true)
+			fin.notify();
 	}
 	
 	private String getName(Maze maze)
@@ -109,6 +114,7 @@ public class MyModel extends Observable implements Model {
 
 	@Override
 	public void stop() {
+		this.flag=true;
 		executor.shutdown();
 		while(!executor.isShutdown()){
 			try {
@@ -129,11 +135,11 @@ public class MyModel extends Observable implements Model {
 		} catch (IOException e) {
 			e.printStackTrace();}
 		try {
-			out2.writeObject(nameMaze);
+			out2.writeObject(nameMaze);		//(bar91) -here it crash when "exit" - because maze isn't serializable
 		} catch (IOException e) {
 			e.printStackTrace();}
 		try {
-			out2.writeObject(MazeSol);
+			out2.writeObject(MazeSol);		//(bar91) - same here
 		} catch (IOException e) {
 			e.printStackTrace();}
 		
@@ -143,7 +149,7 @@ public class MyModel extends Observable implements Model {
 			e = new XMLEncoder(new FileOutputStream("resources/properties.xml"));
 		} catch (FileNotFoundException e1) {
 			e1.printStackTrace();}
-		e.writeObject(properties);
+		e.writeObject(this.properties);
 		e.flush();
 		e.close();
 		//														===  END  ===
@@ -180,7 +186,19 @@ public class MyModel extends Observable implements Model {
 	}
 	
 	public void setProperties(PropertiesModel prop){
+		flag=false;
 		properties=prop;
+		if(this.properties.getMSolver()==null)
+			System.out.println("NO MSolver is set, temp fix downVV");	//(bar90), added some imports for this, marked as for temp fix
+		if(this.properties.getHue()==null)
+			this.properties.setMSolver(new BFSSearcher());
+		if(this.properties.getHue().getClass()==new MazeAirDistance().getClass())
+			this.properties.setMSolver(new AstarSearcher(new MazeAirDistance()));
+		if(this.properties.getHue().getClass()==new MazeManhhetenDistance().getClass())
+			this.properties.setMSolver(new AstarSearcher(new MazeManhhetenDistance()));
+		if(this.properties.getMSolver()==null)
+			System.out.println("BADDDDDDDDDDDDDDDDDDDDD");
+		System.out.println("MSolver is set, as: "+this.properties.getMSolver());
 		executor = Executors.newFixedThreadPool(properties.getAllowedThreads());
 	}
 	

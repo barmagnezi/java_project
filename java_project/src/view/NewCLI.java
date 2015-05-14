@@ -26,8 +26,7 @@ public class NewCLI {
 	 * @param out The OutputStream(PrintStream) that all the commands will write.
 	 * @param commands All the commands that the CLI support.
 	 */
-	public NewCLI(BufferedReader in, PrintStream out,HashMap<String, Command> commands,MyView view)
-	{
+	public NewCLI(BufferedReader in, PrintStream out,HashMap<String, Command> commands,MyView view){
 		this.in = in;
 		this.out = out;
 		this.Commands=commands;
@@ -54,7 +53,7 @@ public class NewCLI {
 				// Invoke the command
 				Command command = Commands.get(commandName);
 				if(command==null)
-					out.println("There is no command "+commandName);
+					out.println("There is no such command "+commandName);
 				else
 					if(arg==null)
 						out.println("No argument has been entered");

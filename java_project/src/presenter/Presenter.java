@@ -9,7 +9,6 @@ import java.util.Observer;
 
 import view.MyView;
 import view.View;
-import model.Model;
 import model.MyModel;
 import model.PropertiesModel;
 
@@ -30,6 +29,7 @@ public class Presenter implements Observer{
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();}
 		PropertiesModel Mproperties = new PropertiesModel(from);
+		//Mproperties.changeProps();
 		model.setProperties(Mproperties);
 	}
 	
@@ -89,7 +89,10 @@ public class Presenter implements Observer{
 	public class displaymazeCommand implements Command {
 		@Override
 		public void doCommand(String arg) {
-			view.displayMaze(model.getMaze(arg));
+			if(model.getMaze(arg)!=null)
+				view.displayMaze(model.getMaze(arg));
+			else
+				System.out.println("Such maze was not found.");	//(bar92)-confirm
 		}
 	}
 	public class solvemazeCommand  implements Command {
@@ -101,7 +104,11 @@ public class Presenter implements Observer{
 	public class displaysolutionCommand  implements Command {
 		@Override
 		public void doCommand(String arg) {
-			view.displaySolution(model.getSolution(arg));
+			if(model.getSolution(arg)!=null)
+				view.displaySolution(model.getSolution(arg));
+			else
+				System.out.println("Such solution was not found."); //(bar92)-confirm
+			
 		}
 	}
 	public class exitCommand  implements Command {
