@@ -40,4 +40,10 @@ public class MyModelStub extends Observable implements Model {
 
 	}
 
+	@Override
+	public void setProperties(PropertiesModel mproperties) {
+		System.out.println("setProperties");
+		
+	}
+
 }

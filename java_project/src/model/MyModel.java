@@ -13,8 +13,10 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+
 import model.PropertiesModel;
 import algorithms.mazeGenerators.Maze;
+import algorithms.search.Searcher;
 import algorithms.search.Solution;
 
 //For temp fix:
@@ -30,7 +32,7 @@ public class MyModel extends Observable implements Model {
 	PropertiesModel properties;
 	boolean flag;
 	Object fin;
-
+	Searcher Solver;
 	@Override
 	public void generateMaze(String name, int col,int row) {
 		Future<Maze> f = executor.submit(new MazeCallable(properties.getMGenerator(),col,row));
@@ -72,7 +74,7 @@ public class MyModel extends Observable implements Model {
 	public void solveMaze(Maze m) {
 		Solution sol = null;
 		if(!MazeSol.containsKey(m)){
-			Future<Solution> f = executor.submit(new MazeSolveCallable(m,properties.isDiag(),properties.getMSolver()));
+			Future<Solution> f = executor.submit(new MazeSolveCallable(m,properties.isDiag(),Solver));
 			try {
 				sol = f.get();
 			} catch (InterruptedException e) {
@@ -188,6 +190,14 @@ public class MyModel extends Observable implements Model {
 	public void setProperties(PropertiesModel prop){
 		flag=false;
 		properties=prop;
+		if(properties.getNameSolver().equals("BFS"))
+			this.Solver=new BFSSearcher();
+		else
+			if(properties.getNameSolver().equals("Astar"))
+				this.Solver=new AstarSearcher(properties.getHue());
+			else
+				System.out.println("error prop");
+		/*
 		if(this.properties.getMSolver()==null)
 			System.out.println("NO MSolver is set, temp fix downVV");	//(bar90), added some imports for this, marked as for temp fix
 		if(this.properties.getHue()==null)
@@ -198,7 +208,7 @@ public class MyModel extends Observable implements Model {
 			this.properties.setMSolver(new AstarSearcher(new MazeManhhetenDistance()));
 		if(this.properties.getMSolver()==null)
 			System.out.println("BADDDDDDDDDDDDDDDDDDDDD");
-		System.out.println("MSolver is set, as: "+this.properties.getMSolver());
+		System.out.println("MSolver is set, as: "+this.properties.getMSolver());*/
 		executor = Executors.newFixedThreadPool(properties.getAllowedThreads());
 	}
 	

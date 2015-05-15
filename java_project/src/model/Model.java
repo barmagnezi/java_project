@@ -9,4 +9,5 @@ public interface Model {
 	void solveMaze(Maze m); 
 	Solution getSolution(String name); 
 	void stop();
+	void setProperties(PropertiesModel mproperties);
 }

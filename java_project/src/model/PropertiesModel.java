@@ -16,7 +16,10 @@ import algorithms.search.aStar.AstarSearcher;
 import algorithms.search.aStar.Heuristic;
 import algorithms.search.aStar.MazeAirDistance;
 import algorithms.search.aStar.MazeManhhetenDistance;
-
+//name of solvers!!!
+//Astar
+//Astar
+//BFS
 public class PropertiesModel implements Serializable {
 	/**
 	 * 
@@ -24,26 +27,35 @@ public class PropertiesModel implements Serializable {
 	private static final long serialVersionUID = 1L;
 	int AllowedThreads;
 	MazeGenerator MGenerator;
-	Searcher MSolver;
+	//Searcher MSolver;
+	String nameSolver;
 	Heuristic Hue;
 	boolean diag;
 	
-	public PropertiesModel() {
+	public PropertiesModel() { 
 	}
-	
+	private void copyConstructor(PropertiesModel prop) {//bar way bar111
+		this.AllowedThreads=prop.getAllowedThreads();
+		this.MGenerator=prop.getMGenerator();
+		this.Hue=prop.getHue();
+		this.diag=prop.isDiag();
+		this.nameSolver=prop.getNameSolver();
+
+	}
 	public PropertiesModel(InputStream from) {
 		
 		try{
 			XMLDecoder XML = null;	
-			XML = new XMLDecoder(from);			
-			PropertiesModel prop=null;
+			XML = new XMLDecoder(from);	
+			this.copyConstructor((PropertiesModel) XML.readObject());//bar way bar111
+			/*PropertiesModel prop=null;
 			prop=(PropertiesModel) XML.readObject();
 			this.setAllowedThreads(prop.getAllowedThreads());
 			this.setMGenerator(prop.getMGenerator());
 			this.setHue(prop.getHue());
 			this.setMSolver(prop.getMSolver());
 			//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ (bar90) Doesnt put in the MSolver cuz error
-			this.setDiag(prop.isDiag());
+			this.setDiag(prop.isDiag());*/ 
 			XML.close();
 		}catch(Exception e ){
 			System.out.println("no found prop//run default values");
@@ -57,13 +69,15 @@ public class PropertiesModel implements Serializable {
 			System.out.println("set as: "+this.getMGenerator());
 			Heuristic Hur = new MazeAirDistance();
 			this.setHue(Hur);
-			this.setMSolver(new AstarSearcher(Hur));
+			this.setNameSolver("Astar");
 			this.setDiag(true);
 		}finally{
 			
 		}	
 	}
 	
+
+/*
 	public void changeProps(){
 		String str = null;
 		String str2 = null;
@@ -128,8 +142,8 @@ public class PropertiesModel implements Serializable {
 				this.setDiag(true);
 		}while(Integer.parseInt(str)!=0 && Integer.parseInt(str)!=1);
 	}
-
-
+*/
+/*
 	public String toString(){
 		String str="";
 		str+=this.AllowedThreads+" "+this.MGenerator.toString()+" "+this.MSolver.toString();
@@ -143,7 +157,7 @@ public class PropertiesModel implements Serializable {
 			str+=" 0";
 		return str;
 	}
-	
+*/	
 	public int getAllowedThreads() {
 		return AllowedThreads;
 	}
@@ -156,19 +170,25 @@ public class PropertiesModel implements Serializable {
 	public void setMGenerator(MazeGenerator mGenerator) {
 		MGenerator = mGenerator;
 	}
+	/*
 	public Searcher getMSolver() {
 		return MSolver;
 	}
 	public void setMSolver(Searcher mSolver) {
 		MSolver = mSolver;
-	}
+	}*/
 	public boolean isDiag() {
 		return diag;
 	}
 	public void setDiag(boolean diag) {
 		this.diag = diag;
 	}
-
+	public String getNameSolver() {
+		return nameSolver;
+	}
+	public void setNameSolver(String nameSolver) {
+		this.nameSolver = nameSolver;
+	}
 	
 	/*public void setPropeties(String path) {
 		XMLDecoder XML = null;

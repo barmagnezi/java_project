@@ -9,15 +9,16 @@ import java.util.Observer;
 
 import view.MyView;
 import view.View;
+import model.Model;
 import model.MyModel;
 import model.PropertiesModel;
 
 public class Presenter implements Observer{
-	MyModel model;
+	Model model;
 	View view;
 	HashMap<String, Command> commands;
 	
-	public Presenter(MyView v, MyModel m) {
+	public Presenter(View v, Model m) {
 		model=m;
 		view=v;
 		commands=new HashMap<String, Command>();
