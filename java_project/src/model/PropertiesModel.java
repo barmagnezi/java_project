@@ -31,6 +31,8 @@ public class PropertiesModel implements Serializable {
 	String nameSolver;
 	Heuristic Hue;
 	boolean diag;
+	String FileDataMazes;
+	
 	
 	public PropertiesModel() { 
 	}
@@ -40,6 +42,7 @@ public class PropertiesModel implements Serializable {
 		this.Hue=prop.getHue();
 		this.diag=prop.isDiag();
 		this.nameSolver=prop.getNameSolver();
+		this.FileDataMazes=prop.getFileDataMazes();
 
 	}
 	public PropertiesModel(InputStream from) {
@@ -71,6 +74,7 @@ public class PropertiesModel implements Serializable {
 			this.setHue(Hur);
 			this.setNameSolver("Astar");
 			this.setDiag(true);
+			this.setFileDataMazes("resources/data.bin");
 		}finally{
 			
 		}	
@@ -189,7 +193,12 @@ public class PropertiesModel implements Serializable {
 	public void setNameSolver(String nameSolver) {
 		this.nameSolver = nameSolver;
 	}
-	
+	public String getFileDataMazes() {
+		return FileDataMazes;
+	}
+	public void setFileDataMazes(String fileDataMazes) {
+		FileDataMazes = fileDataMazes;
+	}
 	/*public void setPropeties(String path) {
 		XMLDecoder XML = null;
 		try {

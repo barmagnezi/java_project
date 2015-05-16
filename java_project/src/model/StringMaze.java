@@ -4,7 +4,8 @@ import algorithms.mazeGenerators.Cell;
 import algorithms.mazeGenerators.Maze;
 
 public class StringMaze {
-	public String MazeToString(Maze maze){
+	
+	public static String MazeToString(Maze maze){
 		String strMaze=maze.getRows()+","+maze.getCols()+"/";
 		for(int i=0;i<maze.getRows();i++)
 			for(int j=0;j<maze.getCols();j++){
@@ -18,7 +19,7 @@ public class StringMaze {
 			}
 		return strMaze;
 	}
-	public Maze StringToMaze(String maze){
+	public static Maze StringToMaze(String maze){
 		String[] rowcolAndCells=maze.split("/");
 		String[] rowAndcol=rowcolAndCells[0].split(",");
 		int rows=Integer.parseInt(rowAndcol[0]);

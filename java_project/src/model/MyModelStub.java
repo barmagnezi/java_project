@@ -46,4 +46,10 @@ public class MyModelStub extends Observable implements Model {
 		
 	}
 
+	@Override
+	public void start() {
+		System.out.println("start");
+		
+	}
+
 }

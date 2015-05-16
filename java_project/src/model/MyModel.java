@@ -1,12 +1,16 @@
 package model;
 
 import java.beans.XMLEncoder;
+import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.PrintWriter;
+import java.io.Writer;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Observable;
 import java.util.concurrent.ExecutionException;
@@ -15,6 +19,8 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 import model.PropertiesModel;
+import algorithms.compression.HuffmanReader;
+import algorithms.compression.HuffmanWriter;
 import algorithms.mazeGenerators.Maze;
 import algorithms.search.Searcher;
 import algorithms.search.Solution;
@@ -30,7 +36,8 @@ public class MyModel extends Observable implements Model {
 	HashMap<String, Maze> nameMaze=new HashMap<>();
 	HashMap<Maze, Solution> MazeSol=new HashMap<>();
 	PropertiesModel properties;
-	boolean flag;
+	boolean executorFlag;
+	boolean updateDataFlag=false;
 	Object fin;
 	Searcher Solver;
 	@Override
@@ -59,9 +66,10 @@ public class MyModel extends Observable implements Model {
 			name+=i;
 		}
 		nameMaze.put(name, maze);
+		updateDataFlag=true;
 		this.setChanged();
 		this.notifyObservers("generateMazeCompleted "+name);
-		if(flag==true)
+		if(executorFlag==true)
 			fin.notify();
 	}
 
@@ -72,6 +80,10 @@ public class MyModel extends Observable implements Model {
 
 	@Override
 	public void solveMaze(Maze m) {
+		if(m==null){
+			System.out.println("error");
+			return;
+		}
 		Solution sol = null;
 		if(!MazeSol.containsKey(m)){
 			Future<Solution> f = executor.submit(new MazeSolveCallable(m,properties.isDiag(),Solver));
@@ -92,10 +104,11 @@ public class MyModel extends Observable implements Model {
 			}
 			MazeSol.put(m, sol);
 			nameMaze.put(getName(m), m);
+			updateDataFlag=true;
 		}
 		this.setChanged();
 		this.notifyObservers("solveMazeCompleted "+getName(m));
-		if(flag==true)
+		if(executorFlag==true)
 			fin.notify();
 	}
 	
@@ -116,7 +129,7 @@ public class MyModel extends Observable implements Model {
 
 	@Override
 	public void stop() {
-		this.flag=true;
+		this.executorFlag=true;
 		executor.shutdown();
 		while(!executor.isShutdown()){
 			try {
@@ -124,6 +137,9 @@ public class MyModel extends Observable implements Model {
 			} catch (InterruptedException e1) {
 				e1.printStackTrace();}
 		}
+		if(updateDataFlag)
+			writeHashmapsToFile();
+		/*
 		//Huffman vs ZIP ??
 		//From Hash maps to "resources/data.bin".
 		FileOutputStream out = null;
@@ -144,7 +160,7 @@ public class MyModel extends Observable implements Model {
 			out2.writeObject(MazeSol);		//(bar91) - same here
 		} catch (IOException e) {
 			e.printStackTrace();}
-		
+		*/
 		//Senia - Get(from Model) & Set properties(To XML)		=== START ===
 		XMLEncoder e = null;
 		try {
@@ -156,9 +172,13 @@ public class MyModel extends Observable implements Model {
 		e.close();
 		//														===  END  ===
 	}
-	
+	public void start(){
+		readHashmapsFromFile();
+	}
+	/*
 	public void start(){
 		//Reading from "resources/data.bin" to Hash maps.
+		
 		FileInputStream in = null;
 		ObjectInputStream in2=null;
 		try {
@@ -186,9 +206,9 @@ public class MyModel extends Observable implements Model {
 			e.printStackTrace();
 		}
 	}
-	
+	*/
 	public void setProperties(PropertiesModel prop){
-		flag=false;
+		executorFlag=false;
 		properties=prop;
 		if(properties.getNameSolver().equals("BFS"))
 			this.Solver=new BFSSearcher();
@@ -211,7 +231,51 @@ public class MyModel extends Observable implements Model {
 		System.out.println("MSolver is set, as: "+this.properties.getMSolver());*/
 		executor = Executors.newFixedThreadPool(properties.getAllowedThreads());
 	}
-	
+	public void writeHashmapsToFile(){
+		try {
+			PrintWriter writer=new PrintWriter(new HuffmanWriter(new FileOutputStream(properties.getFileDataMazes())));
+			for(String name:nameMaze.keySet()){
+				Maze m=nameMaze.get(name);
+				Solution s=MazeSol.get(m);
+				if(s==null)
+					writer.println(name+" "+StringMaze.MazeToString(m)+" x");
+				else
+					writer.println(name+" "+StringMaze.MazeToString(m)+" "+StringSolution.SolutionToString(s));
+			}
+			writer.close();
+		} catch (FileNotFoundException e) {
+			System.out.println("errorr");
+		}
+	}
+	public void readHashmapsFromFile()
+	{
+		try {
+			System.out.println(properties.FileDataMazes);
+			//BufferedReader in=new BufferedReader(new HuffmanReader(new FileInputStream(properties.FileDataMazes)));
+			BufferedReader in=new BufferedReader(new HuffmanReader(new FileInputStream("resources/data.bin")));
+			String line;
+			while((line=in.readLine())!=null){
+				System.out.println(line);
+				String[] NameMazeSol=line.split(" ");
+				try{
+					nameMaze.put(NameMazeSol[0], StringMaze.StringToMaze(NameMazeSol[1]));
+				}catch(java.lang.ArrayIndexOutOfBoundsException e){
+				}
+				boolean help=false;
+				try{
+						help=!NameMazeSol[2].equals("x");
+				}catch(java.lang.ArrayIndexOutOfBoundsException e){
+				}
+				try{
+					if(help)
+						MazeSol.put(StringMaze.StringToMaze(NameMazeSol[1]), StringSolution.StringToSolution(NameMazeSol[2]));
+				}catch(java.lang.ArrayIndexOutOfBoundsException e){
+				}
+			}
+		} catch (ClassNotFoundException | IOException e) {
+			System.out.println("error");
+		}
+	}
 }	//Class close
 	
 	/*public int setProperties(String str){	//"5 DFS BFS 1"(5-Allowed threads,1-diag), "3 Random Astar Air 0"(3-threads,Air-for AirDistance, 0-diag).

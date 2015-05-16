@@ -4,10 +4,11 @@ import algorithms.mazeGenerators.Maze;
 import algorithms.search.Solution;
 
 public interface Model {
-	void generateMaze(String name,int rows, int cols); 
-	Maze getMaze(String name); 
-	void solveMaze(Maze m); 
-	Solution getSolution(String name); 
-	void stop();
-	void setProperties(PropertiesModel mproperties);
+	public void generateMaze(String name,int rows, int cols); 
+	public Maze getMaze(String name); 
+	public void solveMaze(Maze m); 
+	public Solution getSolution(String name); 
+	public void start();
+	public void stop();
+	public void setProperties(PropertiesModel mproperties);
 }

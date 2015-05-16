@@ -36,8 +36,10 @@ public class Presenter implements Observer{
 	
 	@Override
 	public void update(Observable o, Object arg) {
-		if(arg!=null && ((String)arg).equals("start"))
+		if(arg!=null && ((String)arg).equals("start")){
+			model.start();
 			return;
+		}
 		else{
 			if(o == view){
 				Command c=view.getUserCommand();
