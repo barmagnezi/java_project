@@ -2,6 +2,7 @@ package model;
 
 import java.beans.XMLEncoder;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -250,30 +251,31 @@ public class MyModel extends Observable implements Model {
 	public void readHashmapsFromFile()
 	{
 		try {
-			System.out.println(properties.FileDataMazes);
-			//BufferedReader in=new BufferedReader(new HuffmanReader(new FileInputStream(properties.FileDataMazes)));
-			BufferedReader in=new BufferedReader(new HuffmanReader(new FileInputStream("resources/data.bin")));
+			BufferedReader in=new BufferedReader(new HuffmanReader(new FileInputStream(properties.FileDataMazes)));
 			String line;
 			while((line=in.readLine())!=null){
-				System.out.println(line);
+				if(line.equals(""))
+					break;
 				String[] NameMazeSol=line.split(" ");
-				try{
-					nameMaze.put(NameMazeSol[0], StringMaze.StringToMaze(NameMazeSol[1]));
-				}catch(java.lang.ArrayIndexOutOfBoundsException e){
-				}
-				boolean help=false;
-				try{
-						help=!NameMazeSol[2].equals("x");
-				}catch(java.lang.ArrayIndexOutOfBoundsException e){
-				}
-				try{
-					if(help)
-						MazeSol.put(StringMaze.StringToMaze(NameMazeSol[1]), StringSolution.StringToSolution(NameMazeSol[2]));
-				}catch(java.lang.ArrayIndexOutOfBoundsException e){
-				}
+				nameMaze.put(NameMazeSol[0], StringMaze.StringToMaze(NameMazeSol[1]));
+				if(!NameMazeSol[2].equals("x"))
+					MazeSol.put(StringMaze.StringToMaze(NameMazeSol[1]), StringSolution.StringToSolution(NameMazeSol[2]));
+							
 			}
+			in.close();
+			//delete the buffer file that create in hufmman reader
+	    	try{
+	    		 
+	    		File file = new File("buffer_reader(dontDeleteWhileUsingTheHuffmanReader)");
+	    		System.out.println(file.exists());
+	    		file.delete();
+	    	}catch(Exception e){
+	 
+	    		e.printStackTrace();
+	 
+	    	}
 		} catch (ClassNotFoundException | IOException e) {
-			System.out.println("error");
+			System.out.println("error "+properties.FileDataMazes);
 		}
 	}
 }	//Class close
