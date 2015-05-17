@@ -5,7 +5,7 @@
   
   <hibernate-mapping>
       <class name="User" table="Mazes" >
-          <id name="userId" type="java.lang.Long" column="user_id" >
+          <id name="userId" type="java.lang.Long" column="USER_ID" >
                 <generator class="increment" />
           </id>
           <property name="NAME" type="java.lang.String" column="NAME" length="-1" />

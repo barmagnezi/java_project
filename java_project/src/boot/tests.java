@@ -14,21 +14,6 @@ import algorithms.search.Solution;
 public class tests {
 
 	public static void main(String[] args) {
-		 User user = new User();
-		 user.setFirstName("Kermit");
-		 user.setLastName("Frog");
-		 user.setAge(54);
-		 user.setEmail("kermit@muppets.com");
-
-		 SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory(); 
-		 Session session = sessionFactory.openSession();
-		 UserManager manager = new UserManager(session);
-
-		 manager.saveUser(user);
-		 System.out.println("User saved with ID = "+ user.getUserId());
-
-		 session.flush();
-		
 		
 		HashMap<String, Maze> nameMaze=new HashMap<>();
 		HashMap<Maze, Solution> MazeSol=new HashMap<>();
