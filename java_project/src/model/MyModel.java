@@ -59,17 +59,29 @@ public class MyModel extends Observable implements Model {
 			e.printStackTrace();
 		} catch (ExecutionException e) {
 			e.printStackTrace();}
-		int i=0;
+		/*int i=0;
 		while(nameMaze.containsKey(name)){		//if name=small exists, set name=small1, if exists, name=small2, ..
 			i++;
 			if(i!=1)
-				name.substring(0, name.length()-1);
+				name=name.substring(0, name.length()-1);
 			name+=i;
+			if(i==10)
+				i=0;
+		}*/
+		while(nameMaze.containsKey(name)){
+			int i=1;
+			if(name.contains("(")){
+				i=Integer.parseInt(name.substring(name.indexOf("("), name.indexOf(")")));
+				i++;
+				name=name.substring(0, name.indexOf("("))+i+")";
+			}
+			else
+				name=name+"("+i+")";
 		}
 		nameMaze.put(name, maze);
 		updateDataFlag=true;
 		this.setChanged();
-		this.notifyObservers("generateMazeCompleted "+name);
+		this.notifyObservers("maze "+name+" is ready");
 		if(executorFlag==true)
 			fin.notify();
 	}
@@ -108,7 +120,7 @@ public class MyModel extends Observable implements Model {
 			updateDataFlag=true;
 		}
 		this.setChanged();
-		this.notifyObservers("solveMazeCompleted "+getName(m));
+		this.notifyObservers("solution for  "+getName(m)+" is ready");
 		if(executorFlag==true)
 			fin.notify();
 	}
