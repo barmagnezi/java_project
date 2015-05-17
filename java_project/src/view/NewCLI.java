@@ -7,7 +7,9 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.util.HashMap;
 
-import presenter.Command;
+import View.CLI;
+import View.Command;
+
 /**
 * The CLI class is command line interface.
 *
@@ -15,10 +17,7 @@ import presenter.Command;
 * @version 1.0
 * @since 5.5.2015
 */
-public class NewCLI {
-	private BufferedReader in;
-	private PrintStream out;
-	private HashMap<String, Command> Commands; 
+public class NewCLI extends CLI{
 	private MyView view;
 	/**
 	 * This constructor creates CLI that works with the parameters.
@@ -27,9 +26,7 @@ public class NewCLI {
 	 * @param commands All the commands that the CLI support.
 	 */
 	public NewCLI(BufferedReader in, PrintStream out,HashMap<String, Command> commands,MyView view){
-		this.in = in;
-		this.out = out;
-		this.Commands=commands;
+		super(in,out,commands);
 		this.view=view;
 	}
 	/**
@@ -58,7 +55,6 @@ public class NewCLI {
 					if(arg==null)
 						out.println("No argument has been entered");
 					else{
-						view.commandsList.isEmpty();
 						view.commandsList.add(command);
 						view.Notify(arg);
 					}

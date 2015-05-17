@@ -3,10 +3,12 @@ package presenter;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.io.PrintStream;
 import java.util.HashMap;
 import java.util.Observable;
 import java.util.Observer;
 
+import View.Command;
 import view.MyView;
 import view.View;
 import model.Model;
@@ -43,19 +45,13 @@ public class Presenter implements Observer{
 		else{
 			if(o == view){
 				Command c=view.getUserCommand();
-				c.doCommand((String) arg);
+				c.doCommand((String) arg,null);
 			}
 			if(o==model){
 				if(arg==null)
 					return;
 				else{
-					String[] detailAndName=((String)arg).split(" ");
-					if(detailAndName[0].equals("generateMazeCompleted")){
-						view.displayMaze(model.getMaze(detailAndName[1]));
-					}
-					if(detailAndName[0].equals("solveMazeCompleted")){
-						view.displaySolution(model.getSolution(detailAndName[1]));
-					}
+					view.displayString((String)arg);
 				}					
 			}
 		}
@@ -76,7 +72,7 @@ public class Presenter implements Observer{
 	public class generateMazeCommand implements Command {
 
 		@Override
-		public void doCommand(String arg) {
+		public void doCommand(String arg,PrintStream out) {
 			String[] nameAndArguments=arg.split(" ");
 			if(nameAndArguments.length!=2)
 				return;
@@ -91,7 +87,7 @@ public class Presenter implements Observer{
 	
 	public class displaymazeCommand implements Command {
 		@Override
-		public void doCommand(String arg) {
+		public void doCommand(String arg,PrintStream out) {
 			if(model.getMaze(arg)!=null)
 				view.displayMaze(model.getMaze(arg));
 			else
@@ -100,13 +96,13 @@ public class Presenter implements Observer{
 	}
 	public class solvemazeCommand  implements Command {
 		@Override
-		public void doCommand(String arg) {
+		public void doCommand(String arg,PrintStream out) {
 			model.solveMaze(model.getMaze(arg));
 		}
 	}
 	public class displaysolutionCommand  implements Command {
 		@Override
-		public void doCommand(String arg) {
+		public void doCommand(String arg,PrintStream out) {
 			if(model.getSolution(arg)!=null)
 				view.displaySolution(model.getSolution(arg));
 			else
@@ -116,10 +112,11 @@ public class Presenter implements Observer{
 	}
 	public class exitCommand  implements Command {
 		@Override
-		public void doCommand(String arg) {
+		public void doCommand(String arg,PrintStream out) {
 			model.stop();
 			//close all we need
 		}
 	}
+
 		
 }

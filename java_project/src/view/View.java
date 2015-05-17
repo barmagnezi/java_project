@@ -2,9 +2,10 @@ package view;
 
 import java.util.HashMap;
 
+import View.Command;
 import algorithms.mazeGenerators.Maze;
 import algorithms.search.Solution;
-import presenter.Command;
+
 
 public interface View {
 	void start(); 
@@ -12,4 +13,5 @@ public interface View {
 	Command getUserCommand(); 
 	void displayMaze(Maze m); 
 	void displaySolution(Solution s);
+	void displayString(String msg);
 }

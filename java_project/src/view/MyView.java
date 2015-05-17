@@ -7,8 +7,9 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Observable;
 import java.util.Queue;
+
+import View.Command;
 import algorithms.search.Solution;
-import presenter.Command;
 import algorithms.mazeGenerators.Maze;
 
 public class MyView extends Observable implements View {
@@ -39,7 +40,6 @@ public class MyView extends Observable implements View {
 	
 	@Override
 	public void start() {
-		System.out.println("start");
 		this.setChanged();
 		this.notifyObservers("start");
 		Thread t=new Thread(new NewCLIRunnable(myCLI));
@@ -48,28 +48,22 @@ public class MyView extends Observable implements View {
 
 	@Override
 	public void setCommands(HashMap<String, Command> commands) {
-		System.out.println("setCommands");
 		myCLI=new NewCLI(in, out, commands,this);
 	}
 
 	@Override
 	public Command getUserCommand() {
-		System.out.println("getUserCommand");
 		return commandsList.poll();
 	}
 
 	@Override
 	public void displayMaze(Maze m) {
-		System.out.println("displayMaze");
-		
 		MyMazeDispleyer md = new MyMazeDispleyer();
 		md.DisplayMaze(m, out);
 	}
 
 	@Override
-	public void displaySolution(Solution s) {
-		System.out.println("displaySolution");
-		
+	public void displaySolution(Solution s) {	
 		MySolutionDispleyer sd = new MySolutionDispleyer();
 		sd.DisplaySolution(s, out);
 		
@@ -78,5 +72,11 @@ public class MyView extends Observable implements View {
 		this.setChanged();
 		this.notifyObservers(arg);
 	}
+	@Override
+	public void displayString(String msg) {
+		out.println(msg);
+	}
+
+
 
 }
