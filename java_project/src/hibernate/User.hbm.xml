@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+  <!DOCTYPE hibernate-mapping PUBLIC
+  "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+  "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+  
+  <hibernate-mapping>
+      <class name="User" table="Mazes" >
+          <id name="userId" type="java.lang.Long" column="user_id" >
+                <generator class="increment" />
+          </id>
+          <property name="NAME" type="java.lang.String" column="NAME" length="-1" />
+          <property name="MAZE" type="java.lang.String" column="MAZE" length="-1" />
+          <property name="SOLUTION" type="java.lang.String" column="SOLUTION" length="-1" />
+         
+      </class>
+  </hibernate-mapping>
