@@ -8,7 +8,12 @@ import algorithms.search.Solution;
 import algorithms.search.State;
 
 public class MySolutionDispleyer implements SolutionDispleyer {
-
+	
+	/**
+	 * prints out received solution to the received outputStream.
+	 * @param solution received solution.
+	 * @param out received outputStream.
+	 */
 	@Override
 	public void DisplaySolution(Solution solution, PrintStream out) {
 		Stack<State> sol=solution.getSol();

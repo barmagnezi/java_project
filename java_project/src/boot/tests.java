@@ -1,18 +1,9 @@
 package boot;
 
-import model.StringMaze;
-import model.StringSolution;
-import algorithms.demo.MazeSearchable;
-import algorithms.mazeGenerators.DFSMazeGenerator;
-import algorithms.mazeGenerators.Maze;
-import algorithms.search.BFSSearcher;
-import algorithms.search.CommonSearcher;
-import algorithms.search.Solution;
-
 public class tests {
 
 	public static void main(String[] args) {
-		Maze maze=new DFSMazeGenerator().generateMaze(100, 100);
+		/*Maze maze=new DFSMazeGenerator().generateMaze(100, 100);
 		String strmaze=new StringMaze().MazeToString(maze);
 		System.out.println(strmaze.length());
 		/*

@@ -7,11 +7,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
-import java.io.Writer;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Observable;
 import java.util.concurrent.ExecutionException;
@@ -29,9 +25,14 @@ import algorithms.search.Solution;
 //For temp fix:
 import algorithms.search.BFSSearcher;
 import algorithms.search.aStar.AstarSearcher;
-import algorithms.search.aStar.MazeAirDistance;
-import algorithms.search.aStar.MazeManhhetenDistance;
 
+/**
+* The MyModel class extends Observable and implements Model.
+* It is the part that makes all the calculations, such as creating a maze, and finding a solution for it.
+* @author  Bar Magnezi and Senia Kalma
+* @version 1.0
+* @since 17.5.2015
+*/
 public class MyModel extends Observable implements Model {
 	ExecutorService executor;
 	HashMap<String, Maze> nameMaze=new HashMap<>();
@@ -42,59 +43,79 @@ public class MyModel extends Observable implements Model {
 	Object fin;
 	Searcher Solver;
 	@Override
+	/**
+	 * This method generates a maze using threads with an inputed data.
+	 * After it finishes it sent a notification with as "maze "+name+" is ready.".
+	 * @param name The name we want to give the maze.
+	 * @param col The number of columns our maze will have (>2)
+	 * @param row The number of rows our maze will have (>2)
+	 */
 	public void generateMaze(String name, int col,int row) {
 		Future<Maze> f = executor.submit(new MazeCallable(properties.getMGenerator(),col,row));
 		Maze maze = null;
 		try {
 			maze = f.get();
 		} catch (InterruptedException e) {
-			e.printStackTrace();
+			this.setChanged();
+			this.notifyObservers("error while creating a maze.");
 		} catch (ExecutionException e) {
-			e.printStackTrace();
+			this.setChanged();
+			this.notifyObservers("error while creating a maze.");
 		} // w is still null…
 		// wait till the maze is made after the callable was submitted to a thread
 		try {
 			maze = f.get();
 		} catch (InterruptedException e) {
-			e.printStackTrace();
+			this.setChanged();
+			this.notifyObservers("error while creating a maze.");
 		} catch (ExecutionException e) {
-			e.printStackTrace();}
-		/*int i=0;
-		while(nameMaze.containsKey(name)){		//if name=small exists, set name=small1, if exists, name=small2, ..
-			i++;
-			if(i!=1)
-				name=name.substring(0, name.length()-1);
-			name+=i;
-			if(i==10)
-				i=0;
-		}*/
-		while(nameMaze.containsKey(name)){
+			this.setChanged();
+			this.notifyObservers("error while creating a maze.");
+		}
+		
+		while(nameMaze.containsKey(name)){		//if name=small exists, set name=small(1), if exists, name=small(2), ..
 			int i=1;
 			if(name.contains("(")){
-				i=Integer.parseInt(name.substring(name.indexOf("("), name.indexOf(")")));
+				i=Integer.parseInt(name.substring(name.indexOf("(")+1, name.indexOf(")")));
 				i++;
-				name=name.substring(0, name.indexOf("("))+i+")";
+				name=name.substring(0, name.indexOf("(")+1)+i+")";
 			}
 			else
 				name=name+"("+i+")";
 		}
+		
 		nameMaze.put(name, maze);
 		updateDataFlag=true;
 		this.setChanged();
-		this.notifyObservers("maze "+name+" is ready");
+		this.notifyObservers("maze "+name+" is ready.");
 		if(executorFlag==true)
 			fin.notify();
 	}
 
+	/**
+	 * Returns a maze by an inputed name(String).
+	 */
 	@Override
 	public Maze getMaze(String name) {
-		return nameMaze.get(name);
+		if(nameMaze.get(name)==null){
+			this.setChanged();
+			this.notifyObservers("maze "+name+" not found.");
+			return null;
+		}
+		else
+			return nameMaze.get(name);
 	}
-
+	
+	/**
+	 * This method solves a maze using threads.
+	 * After it finishes it sent a notification with as "solution "+name+" is ready.".
+	 * @param m The maze we want to solve.
+	 */
 	@Override
 	public void solveMaze(Maze m) {
 		if(m==null){
-			System.out.println("error");
+			this.setChanged();
+			this.notifyObservers("maze "+m+" not found.");
 			return;
 		}
 		Solution sol = null;
@@ -103,17 +124,21 @@ public class MyModel extends Observable implements Model {
 			try {
 				sol = f.get();
 			} catch (InterruptedException e) {
-				e.printStackTrace();
+				this.setChanged();
+				this.notifyObservers("error while creating a solution.");
 			} catch (ExecutionException e) {
-				e.printStackTrace();
+				this.setChanged();
+				this.notifyObservers("error while creating a solution.");
 			} // w is still null…
 			// wait till the maze is solved after the callable was submitted to a thread
 			try {
 				sol = f.get();
 			} catch (InterruptedException e) {
-				e.printStackTrace();
+				this.setChanged();
+				this.notifyObservers("error while creating a solution.");
 			} catch (ExecutionException e) {
-				e.printStackTrace();
+				this.setChanged();
+				this.notifyObservers("error while creating a solution.");
 			}
 			MazeSol.put(m, sol);
 			nameMaze.put(getName(m), m);
@@ -125,21 +150,47 @@ public class MyModel extends Observable implements Model {
 			fin.notify();
 	}
 	
+	/**
+	 * gets the name of an inputed maze.
+	 * @param maze	the maze we want to find it's name.
+	 * @return the name of the maze(string).
+	 */
 	private String getName(Maze maze)
 	{
        for (String name : nameMaze.keySet()) {
-           if (nameMaze.get(name).equals(maze)) {
+           if (nameMaze.get(name).equals(maze)) 
                return name;
-           }
        }
 	   return null;
 	}
-
+	
+	/**
+	 * gets the name of an inputed maze name.
+	 * @param name	the name of the solution we want to find it's name.
+	 * @return the name of the solution(string).
+	 */
 	@Override
 	public Solution getSolution(String name) {
-		return MazeSol.get(nameMaze.get(name));
-	}
 
+		if(MazeSol.get(nameMaze.get(name))==null){
+			this.setChanged();
+			this.notifyObservers("solution "+name+" not found");
+			return null;
+		}
+		else
+			return MazeSol.get(nameMaze.get(name));
+	}
+	
+	/**
+	 * Reads from the data file and sets the hashmaps by the data read.
+	 */
+	public void start(){
+		readHashmapsFromFile();
+	}
+	
+	/**
+	 * Stops the work and saves the data.
+	 */
 	@Override
 	public void stop() {
 		this.executorFlag=true;
@@ -148,78 +199,27 @@ public class MyModel extends Observable implements Model {
 			try {
 				fin.wait();
 			} catch (InterruptedException e1) {
-				e1.printStackTrace();}
+				this.setChanged();
+				this.notifyObservers("error while closing the threads.");
+			}
 		}
 		if(updateDataFlag)
 			writeHashmapsToFile();
-		/*
-		//Huffman vs ZIP ??
-		//From Hash maps to "resources/data.bin".
-		FileOutputStream out = null;
-		ObjectOutputStream out2 = null;
-		try {
-			out = (new FileOutputStream("resources/data.bin"));
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();}
-		try {
-			out2 = new ObjectOutputStream(out);
-		} catch (IOException e) {
-			e.printStackTrace();}
-		try {
-			out2.writeObject(nameMaze);		//(bar91) -here it crash when "exit" - because maze isn't serializable
-		} catch (IOException e) {
-			e.printStackTrace();}
-		try {
-			out2.writeObject(MazeSol);		//(bar91) - same here
-		} catch (IOException e) {
-			e.printStackTrace();}
-		*/
-		//Senia - Get(from Model) & Set properties(To XML)		=== START ===
 		XMLEncoder e = null;
 		try {
 			e = new XMLEncoder(new FileOutputStream("resources/properties.xml"));
 		} catch (FileNotFoundException e1) {
-			e1.printStackTrace();}
+			this.setChanged();
+			this.notifyObservers("error while saving the properties.");
+		}
 		e.writeObject(this.properties);
 		e.flush();
 		e.close();
-		//														===  END  ===
 	}
-	public void start(){
-		readHashmapsFromFile();
-	}
-	/*
-	public void start(){
-		//Reading from "resources/data.bin" to Hash maps.
-		
-		FileInputStream in = null;
-		ObjectInputStream in2=null;
-		try {
-			in = (new FileInputStream("resources/data.bin"));
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
-		try {
-			in2 = new ObjectInputStream(in);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		try {
-			this.MazeSol=(HashMap<Maze, Solution>) in2.readObject();
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		try {
-			this.nameMaze=(HashMap<String, Maze>) in2.readObject();
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-	*/
+	
+	/**
+	 * Setting the current properties with an inputed PropertiesModel Object.
+	 */
 	public void setProperties(PropertiesModel prop){
 		executorFlag=false;
 		properties=prop;
@@ -228,22 +228,16 @@ public class MyModel extends Observable implements Model {
 		else
 			if(properties.getNameSolver().equals("Astar"))
 				this.Solver=new AstarSearcher(properties.getHue());
-			else
-				System.out.println("error prop");
-		/*
-		if(this.properties.getMSolver()==null)
-			System.out.println("NO MSolver is set, temp fix downVV");	//(bar90), added some imports for this, marked as for temp fix
-		if(this.properties.getHue()==null)
-			this.properties.setMSolver(new BFSSearcher());
-		if(this.properties.getHue().getClass()==new MazeAirDistance().getClass())
-			this.properties.setMSolver(new AstarSearcher(new MazeAirDistance()));
-		if(this.properties.getHue().getClass()==new MazeManhhetenDistance().getClass())
-			this.properties.setMSolver(new AstarSearcher(new MazeManhhetenDistance()));
-		if(this.properties.getMSolver()==null)
-			System.out.println("BADDDDDDDDDDDDDDDDDDDDD");
-		System.out.println("MSolver is set, as: "+this.properties.getMSolver());*/
+			else{
+				this.setChanged();
+				this.notifyObservers("Properties file error");
+			}
 		executor = Executors.newFixedThreadPool(properties.getAllowedThreads());
 	}
+	
+	/**
+	 * Saves the generated mazes and solution in a file using Huffman encoding.
+	 */
 	public void writeHashmapsToFile(){
 		try {
 			PrintWriter writer=new PrintWriter(new HuffmanWriter(new FileOutputStream(properties.getFileDataMazes())));
@@ -257,9 +251,14 @@ public class MyModel extends Observable implements Model {
 			}
 			writer.close();
 		} catch (FileNotFoundException e) {
-			System.out.println("errorr");
+			this.setChanged();
+			this.notifyObservers("error while huffman encoding.");
 		}
 	}
+	
+	/**
+	 * reades the generated mazes and solution from a file using Huffman encoding.
+	 */
 	public void readHashmapsFromFile()
 	{
 		try {
@@ -271,8 +270,7 @@ public class MyModel extends Observable implements Model {
 				String[] NameMazeSol=line.split(" ");
 				nameMaze.put(NameMazeSol[0], StringMaze.StringToMaze(NameMazeSol[1]));
 				if(!NameMazeSol[2].equals("x"))
-					MazeSol.put(StringMaze.StringToMaze(NameMazeSol[1]), StringSolution.StringToSolution(NameMazeSol[2]));
-							
+					MazeSol.put(StringMaze.StringToMaze(NameMazeSol[1]), StringSolution.StringToSolution(NameMazeSol[2]));			
 			}
 			in.close();
 			//delete the buffer file that create in hufmman reader
@@ -282,73 +280,12 @@ public class MyModel extends Observable implements Model {
 	    		System.out.println(file.exists());
 	    		file.delete();
 	    	}catch(Exception e){
-	 
-	    		e.printStackTrace();
-	 
+				this.setChanged();
+				this.notifyObservers("error "+properties.FileDataMazes+" while huffman encoding.");
 	    	}
 		} catch (ClassNotFoundException | IOException e) {
-			System.out.println("error "+properties.FileDataMazes);
+			this.setChanged();
+			this.notifyObservers("error "+properties.FileDataMazes);
 		}
 	}
 }	//Class close
-	
-	/*public int setProperties(String str){	//"5 DFS BFS 1"(5-Allowed threads,1-diag), "3 Random Astar Air 0"(3-threads,Air-for AirDistance, 0-diag).
-		/**
-		 * Receives a String containing the values of how how much thereads we allow, how we Generate a maze and how we Solve it and
-		 * a boolean representing if its with(1) or without(0) diagonals.
-		 * str="3 DFS/Random BFS/Astar 1", if Astar chosen we need to specify what Heuristic it will use -
-		 * "Air/Man".(for example - "4 DFS Astar Man 0")
-		 * If finished successfully, returns 1.
-		 * if error, returns -1.
-		 
-		String splited[] = str.split(" ");
-		boolean flag1=false,flag2=false;
-		//Sets Threads:
-		AllowedThreads = Integer.parseInt(splited[0]);
-		if(AllowedThreads<1)
-			return -1;
-		executor = Executors.newFixedThreadPool(AllowedThreads);
-		//Sets Generator:
-		if(splited[1].equalsIgnoreCase("DFS")){
-			flag1=true;
-			MGenerator = new DFSMazeGenerator();
-		}
-		if(splited[1].equalsIgnoreCase("Random")){
-			flag1=true;
-			MGenerator = new DFSMazeGenerator();
-		}
-		//Sets Solver:
-		if(splited[2].equalsIgnoreCase("BFS")){
-			flag2=true;
-			MSolver = new BFSSearcher();
-		}
-		if(splited[2].equalsIgnoreCase("Astar")){
-			if(splited.length<2){
-				return 0;
-			}
-			Heuristic Hur = null;
-			if(splited[3].equalsIgnoreCase("Air"))
-				Hur = new MazeAirDistance();
-			if(splited[3].equalsIgnoreCase("Man"))
-				Hur = new MazeManhhetenDistance();
-			if(Hur==null)
-				return -1;
-			flag2=true;
-			this.hur=Hur;
-			MSolver = new AstarSearcher(Hur);
-		}
-		//Sets diagonal, 1-Allowed, 0 Forbidden.
-		if(Integer.parseInt(splited[4])==0 || Integer.parseInt(splited[3])==1){
-			if(Integer.parseInt(splited[4])==0)
-				diag=false;
-			else
-				diag=true;
-		}
-		else
-			return -1;
-		if(flag1==false || flag2==false)
-			return -1;
-		
-		return 1;
-		
-	}*/
