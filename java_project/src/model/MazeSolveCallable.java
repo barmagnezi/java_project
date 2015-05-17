@@ -7,6 +7,13 @@ import algorithms.mazeGenerators.Maze;
 import algorithms.search.Searcher;
 import algorithms.search.Solution;
 
+/**
+* The MazeSolveCallable class implements Callable.
+* Generates a solution for a maze with threads.
+* @author  Bar Magnezi and Senia Kalma
+* @version 1.0
+* @since 17.5.2015
+*/
 public class MazeSolveCallable implements Callable<Solution>{
 	Searcher solver;
 	boolean diag;

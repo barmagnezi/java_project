@@ -5,6 +5,12 @@ import java.util.Observable;
 import algorithms.mazeGenerators.Maze;
 import algorithms.search.Solution;
 
+/**
+* MyModel with stubs, only for first cheacking.
+* @author  Bar Magnezi and Senia Kalma
+* @version 1.0
+* @since 17.5.2015
+*/
 public class MyModelStub extends Observable implements Model {
 
 	@Override

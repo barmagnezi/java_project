@@ -7,19 +7,30 @@ import java.io.PrintStream;
 import java.util.HashMap;
 import java.util.Observable;
 import java.util.Observer;
-
 import View.Command;
-import view.MyView;
 import view.View;
 import model.Model;
-import model.MyModel;
 import model.PropertiesModel;
 
+/**
+* The Presenter class implements Observer.
+* sets the Model, View, and a hashmap of eligible commands.
+* @author  Bar Magnezi and Senia Kalma
+* @version 1.0
+* @since 17.5.2015
+*/
 public class Presenter implements Observer{
 	Model model;
 	View view;
 	HashMap<String, Command> commands;
 	
+	/**
+	 * A constructor receiving a View and a Model and sets them as his own.
+	 * Also it sets the properties XML to be the properties.
+	 * @param v The View object.
+	 * @param m The Model object.
+	 * @param row The number of rows our maze will have (>2)
+	 */
 	public Presenter(View v, Model m) {
 		model=m;
 		view=v;
@@ -32,7 +43,6 @@ public class Presenter implements Observer{
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();}
 		PropertiesModel Mproperties = new PropertiesModel(from);
-		//Mproperties.changeProps();
 		model.setProperties(Mproperties);
 	}
 	
@@ -72,6 +82,9 @@ public class Presenter implements Observer{
 	public class generateMazeCommand implements Command {
 
 		@Override
+		/**
+		 * Disassembling the generateMaze received command, setting parameters and calling for the function.
+		 */
 		public void doCommand(String arg,PrintStream out) {
 			String[] nameAndArguments=arg.split(" ");
 			if(nameAndArguments.length!=2)
@@ -85,28 +98,39 @@ public class Presenter implements Observer{
 		}
 	}
 	
+	/**
+	 * Disassembling the displaymazeCommand, setting parameters and calling for the function.
+	 */
 	public class displaymazeCommand implements Command {
 		@Override
 		public void doCommand(String arg,PrintStream out) {
 			if(model.getMaze(arg)!=null)
 				view.displayMaze(model.getMaze(arg));
 			else
-				System.out.println("Such maze was not found.");	//(bar92)-confirm
+				view.displayString("Such maze was not found.");
 		}
 	}
+	
+	/**
+	 * Disassembling the solvemazeCommand, setting parameters and calling for the function.
+	 */
 	public class solvemazeCommand  implements Command {
 		@Override
 		public void doCommand(String arg,PrintStream out) {
 			model.solveMaze(model.getMaze(arg));
 		}
 	}
+	
+	/**
+	 * Disassembling the displaysolutionCommand, setting parameters and calling for the function.
+	 */
 	public class displaysolutionCommand  implements Command {
 		@Override
 		public void doCommand(String arg,PrintStream out) {
 			if(model.getSolution(arg)!=null)
 				view.displaySolution(model.getSolution(arg));
 			else
-				System.out.println("Such solution was not found."); //(bar92)-confirm
+				view.displayString("Such solution was not found.");
 			
 		}
 	}

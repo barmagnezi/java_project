@@ -1,42 +1,37 @@
 package model;
 
 import java.beans.XMLDecoder;
-import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.Serializable;
 
 import algorithms.mazeGenerators.DFSMazeGenerator;
 import algorithms.mazeGenerators.MazeGenerator;
-import algorithms.mazeGenerators.RandomMazeGenerator;
-import algorithms.search.BFSSearcher;
-import algorithms.search.Searcher;
-import algorithms.search.aStar.AstarSearcher;
 import algorithms.search.aStar.Heuristic;
 import algorithms.search.aStar.MazeAirDistance;
-import algorithms.search.aStar.MazeManhhetenDistance;
-//name of solvers!!!
-//Astar
-//Astar
-//BFS
+
+/**
+* The PropertiesModel is a class holding the variables needed for our model.
+* @author  Bar Magnezi and Senia Kalma
+* @version 1.0
+* @since 17.5.2015
+*/
 public class PropertiesModel implements Serializable {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	int AllowedThreads;
 	MazeGenerator MGenerator;
-	//Searcher MSolver;
 	String nameSolver;
 	Heuristic Hue;
 	boolean diag;
 	String FileDataMazes;
 	
 	
-	public PropertiesModel() { 
+	public PropertiesModel() {
 	}
-	private void copyConstructor(PropertiesModel prop) {//bar way bar111
+	
+	/**
+	 * Default copy constructor.
+	 */
+	private void copyConstructor(PropertiesModel prop) {
 		this.AllowedThreads=prop.getAllowedThreads();
 		this.MGenerator=prop.getMGenerator();
 		this.Hue=prop.getHue();
@@ -45,28 +40,18 @@ public class PropertiesModel implements Serializable {
 		this.FileDataMazes=prop.getFileDataMazes();
 
 	}
+	/**
+	 * Sets the properties model from an inputStream.
+	 * @param from inputStream containing the XML file.
+	 */
 	public PropertiesModel(InputStream from) {
-		
 		try{
 			XMLDecoder XML = null;	
 			XML = new XMLDecoder(from);	
-			this.copyConstructor((PropertiesModel) XML.readObject());//bar way bar111
-			/*PropertiesModel prop=null;
-			prop=(PropertiesModel) XML.readObject();
-			this.setAllowedThreads(prop.getAllowedThreads());
-			this.setMGenerator(prop.getMGenerator());
-			this.setHue(prop.getHue());
-			this.setMSolver(prop.getMSolver());
-			//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ (bar90) Doesnt put in the MSolver cuz error
-			this.setDiag(prop.isDiag());*/ 
+			this.copyConstructor((PropertiesModel) XML.readObject());
 			XML.close();
 		}catch(Exception e ){
 			System.out.println("no found prop//run default values");
-			/*try {
-				this.changeProps();
-			} catch (IOException e1) {
-				e1.printStackTrace();}	^^ ask the user to input data*/
-			this.setAllowedThreads(3);				//Setting default values for not found XML.
 			System.out.println("setting generator");
 			this.setMGenerator(new DFSMazeGenerator());
 			System.out.println("set as: "+this.getMGenerator());
@@ -147,11 +132,11 @@ public class PropertiesModel implements Serializable {
 		}while(Integer.parseInt(str)!=0 && Integer.parseInt(str)!=1);
 	}
 */
-/*
+
 	public String toString(){
 		String str="";
-		str+=this.AllowedThreads+" "+this.MGenerator.toString()+" "+this.MSolver.toString();
-		if(MSolver.toString().equalsIgnoreCase("BFS"))
+		str+=this.AllowedThreads+" "+this.MGenerator.toString()+" "+this.nameSolver;
+		if(nameSolver.equalsIgnoreCase("BFS"))
 			str+=" PlaceholderForNoHue";
 		else
 			str+=" "+this.Hue.toString();
@@ -161,7 +146,7 @@ public class PropertiesModel implements Serializable {
 			str+=" 0";
 		return str;
 	}
-*/	
+
 	public int getAllowedThreads() {
 		return AllowedThreads;
 	}
@@ -174,13 +159,6 @@ public class PropertiesModel implements Serializable {
 	public void setMGenerator(MazeGenerator mGenerator) {
 		MGenerator = mGenerator;
 	}
-	/*
-	public Searcher getMSolver() {
-		return MSolver;
-	}
-	public void setMSolver(Searcher mSolver) {
-		MSolver = mSolver;
-	}*/
 	public boolean isDiag() {
 		return diag;
 	}

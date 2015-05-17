@@ -3,6 +3,12 @@ package model;
 import algorithms.mazeGenerators.Cell;
 import algorithms.mazeGenerators.Maze;
 
+/**
+* Saves and represents the maze as a string.
+* @author  Bar Magnezi and Senia Kalma
+* @version 1.0
+* @since 17.5.2015
+*/
 public class StringMaze {
 	
 	public static String MazeToString(Maze maze){

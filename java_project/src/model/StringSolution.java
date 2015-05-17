@@ -5,6 +5,12 @@ import java.util.Stack;
 import algorithms.search.Solution;
 import algorithms.search.State;
 
+/**
+* Saves and represents the solution as a string.
+* @author  Bar Magnezi and Senia Kalma
+* @version 1.0
+* @since 17.5.2015
+*/
 public class StringSolution {
 	public static String SolutionToString(Solution solution){
 		String strsol="";

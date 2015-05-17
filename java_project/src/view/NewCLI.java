@@ -65,14 +65,14 @@ public class NewCLI extends CLI{
 			out.println("Goodbye");
 			view.commandsList.add(Commands.get("exit"));
 			view.Notify(null);			
-		} catch (IOException e) {			
-			System.out.println("can't read/write from/to in/out streams");
+		} catch (IOException e) {
+			out.println("can't read/write from/to in/out streams");
 		} finally {
 			try {
 				in.close();
 				out.close();
-			} catch (IOException e) {				
-				System.out.println("can't close from in/out streams");
+			} catch (IOException e) {
+				out.println("can't close from in/out streams");
 			}		
 		}	
 	}
