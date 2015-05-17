@@ -12,6 +12,9 @@ import algorithms.search.Solution;
 public class tests {
 
 	public static void main(String[] args) {
+		Maze maze=new DFSMazeGenerator().generateMaze(100, 100);
+		String strmaze=new StringMaze().MazeToString(maze);
+		System.out.println(strmaze.length());
 		/*
 		 * test for StringMaze
 		Maze maze=new DFSMazeGenerator().generateMaze(10, 20);
