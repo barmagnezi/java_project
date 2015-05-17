@@ -4,7 +4,7 @@
   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
   
   <hibernate-mapping>
-      <class name="User" table="Mazes" >
+      <class name="hibernateClass" table="MAZE" >
           <id name="userId" type="java.lang.Long" column="USER_ID" >
                 <generator class="increment" />
           </id>

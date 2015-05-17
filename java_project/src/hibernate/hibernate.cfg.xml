@@ -3,7 +3,7 @@
     <hibernate-configuration>
       <session-factory>
         <property name="connection.url">
-          jdbc:mysql://localhost:3306/?user=root/mydatabase
+          jdbc:mysql://localhost:3306/mydatabase
         </property>
         <property name="connection.driver_class">
         com.mysql.jdbc.Driver
