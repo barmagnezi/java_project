@@ -11,7 +11,7 @@ import algorithms.search.Solution;
 public class tests {
 
 	public static void main(String[] args) {
-		
+		/*
 		HashMap<String, Maze> nameMaze=new HashMap<>();
 		HashMap<Maze, Solution> MazeSol=new HashMap<>();
 		Maze m = new Maze(10, 10);	
