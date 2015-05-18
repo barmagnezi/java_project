@@ -354,9 +354,10 @@ public class MyModel extends Observable implements Model {
 		System.out.println("Read, in Mazesol: "+MazeSol.size());
 		while(it.hasNext()){
 			HC=it.next();
+			Maze m=StringMaze.StringToMaze(HC.getMaze());
 			nameMaze.put(HC.getName(), StringMaze.StringToMaze(HC.getMaze()));
 			if(HC.getSolution()!=null)
-				MazeSol.put(HC.getMaze(), StringSolution.StringToSolution(HC.getSolution()));
+				MazeSol.put(m, StringSolution.StringToSolution(HC.getSolution()));
 		}
 		System.out.println("Read, in Mazesol: "+MazeSol.size());
 		session.close();
