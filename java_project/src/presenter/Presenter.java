@@ -1,5 +1,6 @@
 package presenter;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -7,6 +8,7 @@ import java.io.PrintStream;
 import java.util.HashMap;
 import java.util.Observable;
 import java.util.Observer;
+
 import View.Command;
 import view.View;
 import model.Model;
@@ -41,7 +43,9 @@ public class Presenter implements Observer{
 		try {
 			from = new FileInputStream("resources/properties.xml");
 		} catch (FileNotFoundException e) {
-			e.printStackTrace();}
+			view.displayString("resources/properties.xml not found");
+			File theDir = new File("resources");
+			theDir.mkdirs();}
 		PropertiesModel Mproperties = new PropertiesModel(from);
 		model.setProperties(Mproperties);
 	}

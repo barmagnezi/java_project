@@ -52,10 +52,9 @@ public class PropertiesModel implements Serializable {
 			this.copyConstructor((PropertiesModel) XML.readObject());
 			XML.close();
 		}catch(Exception e ){
-			System.out.println("no found prop//run default values");
-			System.out.println("setting generator");
+			System.out.println("no found properties//run default values\n"
+					+ "after exit command the properties save in resources/properties.xml");
 			this.setMGenerator(new DFSMazeGenerator());
-			System.out.println("set as: "+this.getMGenerator());
 			Heuristic Hur = new MazeManhhetenDistance();
 			this.setHue(Hur);
 			this.setNameSolver("Astar");

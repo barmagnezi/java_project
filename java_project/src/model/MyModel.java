@@ -290,7 +290,7 @@ public class MyModel extends Observable implements Model {
 	    	}
 		} catch (ClassNotFoundException | IOException e) {
 			this.setChanged();
-			this.notifyObservers("error "+properties.FileDataMazes);
+			this.notifyObservers("The file :"+properties.FileDataMazes+" that need to save the mazes not found.\nAfter exit will create new file with the mazes that you create.");
 		}
 	}
 }	//Class close
