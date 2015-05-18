@@ -1,5 +1,7 @@
 package model;
 
+import hibernate.HibernateClass;
+
 import java.beans.XMLEncoder;
 import java.io.BufferedReader;
 import java.io.File;
@@ -10,12 +12,19 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Observable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.AnnotationConfiguration;
+import org.hibernate.tool.hbm2ddl.SchemaExport;
 
 import model.PropertiesModel;
 import algorithms.compression.HuffmanReader;
@@ -44,6 +53,8 @@ public class MyModel extends Observable implements Model {
 	boolean updateDataFlag=false;
 	Object fin;
 	Searcher Solver;
+	SessionFactory factory;
+	
 	@Override
 	/**
 	 * This method generates a maze using threads with an inputed data.
@@ -187,7 +198,17 @@ public class MyModel extends Observable implements Model {
 	 * Reads from the data file and sets the hashmaps by the data read.
 	 */
 	public void start(){
-		readHashmapsFromFile();
+		if(properties.isHib()==true){
+			System.out.println("senia 55 is reading from hib");
+			AnnotationConfiguration config = new AnnotationConfiguration();
+			config.addAnnotatedClass(HibernateClass.class);
+			config.configure();
+			//new SchemaExport(config).create(true, true);
+			this.factory = config.buildSessionFactory();
+			readHashmapsFromHIB();
+		}
+		else
+			readHashmapsFromFile();
 	}
 	
 	/**
@@ -195,6 +216,7 @@ public class MyModel extends Observable implements Model {
 	 */
 	@Override
 	public void stop() {
+		System.out.println("in stop, is hib: "+this.properties.isHib());
 		this.executorFlag=true;
 		executor.shutdown();
 		while(!executor.isShutdown()){
@@ -205,8 +227,14 @@ public class MyModel extends Observable implements Model {
 				this.notifyObservers("error while closing the threads.");
 			}
 		}
-		if(updateDataFlag)
-			writeHashmapsToFile();
+		if(updateDataFlag){
+			if(properties.isHib()==true){
+				System.out.println("senia 56 is writing to hib");
+				writeHashmapsToHib();
+			}
+			else
+				writeHashmapsToFile();
+		}
 		XMLEncoder e = null;
 		try {
 			e = new XMLEncoder(new FileOutputStream("resources/properties.xml"));
@@ -276,7 +304,7 @@ public class MyModel extends Observable implements Model {
 				Maze m=StringMaze.StringToMaze(NameMazeSol[1]);
 				nameMaze.put(NameMazeSol[0],m);
 				if(!NameMazeSol[2].equals("x"))
-					MazeSol.put(m, StringSolution.StringToSolution(NameMazeSol[2]));			
+					MazeSol.put(m, StringSolution.StringToSolution(NameMazeSol[2]));
 			}
 			in.close();
 			//delete the buffer file that create in hufmman reader
@@ -293,4 +321,45 @@ public class MyModel extends Observable implements Model {
 			this.notifyObservers("The file :"+properties.FileDataMazes+" that need to save the mazes not found.\nAfter exit will create new file with the mazes that you create.");
 		}
 	}
+	
+	// ===================================   HIBERNATE   =====================================================
+	
+	public void writeHashmapsToHib(){
+		AnnotationConfiguration config = new AnnotationConfiguration();
+		config.addAnnotatedClass(HibernateClass.class);
+		config.configure();
+		new SchemaExport(config).create(true, true);
+		this.factory = config.buildSessionFactory();
+		Session session = this.factory.getCurrentSession();
+		session.beginTransaction();
+
+		for(String name:nameMaze.keySet()){
+			HibernateClass HC = new HibernateClass();
+			HC.setName(name);
+			HC.setMaze(StringMaze.MazeToString(nameMaze.get(name)));
+			if(MazeSol.get(nameMaze.get(name))!=null)
+				HC.setSolution(StringSolution.SolutionToString(MazeSol.get(nameMaze.get(name))));
+			session.save(HC);
+			}
+		session.getTransaction().commit();
+	}
+	
+	public void readHashmapsFromHIB(){
+		Session session = this.factory.openSession();
+		
+		ArrayList<HibernateClass> qu =  (ArrayList<HibernateClass>) session.createQuery("from HibernateClass").list();
+
+		Iterator<HibernateClass> it = qu.iterator();
+		HibernateClass HC;
+		System.out.println("Read, in Mazesol: "+MazeSol.size());
+		while(it.hasNext()){
+			HC=it.next();
+			nameMaze.put(HC.getName(), StringMaze.StringToMaze(HC.getMaze()));
+			if(HC.getSolution()!=null)
+				MazeSol.put(HC.getMaze(), StringSolution.StringToSolution(HC.getSolution()));
+		}
+		System.out.println("Read, in Mazesol: "+MazeSol.size());
+		session.close();
+	}
+	
 }	//Class close

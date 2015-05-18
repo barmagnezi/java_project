@@ -24,6 +24,7 @@ public class PropertiesModel implements Serializable {
 	Heuristic Hue;
 	boolean diag;
 	String FileDataMazes;
+	boolean hib;
 	
 	
 	public PropertiesModel() {
@@ -39,7 +40,7 @@ public class PropertiesModel implements Serializable {
 		this.diag=prop.isDiag();
 		this.nameSolver=prop.getNameSolver();
 		this.FileDataMazes=prop.getFileDataMazes();
-
+		this.hib=prop.isHib();
 	}
 	/**
 	 * Sets the properties model from an inputStream.
@@ -61,6 +62,7 @@ public class PropertiesModel implements Serializable {
 			this.setDiag(false);
 			this.setFileDataMazes("resources/data.bin");
 			this.setAllowedThreads(5);
+			this.setHib(true);
 		}finally{
 			
 		}	
@@ -208,5 +210,13 @@ public class PropertiesModel implements Serializable {
 
 	public void setHue(Heuristic hue) {
 		Hue = hue;
+	}
+
+	public boolean isHib() {
+		return hib;
+	}
+
+	public void setHib(boolean hib) {
+		this.hib = hib;
 	}
 }

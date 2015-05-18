@@ -12,13 +12,13 @@ public class DatabaseManager {
 	      RuntimeException("Invalid session object.");
 	  this.session = session;
 	 }
-	 public void saveUser(hibernateClass user){
+	 public void saveUser(HibernateClass user){
 	  session.save(user);
 	 }
-	 public void updateUser(hibernateClass user){
+	 public void updateUser(HibernateClass user){
 	  session.update(user);
 	 }
-	 public void deleteUser(hibernateClass user) {
+	 public void deleteUser(HibernateClass user) {
 	  session.delete(user);
 	 }
 

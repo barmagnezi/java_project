@@ -6,8 +6,5 @@
 	<classpathentry kind="lib" path="dev/my_alg.jar"/>
 	<classpathentry kind="lib" path="dev/commons-io-2.4.jar"/>
 	<classpathentry kind="lib" path="dev/matala2_cli.jar"/>
-	<classpathentry kind="lib" path="dev/mysql-connector-java-5.1.35-bin.jar"/>
-	<classpathentry kind="lib" path="hibernate/postgresql-9.4-1201.jdbc4.jar"/>
-	<classpathentry kind="lib" path="hibernate/hibernate-core-4.3.9.Final.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

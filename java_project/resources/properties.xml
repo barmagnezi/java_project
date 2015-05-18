@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<java version="1.8.0_40" class="java.beans.XMLDecoder">
+<java version="1.8.0_45" class="java.beans.XMLDecoder">
  <object class="model.PropertiesModel">
   <void property="MGenerator">
    <object class="algorithms.mazeGenerators.DFSMazeGenerator"/>
@@ -9,6 +9,9 @@
   </void>
   <void property="fileDataMazes">
    <string>resources/data.bin</string>
+  </void>
+  <void property="hib">
+   <boolean>true</boolean>
   </void>
   <void property="hue">
    <object class="algorithms.search.aStar.MazeManhhetenDistance"/>

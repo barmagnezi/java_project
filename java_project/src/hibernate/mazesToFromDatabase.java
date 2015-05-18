@@ -48,7 +48,7 @@ public class mazesToFromDatabase {
 		DatabaseManager manager = new DatabaseManager(session);
 		 
 		for(String name:nameMaze.keySet()){
-			hibernateClass row=new hibernateClass();
+			HibernateClass row=new HibernateClass();
 			row.setName(name);
 			row.setMaze(StringMaze.MazeToString(nameMaze.get(name)));
 			if(MazeSol.containsKey(nameMaze.get(name)))
@@ -66,9 +66,9 @@ public class mazesToFromDatabase {
 
 		Query query = session.createQuery("from Mazes");
 
-		List <hibernateClass>list = query.list();
-		Iterator<hibernateClass> it=list.iterator();
-		hibernateClass row = null;
+		List <HibernateClass>list = query.list();
+		Iterator<HibernateClass> it=list.iterator();
+		HibernateClass row = null;
 		while (it.hasNext()){
 			row=it.next();
 			nameMaze.put(row.getName(), StringMaze.StringToMaze(row.getMaze()));
