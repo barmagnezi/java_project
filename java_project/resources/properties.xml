@@ -5,16 +5,13 @@
    <object class="algorithms.mazeGenerators.DFSMazeGenerator"/>
   </void>
   <void property="allowedThreads">
-   <int>3</int>
-  </void>
-  <void property="diag">
-   <boolean>true</boolean>
+   <int>5</int>
   </void>
   <void property="fileDataMazes">
    <string>resources/data.bin</string>
   </void>
   <void property="hue">
-   <object class="algorithms.search.aStar.MazeAirDistance"/>
+   <object class="algorithms.search.aStar.MazeManhhetenDistance"/>
   </void>
   <void property="nameSolver">
    <string>Astar</string>

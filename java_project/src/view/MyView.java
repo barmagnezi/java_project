@@ -128,6 +128,8 @@ public class MyView extends Observable implements View {
 		 */
 		public void start()
 		{
+			out.flush();
+			out.println("Welcome to the project of Senia&Bar");
 			out.print("Enter command: ");
 
 			try {

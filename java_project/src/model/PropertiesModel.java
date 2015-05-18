@@ -8,6 +8,7 @@ import algorithms.mazeGenerators.DFSMazeGenerator;
 import algorithms.mazeGenerators.MazeGenerator;
 import algorithms.search.aStar.Heuristic;
 import algorithms.search.aStar.MazeAirDistance;
+import algorithms.search.aStar.MazeManhhetenDistance;
 
 /**
 * The PropertiesModel is a class holding the variables needed for our model.
@@ -55,11 +56,12 @@ public class PropertiesModel implements Serializable {
 			System.out.println("setting generator");
 			this.setMGenerator(new DFSMazeGenerator());
 			System.out.println("set as: "+this.getMGenerator());
-			Heuristic Hur = new MazeAirDistance();
+			Heuristic Hur = new MazeManhhetenDistance();
 			this.setHue(Hur);
 			this.setNameSolver("Astar");
-			this.setDiag(true);
+			this.setDiag(false);
 			this.setFileDataMazes("resources/data.bin");
+			this.setAllowedThreads(5);
 		}finally{
 			
 		}	
