@@ -2,6 +2,8 @@ package hibernate;
 
 import org.hibernate.Session;
 
+
+
 public class DatabaseManager {
 	 private Session session = null;
 	 public DatabaseManager(Session session) {

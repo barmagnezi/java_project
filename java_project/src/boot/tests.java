@@ -4,9 +4,6 @@ import hibernate.mazesToFromDatabase;
 
 import java.util.HashMap;
 
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
 
 import algorithms.mazeGenerators.Maze;
 import algorithms.search.Solution;

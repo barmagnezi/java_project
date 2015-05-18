@@ -2,11 +2,11 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Hibernate"/>
 	<classpathentry kind="lib" path="dev/my_alg.jar"/>
 	<classpathentry kind="lib" path="dev/commons-io-2.4.jar"/>
 	<classpathentry kind="lib" path="dev/matala2_cli.jar"/>
 	<classpathentry kind="lib" path="dev/mysql-connector-java-5.1.35-bin.jar"/>
-	<classpathentry kind="lib" path="hibernate/slf4j-1.5.2/slf4j-jdk14-1.5.2.jar"/>
-	<classpathentry kind="lib" path="hibernate/hibernate/hibernate-core-4.1.12.final-sources.jar"/>
+	<classpathentry kind="lib" path="hibernate/postgresql-9.4-1201.jdbc4.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

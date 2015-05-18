@@ -8,11 +8,19 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
+
+
+
+
+
+
+
+
+
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
-
 
 import model.StringMaze;
 import model.StringSolution;
@@ -21,6 +29,7 @@ import algorithms.search.Solution;
 
 public class mazesToFromDatabase {
 
+	
 
 	public void writeToDatabase(HashMap<String, Maze> nameMaze,HashMap<Maze, Solution> MazeSol){
 		
