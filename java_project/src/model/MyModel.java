@@ -7,6 +7,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Observable;
@@ -241,13 +243,15 @@ public class MyModel extends Observable implements Model {
 	public void writeHashmapsToFile(){
 		try {
 			PrintWriter writer=new PrintWriter(new HuffmanWriter(new FileOutputStream(properties.getFileDataMazes())));
+			//PrintWriter writer=new PrintWriter(new OutputStreamWriter(new FileOutputStream(properties.getFileDataMazes())));
 			for(String name:nameMaze.keySet()){
 				Maze m=nameMaze.get(name);
-				Solution s=MazeSol.get(m);
+				Solution s=MazeSol.get(nameMaze.get(name));
 				if(s==null)
 					writer.println(name+" "+StringMaze.MazeToString(m)+" x");
-				else
+				else{
 					writer.println(name+" "+StringMaze.MazeToString(m)+" "+StringSolution.SolutionToString(s));
+				}
 			}
 			writer.close();
 		} catch (FileNotFoundException e) {
@@ -263,21 +267,22 @@ public class MyModel extends Observable implements Model {
 	{
 		try {
 			BufferedReader in=new BufferedReader(new HuffmanReader(new FileInputStream(properties.FileDataMazes)));
+			//BufferedReader in=new BufferedReader(new InputStreamReader(new FileInputStream(properties.FileDataMazes)));
 			String line;
 			while((line=in.readLine())!=null){
 				if(line.equals(""))
 					break;
 				String[] NameMazeSol=line.split(" ");
-				nameMaze.put(NameMazeSol[0], StringMaze.StringToMaze(NameMazeSol[1]));
+				Maze m=StringMaze.StringToMaze(NameMazeSol[1]);
+				nameMaze.put(NameMazeSol[0],m);
 				if(!NameMazeSol[2].equals("x"))
-					MazeSol.put(StringMaze.StringToMaze(NameMazeSol[1]), StringSolution.StringToSolution(NameMazeSol[2]));			
+					MazeSol.put(m, StringSolution.StringToSolution(NameMazeSol[2]));			
 			}
 			in.close();
 			//delete the buffer file that create in hufmman reader
 	    	try{
 	    		 
 	    		File file = new File("buffer_reader(dontDeleteWhileUsingTheHuffmanReader)");
-	    		System.out.println(file.exists());
 	    		file.delete();
 	    	}catch(Exception e){
 				this.setChanged();

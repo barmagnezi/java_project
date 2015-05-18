@@ -1,6 +1,7 @@
 package view;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.util.HashMap;
@@ -8,6 +9,7 @@ import java.util.LinkedList;
 import java.util.Observable;
 import java.util.Queue;
 
+import View.CLI;
 import View.Command;
 import algorithms.search.Solution;
 import algorithms.mazeGenerators.Maze;
@@ -45,7 +47,11 @@ public class MyView extends Observable implements View {
 	public void start() {
 		this.setChanged();
 		this.notifyObservers("start");
-		Thread t=new Thread(new NewCLIRunnable(myCLI));
+		Thread t=new Thread(new Runnable() {
+			public void run() {
+				myCLI.start();
+			}
+		});
 		t.start();
 	}
 	
@@ -55,7 +61,7 @@ public class MyView extends Observable implements View {
 	 */
 	@Override
 	public void setCommands(HashMap<String, Command> commands) {
-		myCLI=new NewCLI(in, out, commands,this);
+		myCLI=new NewCLI(in, out, commands);
 	}
 	
 	/**
@@ -86,6 +92,7 @@ public class MyView extends Observable implements View {
 		sd.DisplaySolution(s, out);
 	}
 	
+	//only for NotifyCLIgetViewWeDontUseIt we don't use it
 	/**
 	 * Notify our observers using the received argument.
 	 * @param arg received argument.
@@ -105,5 +112,66 @@ public class MyView extends Observable implements View {
 	}
 
 
+	//private class for CLI
+	private class NewCLI extends CLI{
+		/**
+		 * This constructor creates CLI that works with the parameters.
+		 * @param in The inputstream(BufferedReader) that contain all the command from the user.
+		 * @param out The OutputStream(PrintStream) that all the commands will write.
+		 * @param commands All the commands that the CLI support.
+		 */
+		public NewCLI(BufferedReader in, PrintStream out,HashMap<String, Command> commands){
+			super(in,out,commands);
+		}
+		/**
+		 * This method start getting commands from the user and add them to commandsList.
+		 */
+		public void start()
+		{
+			out.print("Enter command: ");
+
+			try {
+				String line = in.readLine();
+				
+				while (!line.equals("exit"))
+				{
+					String[] sp = line.split(" ", 2);
+									
+					String commandName = sp[0];
+					String arg = null;
+					if (sp.length > 1)
+						arg = sp[1];
+					// Invoke the command
+					Command command = Commands.get(commandName);
+					if(command==null)
+						out.println("There is no such command "+commandName);
+					else
+						if(arg==null)
+							out.println("No argument has been entered");
+						else{
+							commandsList.add(command);
+							setChanged();
+							notifyObservers(arg);
+						}
+					
+					out.print("Enter command: ");
+					line = in.readLine();
+				}
+				out.println("Goodbye");
+				commandsList.add(Commands.get("exit"));
+				setChanged();
+				notifyObservers(null);
+			} catch (IOException e) {
+				out.println("can't read/write from/to in/out streams");
+			} finally {
+				try {
+					in.close();
+					out.close();
+				} catch (IOException e) {
+					out.println("can't close from in/out streams");
+				}		
+			}	
+		}
+	}
 
 }

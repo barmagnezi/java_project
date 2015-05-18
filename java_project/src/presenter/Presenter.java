@@ -87,11 +87,15 @@ public class Presenter implements Observer{
 		 */
 		public void doCommand(String arg,PrintStream out) {
 			String[] nameAndArguments=arg.split(" ");
-			if(nameAndArguments.length!=2)
+			if(nameAndArguments.length!=2){
+				view.displayString("Please enter two arguments");
 				return;
+			}
 			String[] rowAndcol=nameAndArguments[1].split(","); 
-			if(rowAndcol.length!=2)
+			if(rowAndcol.length!=2){
+				view.displayString("The second argument must be split with ',' ");
 				return;
+			}
 			int rows=Integer.parseInt(rowAndcol[0]);
 			int cols=Integer.parseInt(rowAndcol[1]);
 			model.generateMaze(nameAndArguments[0],rows,cols);
