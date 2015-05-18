@@ -17,10 +17,12 @@ import java.util.List;
 
 
 
+
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
+
 
 import model.StringMaze;
 import model.StringSolution;
@@ -35,6 +37,7 @@ public class mazesToFromDatabase {
 		
 		SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory(); 
 		Session session = sessionFactory.openSession();
+		session.beginTransaction();
 		DatabaseManager manager = new DatabaseManager(session);
 		 
 		for(String name:nameMaze.keySet()){
