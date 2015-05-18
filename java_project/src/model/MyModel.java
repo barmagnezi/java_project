@@ -216,7 +216,6 @@ public class MyModel extends Observable implements Model {
 	 */
 	@Override
 	public void stop() {
-		System.out.println("in stop, is hib: "+this.properties.isHib());
 		this.executorFlag=true;
 		executor.shutdown();
 		while(!executor.isShutdown()){
@@ -229,7 +228,6 @@ public class MyModel extends Observable implements Model {
 		}
 		if(updateDataFlag){
 			if(properties.isHib()==true){
-				System.out.println("senia 56 is writing to hib");
 				writeHashmapsToHib();
 			}
 			else
@@ -351,15 +349,13 @@ public class MyModel extends Observable implements Model {
 
 		Iterator<HibernateClass> it = qu.iterator();
 		HibernateClass HC;
-		System.out.println("Read, in Mazesol: "+MazeSol.size());
 		while(it.hasNext()){
 			HC=it.next();
 			Maze m=StringMaze.StringToMaze(HC.getMaze());
-			nameMaze.put(HC.getName(), StringMaze.StringToMaze(HC.getMaze()));
+			nameMaze.put(HC.getName(), m);
 			if(HC.getSolution()!=null)
 				MazeSol.put(m, StringSolution.StringToSolution(HC.getSolution()));
 		}
-		System.out.println("Read, in Mazesol: "+MazeSol.size());
 		session.close();
 	}
 	
