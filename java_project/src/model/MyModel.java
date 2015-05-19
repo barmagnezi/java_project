@@ -72,9 +72,11 @@ public class MyModel extends Observable implements Model {
 		} catch (InterruptedException e) {
 			this.setChanged();
 			this.notifyObservers("error while creating a maze.");
+			return;
 		} catch (ExecutionException e) {
 			this.setChanged();
 			this.notifyObservers("error while creating a maze.");
+			return;
 		} // w is still null…
 		// wait till the maze is made after the callable was submitted to a thread
 		try {
