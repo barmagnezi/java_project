@@ -30,10 +30,24 @@
    </void>
   </void>
   <void class="presenter.PropertiesModel" method="getField">
+   <string>diag</string>
+   <void method="set">
+    <object idref="PropertiesModel0"/>
+    <boolean>false</boolean>
+   </void>
+  </void>
+  <void class="presenter.PropertiesModel" method="getField">
    <string>FileDataMazes</string>
    <void method="set">
     <object idref="PropertiesModel0"/>
     <string>resources/data.bin</string>
+   </void>
+  </void>
+  <void class="presenter.PropertiesModel" method="getField">
+   <string>hib</string>
+   <void method="set">
+    <object idref="PropertiesModel0"/>
+    <boolean>false</boolean>
    </void>
   </void>
  </object>

@@ -21,9 +21,9 @@ public class PropertiesModel implements Serializable {
 	public MazeGenerator MGenerator;
 	public String nameSolver;
 	public Heuristic Hue;
-	public boolean diag;
+	public Boolean diag;
 	public String FileDataMazes;
-	public boolean hib;
+	public Boolean hib;
 	
 	
 	public PropertiesModel() {
