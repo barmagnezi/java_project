@@ -12,7 +12,6 @@ import java.util.Observer;
 import View.Command;
 import view.View;
 import model.Model;
-import model.PropertiesModel;
 
 /**
 * The Presenter class implements Observer.
@@ -40,13 +39,15 @@ public class Presenter implements Observer{
 		addAllCommands();
 		view.setCommands(commands);
 		InputStream from = null;
+		PropertiesModel Mproperties;
 		try {
 			from = new FileInputStream("resources/properties.xml");
-		} catch (FileNotFoundException e) {
+			Mproperties = new PropertiesModel(from);
+		} catch (Exception e) {
 			view.displayString("resources/properties.xml not found");
 			File theDir = new File("resources");
-			theDir.mkdirs();}
-		PropertiesModel Mproperties = new PropertiesModel(from);
+			theDir.mkdirs();
+			Mproperties = new PropertiesModel(null);}		
 		model.setProperties(Mproperties);
 	}
 	
@@ -54,6 +55,7 @@ public class Presenter implements Observer{
 	public void update(Observable o, Object arg) {
 		if(arg!=null && ((String)arg).equals("start")){
 			model.start();
+			view.displayString("\nIf you run the program first time use the 'help -h' command to see how to use this command line interface\n");
 			return;
 		}
 		else{
@@ -79,6 +81,7 @@ public class Presenter implements Observer{
 		commands.put("solveMaze", new solvemazeCommand());
 		commands.put("displaySolution", new displaysolutionCommand());
 		commands.put("exit", new exitCommand());
+		commands.put("help", new helpCommand());
 	}
 	//commands
 	
@@ -147,6 +150,23 @@ public class Presenter implements Observer{
 		public void doCommand(String arg,PrintStream out) {
 			model.stop();
 			//close all we need
+		}
+	}
+	public class helpCommand  implements Command {
+		@Override
+		public void doCommand(String arg,PrintStream out) {
+			view.displayString("help-show all the commands\n\n"
+					+ "generateMaze-create new maze with the parameters\n"
+					+ "		syntax:generateMaze <mazeName> <numberOfrows>,<numberOfColumns>\n\n"
+					+ "displayMaze-print the maze\n"
+					+ "		syntax:displayMaze <mazeName>\n\n"
+					+ "solveMaze-create solution to maze and save it"
+					+ "		syntax:solveMaze <mazeName>\n\n"
+					+ "displaySolution-print the solution of maze\n"
+					+ "		syntax:displaySolution <mazeName>\n\n"
+					+ "exit-exit from program and save all the changes\n"
+					+ "---------------------------------------------------------\n");
+			
 		}
 	}
 

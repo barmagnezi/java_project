@@ -1,4 +1,4 @@
-package model;
+package presenter;
 
 import java.beans.XMLDecoder;
 import java.io.InputStream;
@@ -17,13 +17,13 @@ import algorithms.search.aStar.MazeManhhetenDistance;
 */
 public class PropertiesModel implements Serializable {
 	private static final long serialVersionUID = 1L;
-	int AllowedThreads;
-	MazeGenerator MGenerator;
-	String nameSolver;
-	Heuristic Hue;
-	boolean diag;
-	String FileDataMazes;
-	boolean hib;
+	public int AllowedThreads;
+	public MazeGenerator MGenerator;
+	public String nameSolver;
+	public Heuristic Hue;
+	public boolean diag;
+	public String FileDataMazes;
+	public boolean hib;
 	
 	
 	public PropertiesModel() {

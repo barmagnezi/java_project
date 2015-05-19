@@ -24,13 +24,14 @@ import org.hibernate.SessionFactory;
 import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
 
-import model.PropertiesModel;
 import algorithms.compression.HuffmanReader;
 import algorithms.compression.HuffmanWriter;
 import algorithms.mazeGenerators.Maze;
-import algorithms.search.Searcher;
 import algorithms.search.*;
+
 import org.hibernate.*;
+
+import presenter.PropertiesModel;
 import algorithms.search.Solution;
 
 //For temp fix:
@@ -45,15 +46,15 @@ import algorithms.search.aStar.AstarSearcher;
 * @since 17.5.2015
 */
 public class MyModel extends Observable implements Model {
-	ExecutorService executor;
-	HashMap<String, Maze> nameMaze=new HashMap<>();
-	HashMap<Maze, Solution> MazeSol=new HashMap<>();
-	PropertiesModel properties;
-	boolean executorFlag;
-	boolean updateDataFlag=false;
-	Object fin;
-	Searcher Solver;
-	SessionFactory factory;
+	private ExecutorService executor;
+	private HashMap<String, Maze> nameMaze=new HashMap<>();
+	private HashMap<Maze, Solution> MazeSol=new HashMap<>();
+	private PropertiesModel properties;
+	private boolean executorFlag;
+	private boolean updateDataFlag=false;
+	private Object fin;
+	private Searcher Solver;
+	private SessionFactory factory;
 	
 	@Override
 	/**
