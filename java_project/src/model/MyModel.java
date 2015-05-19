@@ -199,7 +199,6 @@ public class MyModel extends Observable implements Model {
 	 */
 	public void start(){
 		if(properties.isHib()==true){
-			System.out.println("senia 55 is reading from hib");
 			AnnotationConfiguration config = new AnnotationConfiguration();
 			config.addAnnotatedClass(HibernateClass.class);
 			config.configure();

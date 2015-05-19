@@ -5,6 +5,7 @@ import java.io.FileOutputStream;
 import java.io.PrintWriter;
 import java.util.HashMap;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -47,12 +48,14 @@ public class HibernateClass {
 	public void setName(String name) {
 		this.name = name;
 	}
+	@Column(length=31800)
 	public String getMaze() {
 		return maze;
 	}
 	public void setMaze(String maze) {
 		this.maze = maze;
 	}
+	@Column(length=31800)
 	public String getSolution() {
 		return solution;
 	}

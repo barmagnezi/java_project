@@ -18,10 +18,19 @@ import org.hibernate.tool.hbm2ddl.SchemaExport;
 public class HiberTest {
 
 	public static void main(String[] args) {
+		AnnotationConfiguration config = new AnnotationConfiguration();
+		config.addAnnotatedClass(HibernateClass.class);
+		config.configure("hibernate.cfg.xml");
+		
+		new SchemaExport(config).create(true, true);
+		
+		
+		
+		
 		//DOMConfigurator.configure("log4j.xml");
 		//BasicConfigurator.configure();
 		
-		AnnotationConfiguration config = new AnnotationConfiguration();
+		/*AnnotationConfiguration config = new AnnotationConfiguration();
 		config.addAnnotatedClass(HibernateClass.class);
 		config.configure();
 		
@@ -38,7 +47,7 @@ public class HiberTest {
 		HB1.setSolution("42");
 		session.save(HB1);
 		
-		session.getTransaction().commit();*/
+		session.getTransaction().commit();
 		
 		Session session2 = factory.openSession();
 		
@@ -61,7 +70,7 @@ public class HiberTest {
 		///org.hibernate.Query q = session2.createQuery("from HibernateClass");
 		///System.out.println("HERE "+q.toString());
 		session2.close();
-		
+		*/
 	}
 
 }
