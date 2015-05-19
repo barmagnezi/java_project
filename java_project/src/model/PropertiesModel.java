@@ -61,7 +61,7 @@ public class PropertiesModel implements Serializable {
 			this.setDiag(false);
 			this.setFileDataMazes("resources/data.bin");
 			this.setAllowedThreads(5);
-			this.setHib(true);
+			this.setHib(false);
 		}finally{
 			
 		}	
