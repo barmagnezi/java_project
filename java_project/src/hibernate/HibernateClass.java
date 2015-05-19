@@ -1,10 +1,5 @@
 package hibernate;
 
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.PrintWriter;
-import java.util.HashMap;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -13,17 +8,13 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.TableGenerator;
 
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.cfg.AnnotationConfiguration;
-import org.hibernate.tool.hbm2ddl.SchemaExport;
 
-import model.StringMaze;
-import model.StringSolution;
-import algorithms.compression.HuffmanWriter;
-import algorithms.mazeGenerators.Maze;
-import algorithms.search.Solution;
-
+/**
+* The HibernateClass Used for saving our data in our "mazesinfo" table using Hibernate.
+* @author  Bar Magnezi and Senia Kalma
+* @version 1.0
+* @since 17.5.2015
+*/
 @Entity
 @Table(name="mazesinfo")
 public class HibernateClass {

@@ -1,17 +1,7 @@
 package hibernate;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
-import javax.persistence.Query;
-
 import hibernate.HibernateClass;
 
-import org.apache.log4j.BasicConfigurator;
-import org.apache.log4j.xml.DOMConfigurator;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
 
@@ -23,12 +13,6 @@ public class HiberTest {
 		config.configure("hibernate.cfg.xml");
 		
 		new SchemaExport(config).create(true, true);
-		
-		
-		
-		
-		//DOMConfigurator.configure("log4j.xml");
-		//BasicConfigurator.configure();
 		
 		/*AnnotationConfiguration config = new AnnotationConfiguration();
 		config.addAnnotatedClass(HibernateClass.class);

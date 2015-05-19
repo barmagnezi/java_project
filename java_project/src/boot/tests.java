@@ -1,13 +1,5 @@
 package boot;
 
-import hibernate.mazesToFromDatabase;
-
-import java.util.HashMap;
-
-
-import algorithms.mazeGenerators.Maze;
-import algorithms.search.Solution;
-
 public class tests {
 
 	public static void main(String[] args) {

@@ -7,7 +7,6 @@ import java.io.Serializable;
 import algorithms.mazeGenerators.DFSMazeGenerator;
 import algorithms.mazeGenerators.MazeGenerator;
 import algorithms.search.aStar.Heuristic;
-import algorithms.search.aStar.MazeAirDistance;
 import algorithms.search.aStar.MazeManhhetenDistance;
 
 /**
@@ -62,7 +61,7 @@ public class PropertiesModel implements Serializable {
 			this.setDiag(false);
 			this.setFileDataMazes("resources/data.bin");
 			this.setAllowedThreads(5);
-			this.setHib(false);
+			this.setHib(true);
 		}finally{
 			
 		}	
