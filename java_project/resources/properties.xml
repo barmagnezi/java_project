@@ -10,9 +10,6 @@
   <void property="fileDataMazes">
    <string>resources/data.bin</string>
   </void>
-  <void property="hib">
-   <boolean>true</boolean>
-  </void>
   <void property="hue">
    <object class="algorithms.search.aStar.MazeManhhetenDistance"/>
   </void>

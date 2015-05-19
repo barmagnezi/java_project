@@ -3,6 +3,7 @@ package boot;
 import presenter.Presenter;
 import view.MyView;
 import model.MyModel;
+import algorithms.search.*;
 /**
 * The MyModel class extends Observable and implements Model.
 * It is the part that makes all the calculations, such as creating a maze, and finding a solution for it.
@@ -11,7 +12,6 @@ import model.MyModel;
 * @since 17.5.2015
 */
 public class Run {
-
 	public static void main(String[] args) {
 		MyModel m = new MyModel();
 		MyView v = new MyView();

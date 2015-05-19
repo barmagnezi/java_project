@@ -29,6 +29,8 @@ import algorithms.compression.HuffmanReader;
 import algorithms.compression.HuffmanWriter;
 import algorithms.mazeGenerators.Maze;
 import algorithms.search.Searcher;
+import algorithms.search.*;
+import org.hibernate.*;
 import algorithms.search.Solution;
 
 //For temp fix:

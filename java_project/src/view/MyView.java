@@ -12,6 +12,9 @@ import java.util.Queue;
 import View.CLI;
 import View.Command;
 import algorithms.search.Solution;
+import algorithms.search.Searcher;
+import algorithms.search.*;
+import algorithms.search.aStar.*;
 import algorithms.mazeGenerators.Maze;
 
 public class MyView extends Observable implements View {
