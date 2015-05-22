@@ -52,7 +52,7 @@ public class MyView extends BasicWindow implements View {
 				display.syncExec(new Runnable() {
 					@Override
 					public void run() {
-						new CreateNMaze("Create a new maze",200,200).run();
+						new CreateNMaze("Create a new maze",200,200, display).run();
 						//MazeViewWidgetStub Stub = new MazeViewWidgetStub(Stub, 0); <<- Inside the window
 						//Stub.solve();
 					}
