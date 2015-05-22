@@ -1,7 +1,11 @@
 package view.viewGUI;
 
+
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.KeyEvent;
+import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -21,13 +25,16 @@ public class MazeViewWidget extends Canvas {
 	Button Bstartover;
 	Canvas Maze;
 	Group GroupCharacters;
+	Button[] CharactersButtons;
+
 	Group GroupBackgroundMaze;
+	Button[] BackgroundsButtons;
+
 	
 	public MazeViewWidget(Composite parent, int style) {
 		super(parent, style);
 		
 		this.setLayout(new GridLayout(2,false));
-		
 		LBmazeName=new Label(this, SWT.NONE);	
 		LBmazeName.setLayoutData(new GridData(SWT.LEFT, SWT.None, false, false, 1, 1));
 		
@@ -42,7 +49,7 @@ public class MazeViewWidget extends Canvas {
 		Bstartover.setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, false, false, 1, 1));
 		Bstartover.setText("start over");
 		
-		Maze=new Canvas(this, SWT.NONE);
+		Maze=new Canvas(this, SWT.BORDER_SOLID);
 		Maze.setBackground(new Color(null,10,50,30));
 		Maze.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
 		
@@ -51,24 +58,46 @@ public class MazeViewWidget extends Canvas {
 		GroupCharacters.setLayout(new GridLayout(3, true));
 		GroupCharacters.setLayoutData(new GridData(SWT.LEFT, SWT.DOWN,  false, false));
 		
-		for(int i = 0; i < 3; i++) 
-			new Button(GroupCharacters, SWT.RADIO).setText("option " + (i + 1));       
+		CharactersButtons=new Button[3];
+		for(int i = 0; i < 3; i++) {
+			CharactersButtons[i]=new Button(GroupCharacters, SWT.RADIO);
+			CharactersButtons[i].setText("option " + (i + 1));
+		}
 
 		GroupBackgroundMaze=new Group(this, SWT.SHADOW_OUT);
 		GroupBackgroundMaze.setText("background");
 		GroupBackgroundMaze.setLayout(new GridLayout(3, true));
 		GroupBackgroundMaze.setLayoutData(new GridData(SWT.LEFT, SWT.DOWN,  false, false));
 		
-		for(int i = 0; i < 3; i++) 
-			new Button(GroupBackgroundMaze, SWT.RADIO).setText("option " + (i + 1));  
+		BackgroundsButtons=new Button[3];
+		for(int i = 0; i < 3; i++) {
+			BackgroundsButtons[i]=new Button(GroupBackgroundMaze, SWT.RADIO);
+			BackgroundsButtons[i].setText("option " + (i + 1));
+		}
 		
+	    this.addKeyListener(new KeyListener() {
+			
+			@Override
+			public void keyReleased(KeyEvent arg0) {
+				//if((arg0.stateMask & ) != 0)
+					System.out.println("arg0.character:"+arg0.keyCode);
+				
+			}
+			
+			@Override
+			public void keyPressed(KeyEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+
 		load();
 
 	}
 	public void load(){
+		this.setBackgroundImage(new Image(null, "resources/images/background.png"));
 		LBmazeName.setText("Maze name: "+mazeName);
 		LBsteps.setText("Number of steps: "+steps);
-
 	}
 
 

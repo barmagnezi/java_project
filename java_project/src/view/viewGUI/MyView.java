@@ -31,7 +31,7 @@ public class MyView extends BasicWindow implements View {
 		BNewMaze.addSelectionListener(new SelectionListener() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				display.syncExec(new Runnable() {
+				shell.getDisplay().syncExec(new Runnable() {
 					@Override
 					public void run() {
 						new CreateNMaze("Create a new maze",200,200).run();
