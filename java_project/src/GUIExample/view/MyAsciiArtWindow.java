@@ -22,7 +22,6 @@ public class MyAsciiArtWindow extends BasicWindow implements View{
 	Text t;
 	
 
-
 	public MyAsciiArtWindow(String title, int width, int height) {
 		super(title, width, height);
 	}
