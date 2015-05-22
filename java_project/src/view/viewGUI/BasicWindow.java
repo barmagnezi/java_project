@@ -11,7 +11,14 @@ public abstract class BasicWindow extends Observable implements Runnable{
 	Shell shell;
 	
 	public BasicWindow(String title, int width, int height) {
-		display=new Display();
+		this.display=new Display();
+		shell=new Shell(display);
+		shell.setText(title);
+		shell.setSize(width,height);
+	}
+	
+	public BasicWindow(String title, int width, int height, Display disp) {
+		this.setDisplay(disp);
 		shell=new Shell(display);
 		shell.setText(title);
 		shell.setSize(width,height);
@@ -35,6 +42,14 @@ public abstract class BasicWindow extends Observable implements Runnable{
 		 } // shell is disposed
 
 		 display.dispose(); // dispose OS components
+	}
+
+	public void setDisplay(Display display) {
+		this.display = display;
+	}
+
+	public Display getDisplay() {
+		return display;
 	}
 
 }

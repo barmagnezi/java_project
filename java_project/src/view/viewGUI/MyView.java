@@ -23,10 +23,10 @@ public class MyView extends BasicWindow implements View {
 	
 	@Override
 	void initWidgets() {
-		shell.setLayout(new GridLayout(5,false));
-		//First button - Create New Maze
+		shell.setLayout(new GridLayout(2,false));
+		//button1 - Create New Maze
 		Button BNewMaze=new Button(shell, SWT.PUSH);
-		BNewMaze.setLayoutData(new GridData(SWT.FILL, SWT.None, false, false, 1, 1));		
+		BNewMaze.setLayoutData(new GridData(SWT.LEFT, SWT.None, false, false, 1, 1));		
 		BNewMaze.setText("Create new maze");
 		BNewMaze.addSelectionListener(new SelectionListener() {
 			@Override
@@ -34,23 +34,17 @@ public class MyView extends BasicWindow implements View {
 				shell.getDisplay().syncExec(new Runnable() {
 					@Override
 					public void run() {
-						new CreateNMaze("Create a new maze",200,200).run();
+						CreateNMaze CNM = new CreateNMaze("New Maze", 300, 300, display);
+						CNM.run();
 					}
 				});
-				//shell.setLayout(new GridLayout(3,false));
-				//FileDialog fd=new FileDialog(shell,SWT.OPEN);
-				/*fd.setText("open");
-				fd.setFilterPath("");
-				String[] filterExt = { "*.png", "*.gif", ".jpg", "*.bmp" };
-				fd.setFilterExtensions(filterExt);
-				fileName = fd.open();*/
 			}
 			@Override
 			public void widgetDefaultSelected(SelectionEvent arg0) {}
 		});
-		//Second button - Open excesting Maze
+		//button2 - Open excesting Maze
 		Button BOpenMaze=new Button(shell, SWT.PUSH);
-		BOpenMaze.setLayoutData(new GridData(SWT.FILL, SWT.None, false, false, 1, 1));		
+		BOpenMaze.setLayoutData(new GridData(SWT.RIGHT, SWT.None, false, false, 1, 1));		
 		BOpenMaze.setText("Open a maze");
 		BOpenMaze.addSelectionListener(new SelectionListener() {
 			@Override
@@ -67,7 +61,7 @@ public class MyView extends BasicWindow implements View {
 			@Override
 			public void widgetDefaultSelected(SelectionEvent arg0) {}
 		});
-		//Third button - Solve Maze
+		//button3 - Solve Maze
 		Button BSolveMaze=new Button(shell, SWT.PUSH);
 		BSolveMaze.setLayoutData(new GridData(SWT.FILL, SWT.None, false, false, 2, 1));		
 		BSolveMaze.setText("Solve a maze");
@@ -85,7 +79,7 @@ public class MyView extends BasicWindow implements View {
 			@Override
 			public void widgetDefaultSelected(SelectionEvent arg0) {}
 		});
-		//Third button - Clue
+		//button4 - Clue
 		Button BClue=new Button(shell, SWT.PUSH);
 		BClue.setLayoutData(new GridData(SWT.FILL, SWT.None, false, false, 2, 1));		
 		BClue.setText("Give me a clue");
@@ -103,6 +97,24 @@ public class MyView extends BasicWindow implements View {
 			@Override
 			public void widgetDefaultSelected(SelectionEvent arg0) {}
 		});
+		//button5 - Load settings
+				Button BLoad=new Button(shell, SWT.PUSH);
+				BLoad.setLayoutData(new GridData(SWT.RIGHT, SWT.RIGHT, false, false, 3, 2));		
+				BLoad.setText("Load settings");
+				BLoad.addSelectionListener(new SelectionListener() {
+					@Override
+					public void widgetSelected(SelectionEvent arg0) {
+						display.syncExec(new Runnable() {
+							@Override
+							public void run() {
+								MazeViewWidgetStub Stub = new MazeViewWidgetStub(Stub, 0);
+								Stub.solve();
+							}
+						});
+					}
+					@Override
+					public void widgetDefaultSelected(SelectionEvent arg0) {}
+				});
 		
 	}	//initWidgets
 

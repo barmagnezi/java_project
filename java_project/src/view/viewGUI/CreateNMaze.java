@@ -3,11 +3,12 @@ package view.viewGUI;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Display;
 
 public class CreateNMaze extends BasicWindow{
 
-	public CreateNMaze(String title, int width, int height) {
-		super(title, width, height);
+	public CreateNMaze(String title, int width, int height, Display disp) {
+		super(title, width, height,disp);
 	}
 
 	@Override
