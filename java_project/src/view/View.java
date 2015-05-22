@@ -5,8 +5,6 @@ import java.util.HashMap;
 import View.Command;
 import algorithms.mazeGenerators.Maze;
 import algorithms.search.Solution;
-import algorithms.search.*;
-import algorithms.search.aStar.*;
 
 /**
 * View interface.

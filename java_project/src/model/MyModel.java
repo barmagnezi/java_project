@@ -18,19 +18,14 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
-
 import algorithms.compression.HuffmanReader;
 import algorithms.compression.HuffmanWriter;
 import algorithms.mazeGenerators.Maze;
 import algorithms.search.*;
-
-import org.hibernate.*;
-
 import presenter.PropertiesModel;
 import algorithms.search.Solution;
 
