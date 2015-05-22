@@ -1,6 +1,8 @@
 package view.viewGUI;
 
 
+import java.util.Observable;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
@@ -19,6 +21,8 @@ public class MazeViewWidget extends Canvas {
 	private String mazeName="Not loaded maze";
 	private int steps=0;
 	
+	brainOfGUI helper=new brainOfGUI();
+	
 	Label LBmazeName;
 	Button Bhelp;
 	Label LBsteps;
@@ -26,10 +30,8 @@ public class MazeViewWidget extends Canvas {
 	Canvas Maze;
 	Group GroupCharacters;
 	Button[] CharactersButtons;
-
 	Group GroupBackgroundMaze;
 	Button[] BackgroundsButtons;
-
 	
 	public MazeViewWidget(Composite parent, int style) {
 		super(parent, style);
@@ -63,7 +65,7 @@ public class MazeViewWidget extends Canvas {
 			CharactersButtons[i]=new Button(GroupCharacters, SWT.RADIO);
 			CharactersButtons[i].setText("option " + (i + 1));
 		}
-
+		CharactersButtons[0].setSelection(true);
 		GroupBackgroundMaze=new Group(this, SWT.SHADOW_OUT);
 		GroupBackgroundMaze.setText("background");
 		GroupBackgroundMaze.setLayout(new GridLayout(3, true));
@@ -74,14 +76,21 @@ public class MazeViewWidget extends Canvas {
 			BackgroundsButtons[i]=new Button(GroupBackgroundMaze, SWT.RADIO);
 			BackgroundsButtons[i].setText("option " + (i + 1));
 		}
+		BackgroundsButtons[0].setSelection(true);
 		
 	    this.addKeyListener(new KeyListener() {
 			
 			@Override
 			public void keyReleased(KeyEvent arg0) {
 				//if((arg0.stateMask & ) != 0)
-					System.out.println("arg0.character:"+arg0.keyCode);
-				
+				if(arg0.keyCode==16777220)
+					System.out.println("right");				
+				if(arg0.keyCode==16777219)
+					System.out.println("left");
+				if(arg0.keyCode==16777217)
+					System.out.println("up");
+				if(arg0.keyCode==16777218)
+					System.out.println("down");	
 			}
 			
 			@Override
@@ -98,6 +107,23 @@ public class MazeViewWidget extends Canvas {
 		this.setBackgroundImage(new Image(null, "resources/images/background.png"));
 		LBmazeName.setText("Maze name: "+mazeName);
 		LBsteps.setText("Number of steps: "+steps);
+	}
+	
+	public void generateMaze(String name,int rows,int cols){
+		System.out.println("generateMaze");
+		helper.generateMaze(name,rows,cols);
+	}
+	
+	public void loadMaze(String name){
+		System.out.println("loadMaze");
+	}
+	
+	public void solve(){
+		System.out.println("solve");
+	}
+	
+	public void clue(){
+		System.out.println("clue");
 	}
 
 
