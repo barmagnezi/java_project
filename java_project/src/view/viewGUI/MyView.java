@@ -77,9 +77,26 @@ public class MyView extends BasicWindow implements View {
 				display.syncExec(new Runnable() {
 					@Override
 					public void run() {
-						new CreateNMaze("Create a new maze",200,200).run();
-						//MazeViewWidgetStub Stub = new MazeViewWidgetStub(Stub, 0); <<- Inside the window
-						//Stub.solve();
+						MazeViewWidgetStub Stub = new MazeViewWidgetStub(Stub, 0);
+						Stub.solve();
+					}
+				});
+			}
+			@Override
+			public void widgetDefaultSelected(SelectionEvent arg0) {}
+		});
+		//Third button - Clue
+		Button BClue=new Button(shell, SWT.PUSH);
+		BClue.setLayoutData(new GridData(SWT.FILL, SWT.None, false, false, 2, 1));		
+		BClue.setText("Give me a clue");
+		BClue.addSelectionListener(new SelectionListener() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				display.syncExec(new Runnable() {
+					@Override
+					public void run() {
+						MazeViewWidgetStub Stub = new MazeViewWidgetStub(Stub, 0);
+						Stub.solve();
 					}
 				});
 			}
