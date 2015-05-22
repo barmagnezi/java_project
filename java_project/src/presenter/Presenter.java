@@ -160,7 +160,7 @@ public class Presenter implements Observer{
 					+ "		syntax:generateMaze <mazeName> <numberOfrows>,<numberOfColumns>\n\n"
 					+ "displayMaze-print the maze\n"
 					+ "		syntax:displayMaze <mazeName>\n\n"
-					+ "solveMaze-create solution to maze and save it"
+					+ "solveMaze-create solution to maze and save it\n"
 					+ "		syntax:solveMaze <mazeName>\n\n"
 					+ "displaySolution-print the solution of maze\n"
 					+ "		syntax:displaySolution <mazeName>\n\n"

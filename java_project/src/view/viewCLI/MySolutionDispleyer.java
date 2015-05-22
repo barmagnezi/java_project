@@ -1,4 +1,4 @@
-package view;
+package view.viewCLI;
 
 import java.io.PrintStream;
 import java.util.Stack;

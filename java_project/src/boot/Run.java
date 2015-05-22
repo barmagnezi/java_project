@@ -1,7 +1,7 @@
 package boot;
 
 import presenter.Presenter;
-import view.MyView;
+import view.viewCLI.MyView;
 import model.MyModel;
 import algorithms.search.*;
 /**

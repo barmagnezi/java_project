@@ -1,4 +1,4 @@
-package view;
+package view.viewCLI;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -9,10 +9,9 @@ import java.util.LinkedList;
 import java.util.Observable;
 import java.util.Queue;
 
+import view.View;
 import View.CLI;
 import View.Command;
-import algorithms.search.Solution;
-import algorithms.search.Searcher;
 import algorithms.search.*;
 import algorithms.search.aStar.*;
 import algorithms.mazeGenerators.Maze;
