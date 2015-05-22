@@ -13,7 +13,6 @@ import view.View;
 import View.CLI;
 import View.Command;
 import algorithms.search.*;
-import algorithms.search.aStar.*;
 import algorithms.mazeGenerators.Maze;
 
 public class MyView extends Observable implements View {

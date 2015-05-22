@@ -3,7 +3,6 @@ package boot;
 import presenter.Presenter;
 import view.viewCLI.MyView;
 import model.MyModel;
-import algorithms.search.*;
 /**
 * The MyModel class extends Observable and implements Model.
 * It is the part that makes all the calculations, such as creating a maze, and finding a solution for it.
