@@ -34,7 +34,7 @@ public class GameWidjet extends BasicWindow {
 	
 	@Override
 	void initWidgets() {
-		shell.setLayout(new GridLayout(2,false));
+		shell.setLayout(new GridLayout(3,false));
 		//button1 - Create New Maze
 		Button BNewMaze=new Button(shell, SWT.PUSH);
 		BNewMaze.setLayoutData(new GridData(SWT.LEFT, SWT.None, false, false, 1, 1));		
@@ -45,7 +45,7 @@ public class GameWidjet extends BasicWindow {
 				shell.getDisplay().syncExec(new Runnable() {
 					@Override
 					public void run() {
-						new CreateNMaze("New Maze", 300, 150, display,gameView).run();
+						new CreateNMaze("New Maze", 300, 150, display, gameView).run();
 						gameView.setFocus();
 					}
 				});
@@ -56,7 +56,7 @@ public class GameWidjet extends BasicWindow {
 		
 		//button2 - Open excesting Maze
 		Button BOpenMaze=new Button(shell, SWT.PUSH);
-		BOpenMaze.setLayoutData(new GridData(SWT.LEFT, SWT.None, true, false, 1, 1));		
+		BOpenMaze.setLayoutData(new GridData(SWT.LEFT, SWT.None, false, false, 1, 1));		
 		BOpenMaze.setText("Open the maze");
 		BOpenMaze.addSelectionListener(new SelectionListener() {
 			@Override
@@ -64,7 +64,7 @@ public class GameWidjet extends BasicWindow {
 				shell.getDisplay().syncExec(new Runnable() {
 					@Override
 					public void run() {
-						new OpenMaze("Open a maze",250,130, display,gameView).run();
+						new OpenMaze("Open a maze",250,130, display, gameView).run();
 						gameView.setFocus();
 					}
 				});
@@ -111,7 +111,7 @@ public class GameWidjet extends BasicWindow {
 			@Override
 			public void widgetDefaultSelected(SelectionEvent arg0) {}
 		});*/
-		gameView.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
+		gameView.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 3, 1));
 		gameView.setFocus();
 		shell.addHelpListener(new HelpListener() {
 			

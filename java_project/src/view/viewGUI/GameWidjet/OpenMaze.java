@@ -16,11 +16,14 @@ import org.eclipse.swt.widgets.Text;
 import view.viewGUI.MazeViewWidget;
 
 public class OpenMaze extends BasicWindow{
+	int hight,witdh;
 
 	MazeViewWidget mazeView;
 	public OpenMaze(String title, int width, int height, Display disp, MazeViewWidget mazeView) {
 		super(title, width, height, disp);
 		this.mazeView=mazeView;
+		this.witdh=width;
+		this.hight=height;
 	}
 
 	@Override
@@ -50,8 +53,8 @@ public class OpenMaze extends BasicWindow{
 		shell.addControlListener(new ControlAdapter() {
 			public void controlResized(ControlEvent e){
                 Rectangle rect = shell.getBounds();
-                if(rect.width != 130 || rect.height!=250)
-                    shell.setBounds(rect.x, rect.y, 250, 130);
+                if(rect.height!=hight || rect.width != witdh)
+                	shell.setBounds(rect.x, rect.y, witdh, hight);
 			}
 		});
 	}

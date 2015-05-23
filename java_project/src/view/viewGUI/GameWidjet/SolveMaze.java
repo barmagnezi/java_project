@@ -1,8 +1,11 @@
 package view.viewGUI.GameWidjet;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ControlAdapter;
+import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -13,11 +16,14 @@ import org.eclipse.swt.widgets.Text;
 import view.viewGUI.MazeViewWidget;
 
 public class SolveMaze extends BasicWindow{
+	int hight, witdh;
 
 	MazeViewWidget mazeView;
 	public SolveMaze(String title, int width, int height, Display disp, MazeViewWidget mazeView) {
 		super(title, width, height, disp);
 		this.mazeView=mazeView;
+		this.hight=height;
+		this.witdh=width;
 	}
 
 	@Override
@@ -43,6 +49,14 @@ public class SolveMaze extends BasicWindow{
 			}
 			@Override
 			public void widgetDefaultSelected(SelectionEvent arg0) {}
+		});
+		
+		shell.addControlListener(new ControlAdapter() {
+			public void controlResized(ControlEvent e){
+                Rectangle rect = shell.getBounds();
+                if(rect.height!=hight || rect.width != witdh)
+                	shell.setBounds(rect.x, rect.y, witdh, hight);
+			}
 		});
 	}
 	
