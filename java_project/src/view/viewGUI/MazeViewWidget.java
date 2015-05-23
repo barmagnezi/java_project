@@ -21,6 +21,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.MessageBox;
 
 import View.Command;
 import algorithms.search.Solution;
@@ -30,14 +31,14 @@ public class MazeViewWidget extends Canvas implements View{
 
 	private String mazeName="Not loaded maze";
 	private int steps=0;
-	
+	private algorithms.mazeGenerators.Maze maze=null;
 	brainOfGUI helper=new brainOfGUI();
 	
 	Label LBmazeName;
 	Label LHelp;
 	Label LBsteps;
 	Button Bstartover;
-	Canvas Maze;
+	DisplayMaze MazeDisplayer;
 	Group GroupCharacters;
 	Button[] CharactersButtons;
 	Group GroupBackgroundMaze;
@@ -62,9 +63,9 @@ public class MazeViewWidget extends Canvas implements View{
 		Bstartover.setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, false, false, 1, 1));
 		Bstartover.setText("start over");
 		
-		Maze=new Canvas(this, SWT.BORDER_SOLID);
-		Maze.setBackground(new Color(null,10,50,30));
-		Maze.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
+		MazeDisplayer=new DisplayMaze(this, SWT.BORDER_SOLID);
+		MazeDisplayer.setBackground(new Color(null,10,50,30));
+		MazeDisplayer.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
 		
 		GroupCharacters=new Group(this, SWT.SHADOW_OUT);
 		GroupCharacters.setText("Characters");
@@ -125,7 +126,7 @@ public class MazeViewWidget extends Canvas implements View{
 	}
 	
 	public void loadMaze(String name){
-		System.out.println("loadMaze");
+		helper.displaymaze(name);		
 	}
 	
 	public void solve(){
@@ -135,6 +136,9 @@ public class MazeViewWidget extends Canvas implements View{
 	public void clue(){
 		System.out.println("clue");
 	}
+	
+	//View @Override
+	
 	@Override
 	public void start() {
 	}
@@ -148,15 +152,18 @@ public class MazeViewWidget extends Canvas implements View{
 	}
 	@Override
 	public void displayMaze(algorithms.mazeGenerators.Maze m) {
-		
+		MazeDisplayer.showMaze(m);
 	}
 	@Override
 	public void displaySolution(Solution s) {
-		
+		System.out.println("print sol on MazeDisplayer canvas");
 	}
 	@Override
 	public void displayString(String msg) {
-		msg
+		MessageBox messageBox = new MessageBox(this,  SWT.OK);
+		messageBox.setMessage("help.........");
+		messageBox.setText("help");
+		messageBox.open();
 	}
 
 

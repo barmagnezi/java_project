@@ -37,7 +37,8 @@ public class Presenter implements Observer{
 		commands=new HashMap<String, Command>();
 		addAllCommands();
 		view.setCommands(commands);
-		InputStream from = null;
+		setNewProperties("resources/properties.xml");
+		/*InputStream from = null;
 		PropertiesModel Mproperties;
 		try {
 			from = new FileInputStream("resources/properties.xml");
@@ -47,9 +48,21 @@ public class Presenter implements Observer{
 			File theDir = new File("resources");
 			theDir.mkdirs();
 			Mproperties = new PropertiesModel(null);}		
+		model.setProperties(Mproperties);*/
+	}
+	public void setNewProperties(String path){
+		InputStream from = null;
+		PropertiesModel Mproperties;
+		try {
+			from = new FileInputStream(path);
+			Mproperties = new PropertiesModel(from);
+		} catch (Exception e) {
+			view.displayString(path+" not found");
+			File theDir = new File("resources");
+			theDir.mkdirs();
+			Mproperties = new PropertiesModel(null);}		
 		model.setProperties(Mproperties);
 	}
-	
 	@Override
 	public void update(Observable o, Object arg) {
 		if(arg!=null && ((String)arg).equals("start")){
