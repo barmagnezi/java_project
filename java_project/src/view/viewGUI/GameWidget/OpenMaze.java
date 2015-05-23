@@ -1,4 +1,4 @@
-package view.viewGUI.GameWidjet;
+package view.viewGUI.GameWidget;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ControlAdapter;

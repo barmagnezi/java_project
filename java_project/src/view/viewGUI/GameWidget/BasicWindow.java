@@ -1,4 +1,4 @@
-package view.viewGUI.GameWidjet;
+package view.viewGUI.GameWidget;
 
 import java.util.Observable;
 

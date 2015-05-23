@@ -1,4 +1,4 @@
-package view.viewGUI.GameWidjet;
+package view.viewGUI.GameWidget;
 
 import java.util.HashMap;
 import java.util.Observer;
@@ -19,11 +19,11 @@ import algorithms.search.Solution;
 import view.View;
 import view.viewGUI.MazeViewWidget;
 
-public class GameWidjet extends BasicWindow {
+public class GameWidget extends BasicWindow {
 	MazeViewWidget gameView;
 	String filepath;
 	
-	public GameWidjet(String title, int width, int height) {
+	public GameWidget(String title, int width, int height) {
 		super(title, width, height);
 		gameView=new MazeViewWidget(shell, SWT.BORDER);	
 		
