@@ -36,4 +36,12 @@ public class brainOfGUI extends Observable {
 		this.notifyObservers(name);
 	}
 
+
+	public void setproperties(String path) {
+		commandsList.add(commands.get("setProperties"));
+		this.setChanged();
+		this.notifyObservers(path);
+		
+	}
+
 }

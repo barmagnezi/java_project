@@ -94,6 +94,7 @@ public class Presenter implements Observer{
 		commands.put("displaySolution", new displaysolutionCommand());
 		commands.put("exit", new exitCommand());
 		commands.put("help", new helpCommand());
+		commands.put("setNewProperties", new setPropertiesCommand());
 	}
 	//commands
 	
@@ -180,6 +181,14 @@ public class Presenter implements Observer{
 					+ "---------------------------------------------------------\n");
 			
 		}
+	}
+	public class setPropertiesCommand implements Command{
+
+		@Override
+		public void doCommand(String arg, PrintStream out) {
+			setNewProperties(arg);
+		}
+		
 	}
 
 		

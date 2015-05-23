@@ -2,11 +2,9 @@ package view.viewGUI;
 
 
 import java.util.HashMap;
-import java.util.Observable;
 import java.util.Observer;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.HelpEvent;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.SelectionEvent;
@@ -18,7 +16,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.MessageBox;
@@ -31,18 +29,20 @@ public class MazeViewWidget extends Canvas implements View{
 
 	private String mazeName="Not loaded maze";
 	private int steps=0;
-	private algorithms.mazeGenerators.Maze maze=null;
 	brainOfGUI helper=new brainOfGUI();
 	
 	Label LBmazeName;
 	Label LHelp;
 	Label LBsteps;
 	Button Bstartover;
-	DisplayMaze MazeDisplayer;
+	MazeDisplayerGUI MazeDisplayer;
 	Group GroupCharacters;
 	Button[] CharactersButtons;
 	Group GroupBackgroundMaze;
 	Button[] BackgroundsButtons;
+	public void setProperties(String path){
+		helper.setproperties(path);
+	}
 	public void addObserver(Observer presenter){
 		helper.addObserver(presenter);
 	}
@@ -63,7 +63,7 @@ public class MazeViewWidget extends Canvas implements View{
 		Bstartover.setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, false, false, 1, 1));
 		Bstartover.setText("start over");
 		
-		MazeDisplayer=new DisplayMaze(this, SWT.BORDER_SOLID);
+		MazeDisplayer=new MazeDisplayerGUI(this, SWT.BORDER_SOLID);
 		MazeDisplayer.setBackground(new Color(null,10,50,30));
 		MazeDisplayer.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
 		
@@ -111,6 +111,30 @@ public class MazeViewWidget extends Canvas implements View{
 			}
 		});
 
+	  //button5 - Load settings
+	  		Button BLoad=new Button(getParent(), SWT.PUSH);
+	  		BLoad.setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, false, false, 2, 1));		
+	  		BLoad.setText("Load settings");
+	  		BLoad.addSelectionListener(new SelectionListener() {
+	  			@Override
+	  			public void widgetSelected(SelectionEvent arg0) {
+	  				getParent().getDisplay().syncExec(new Runnable() {
+	  					@Override
+	  					public void run() {
+	  						FileDialog fd=new FileDialog(getShell(),SWT.OPEN);
+	  						fd.setText("open");
+	  						fd.setFilterPath("");
+	  						String[] filterExt = { "*.xml"};
+	  						fd.setFilterExtensions(filterExt);
+	  						if(fd.open()==null)
+	  							return;
+	  						setProperties(fd.open());
+	  					}
+	  				});
+	  			}
+	  			@Override
+	  			public void widgetDefaultSelected(SelectionEvent arg0) {}
+	  		});	  		
 		load();
 
 	}
@@ -152,6 +176,7 @@ public class MazeViewWidget extends Canvas implements View{
 	}
 	@Override
 	public void displayMaze(algorithms.mazeGenerators.Maze m) {
+		System.out.println("MazeDisplayer.showMaze(m);");
 		MazeDisplayer.showMaze(m);
 	}
 	@Override
@@ -160,11 +185,11 @@ public class MazeViewWidget extends Canvas implements View{
 	}
 	@Override
 	public void displayString(String msg) {
-		MessageBox messageBox = new MessageBox(this,  SWT.OK);
+		MessageBox messageBox = new MessageBox(this.getShell(),  SWT.OK);
 		messageBox.setMessage("help.........");
 		messageBox.setText("help");
 		messageBox.open();
 	}
-
+	
 
 }
