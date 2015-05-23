@@ -1,9 +1,12 @@
 package view.viewGUI;
 
+import java.awt.event.MouseMotionListener;
 import java.util.HashMap;
 import java.util.Observer;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.FocusEvent;
+import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.SelectionEvent;
@@ -19,6 +22,7 @@ import algorithms.search.Solution;
 import view.View;
 
 public class MyView extends BasicWindow {
+	MazeViewWidget gameView;
 	String filepath;
 	
 	public MyView(String title, int width, int height) {
@@ -130,29 +134,24 @@ public class MyView extends BasicWindow {
 			public void widgetDefaultSelected(SelectionEvent arg0) {}
 		});*/
 		
-		MazeViewWidget gameView=new MazeViewWidget(shell, SWT.BORDER);	
+		gameView=new MazeViewWidget(shell, SWT.BORDER);	
 		gameView.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
-		
-	    this.addKeyListener(new KeyListener() {
+		gameView.setFocus();
+		shell.addFocusListener(new FocusListener() {
 			
 			@Override
-			public void keyReleased(KeyEvent arg0) {
-
+			public void focusLost(FocusEvent arg0) {
+				gameView.setFocus();
+				
 			}
 			
 			@Override
-			public void keyPressed(KeyEvent arg0) {
-				if(arg0.keyCode==16777220)
-					System.out.println("right");				
-				if(arg0.keyCode==16777219)
-					System.out.println("left");
-				if(arg0.keyCode==16777217)
-					System.out.println("up");
-				if(arg0.keyCode==16777218)
-					System.out.println("down");	
+			public void focusGained(FocusEvent arg0) {
+				gameView.setFocus();
 				
 			}
 		});
+		
 		
 	}	//initWidgets
 } //Class close
