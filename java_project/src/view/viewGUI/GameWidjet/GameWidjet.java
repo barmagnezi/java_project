@@ -83,7 +83,7 @@ public class GameWidjet extends BasicWindow {
 				shell.getDisplay().syncExec(new Runnable() {
 					@Override
 					public void run() {
-						gameView.solve();
+						new SolveMaze("Solve a maze", 250, 130, display, gameView).run();
 						gameView.setFocus();
 					}
 				});
@@ -93,7 +93,7 @@ public class GameWidjet extends BasicWindow {
 		});
 		
 		//button4 - Clue
-		Button BClue=new Button(shell, SWT.PUSH);
+		/*Button BClue=new Button(shell, SWT.PUSH);
 		BClue.setLayoutData(new GridData(SWT.LEFT, SWT.None, false, false, 1, 1));		
 		BClue.setText("Give me a clue");
 		BClue.addSelectionListener(new SelectionListener() {
@@ -110,7 +110,7 @@ public class GameWidjet extends BasicWindow {
 			}
 			@Override
 			public void widgetDefaultSelected(SelectionEvent arg0) {}
-		});
+		});*/
 		gameView.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
 		gameView.setFocus();
 		shell.addHelpListener(new HelpListener() {
@@ -125,6 +125,7 @@ public class GameWidjet extends BasicWindow {
 		});
 		
 	}	//initWidgets
+	
 	public View getView(){
 		return gameView.getView();
 	}

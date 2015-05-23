@@ -1,11 +1,8 @@
 package view.viewGUI.GameWidjet;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.ControlAdapter;
-import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -15,10 +12,10 @@ import org.eclipse.swt.widgets.Text;
 
 import view.viewGUI.MazeViewWidget;
 
-public class OpenMaze extends BasicWindow{
+public class SolveMaze extends BasicWindow{
 
 	MazeViewWidget mazeView;
-	public OpenMaze(String title, int width, int height, Display disp, MazeViewWidget mazeView) {
+	public SolveMaze(String title, int width, int height, Display disp, MazeViewWidget mazeView) {
 		super(title, width, height, disp);
 		this.mazeView=mazeView;
 	}
@@ -37,22 +34,15 @@ public class OpenMaze extends BasicWindow{
 
 		Button BOpenMaze=new Button(shell, SWT.PUSH);
 		BOpenMaze.setLayoutData(new GridData(SWT.RIGHT, SWT.None, false, false, 2, 1));		
-		BOpenMaze.setText("Open this maze");
+		BOpenMaze.setText("Solve this maze");
 		BOpenMaze.addSelectionListener(new SelectionListener() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				mazeView.loadMaze(TMazeName.getText());
+				mazeView.solve(TMazeName.getText());
 				shell.dispose();
 			}
 			@Override
 			public void widgetDefaultSelected(SelectionEvent arg0) {}
-		});
-		shell.addControlListener(new ControlAdapter() {
-			public void controlResized(ControlEvent e){
-                Rectangle rect = shell.getBounds();
-                if(rect.width != 130 || rect.height!=250)
-                    shell.setBounds(rect.x, rect.y, 250, 130);
-			}
 		});
 	}
 	
