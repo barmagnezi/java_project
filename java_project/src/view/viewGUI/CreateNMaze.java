@@ -45,6 +45,7 @@ public class CreateNMaze extends BasicWindow{
 			public void widgetSelected(SelectionEvent arg0) {
 				MazeViewWidgetStub Stub = new MazeViewWidgetStub(shell, 0);
 				Stub.generateMaze(TMazeName.getText(),Integer.parseInt(Trow.getText()),Integer.parseInt(Tcol.getText()));
+				shell.dispose();
 			}
 			@Override
 			public void widgetDefaultSelected(SelectionEvent arg0) {}

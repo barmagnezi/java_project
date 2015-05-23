@@ -1,13 +1,17 @@
 package view.viewGUI;
 
 import java.util.HashMap;
+import java.util.Observer;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.KeyEvent;
+import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.FileDialog;
 
 import View.Command;
 import algorithms.mazeGenerators.Maze;
@@ -15,9 +19,13 @@ import algorithms.search.Solution;
 import view.View;
 
 public class MyView extends BasicWindow {
-
+	String filepath;
+	
 	public MyView(String title, int width, int height) {
 		super(title, width, height);
+	}
+	public void addObserver(Observer presenter){
+		gameView.addObserver(presenter);
 	}
 	
 	@Override
@@ -97,7 +105,7 @@ public class MyView extends BasicWindow {
 			public void widgetDefaultSelected(SelectionEvent arg0) {}
 		});
 		
-		//button5 - Load settings
+		/*//button5 - Load settings
 		Button BLoad=new Button(shell, SWT.PUSH);
 		BLoad.setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, false, false, 2, 1));		
 		BLoad.setText("Load settings");
@@ -107,16 +115,44 @@ public class MyView extends BasicWindow {
 				shell.getDisplay().syncExec(new Runnable() {
 					@Override
 					public void run() {
-						new LoadSettings("Load settings", 300, 150, display).run();
+						FileDialog fd=new FileDialog(shell,SWT.OPEN);
+						fd.setText("open");
+						fd.setFilterPath("");
+						String[] filterExt = { "*.xml"};
+						fd.setFilterExtensions(filterExt);
+						filepath = fd.open();
+						MazeViewWidgetStub Stub = new MazeViewWidgetStub(shell, 0);
+
 					}
 				});
 			}
 			@Override
 			public void widgetDefaultSelected(SelectionEvent arg0) {}
-		});
+		});*/
 		
-		MazeViewWidget barcanvas=new MazeViewWidget(shell, SWT.BORDER);	
-		barcanvas.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));	
+		MazeViewWidget gameView=new MazeViewWidget(shell, SWT.BORDER);	
+		gameView.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
+		
+	    this.addKeyListener(new KeyListener() {
+			
+			@Override
+			public void keyReleased(KeyEvent arg0) {
+
+			}
+			
+			@Override
+			public void keyPressed(KeyEvent arg0) {
+				if(arg0.keyCode==16777220)
+					System.out.println("right");				
+				if(arg0.keyCode==16777219)
+					System.out.println("left");
+				if(arg0.keyCode==16777217)
+					System.out.println("up");
+				if(arg0.keyCode==16777218)
+					System.out.println("down");	
+				
+			}
+		});
 		
 	}	//initWidgets
 } //Class close

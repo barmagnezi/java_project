@@ -36,6 +36,7 @@ public class OpenMaze extends BasicWindow{
 			public void widgetSelected(SelectionEvent arg0) {
 				MazeViewWidgetStub Stub = new MazeViewWidgetStub(shell, 0);
 				Stub.loadMaze(TMazeName.getText());
+				shell.dispose();
 			}
 			@Override
 			public void widgetDefaultSelected(SelectionEvent arg0) {}

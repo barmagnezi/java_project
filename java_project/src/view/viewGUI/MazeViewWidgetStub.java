@@ -26,5 +26,6 @@ public class MazeViewWidgetStub extends Canvas {
 	public void clue(){
 		System.out.println("clue");
 	}
+
 	
 }
