@@ -1,27 +1,20 @@
 package view.viewGUI;
 
-import java.awt.event.MouseMotionListener;
 import java.util.HashMap;
 import java.util.Observer;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.FocusEvent;
-import org.eclipse.swt.events.FocusListener;
-import org.eclipse.swt.events.KeyEvent;
-import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.FileDialog;
-
 import View.Command;
 import algorithms.mazeGenerators.Maze;
 import algorithms.search.Solution;
 import view.View;
 
-public class MyView extends BasicWindow {
+public class MyView extends BasicWindow implements View {
 	MazeViewWidget gameView;
 	String filepath;
 	
@@ -137,21 +130,38 @@ public class MyView extends BasicWindow {
 		gameView=new MazeViewWidget(shell, SWT.BORDER);	
 		gameView.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
 		gameView.setFocus();
-		shell.addFocusListener(new FocusListener() {
-			
-			@Override
-			public void focusLost(FocusEvent arg0) {
-				gameView.setFocus();
-				
-			}
-			
-			@Override
-			public void focusGained(FocusEvent arg0) {
-				gameView.setFocus();
-				
-			}
-		});
+
 		
 		
 	}	//initWidgets
+	@Override
+	public void start() {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void setCommands(HashMap<String, Command> commands) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public Command getUserCommand() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public void displayMaze(Maze m) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void displaySolution(Solution s) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void displayString(String msg) {
+		// TODO Auto-generated method stub
+		
+	}
 } //Class close
