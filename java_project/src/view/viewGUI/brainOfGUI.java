@@ -2,6 +2,7 @@ package view.viewGUI;
 
 import java.util.HashMap;
 import java.util.Observable;
+import java.util.Queue;
 
 import View.Command;
 import algorithms.mazeGenerators.Maze;
@@ -10,19 +11,18 @@ import view.View;
 
 public class brainOfGUI extends Observable implements View {
 	HashMap<String, Command> commands;
+	Queue<Command> commandsList;
+	
 	public void generateMaze(String name,int rows,int cols){
-		commands.get("generateMaze");
+		commandsList.add(commands.get("generateMaze"));
+		this.setChanged();
+		this.notifyObservers("name "+rows+","+cols);
 	}
 
-	@Override
-	public void start() {
-		// TODO Auto-generated method stub
-		
-	}
 
 	@Override
 	public void setCommands(HashMap<String, Command> commands) {
-		
+		this.commands=commands;
 	}
 
 	@Override
@@ -45,7 +45,7 @@ public class brainOfGUI extends Observable implements View {
 
 	@Override
 	public void displayString(String msg) {
-		// TODO Auto-generated method stub
+		System.out.println("maze created");
 		
 	}
 }

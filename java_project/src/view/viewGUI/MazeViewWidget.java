@@ -1,11 +1,16 @@
 package view.viewGUI;
 
 
+import java.util.HashMap;
 import java.util.Observable;
+import java.util.Observer;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.HelpEvent;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
@@ -13,10 +18,15 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 
-public class MazeViewWidget extends Canvas {
+import View.Command;
+import algorithms.search.Solution;
+import view.View;
+
+public class MazeViewWidget extends Canvas implements View{
 
 	private String mazeName="Not loaded maze";
 	private int steps=0;
@@ -24,7 +34,7 @@ public class MazeViewWidget extends Canvas {
 	brainOfGUI helper=new brainOfGUI();
 	
 	Label LBmazeName;
-	Button Bhelp;
+	Label LHelp;
 	Label LBsteps;
 	Button Bstartover;
 	Canvas Maze;
@@ -32,17 +42,18 @@ public class MazeViewWidget extends Canvas {
 	Button[] CharactersButtons;
 	Group GroupBackgroundMaze;
 	Button[] BackgroundsButtons;
-	
+	public void addObserver(Observer presenter){
+		helper.addObserver(presenter);
+	}
 	public MazeViewWidget(Composite parent, int style) {
-		super(parent, style);
-		
+		super(parent, style);		
 		this.setLayout(new GridLayout(2,false));
 		LBmazeName=new Label(this, SWT.NONE);	
 		LBmazeName.setLayoutData(new GridData(SWT.LEFT, SWT.None, false, false, 1, 1));
 		
-		Bhelp=new Button(this, SWT.PUSH);
-		Bhelp.setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, true, false, 1	, 1));	
-		Bhelp.setText("help");
+		LHelp=new Label(this, SWT.PUSH);
+		LHelp.setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, true, false, 1	, 1));	
+		LHelp.setText("Have a question?press F1 :)");
 		
 		LBsteps=new Label(this, SWT.NONE);	
 		LBsteps.setLayoutData(new GridData(SWT.LEFT, SWT.TOP, false, false, 1, 1));
@@ -82,7 +93,11 @@ public class MazeViewWidget extends Canvas {
 			
 			@Override
 			public void keyReleased(KeyEvent arg0) {
-				//if((arg0.stateMask & ) != 0)
+
+			}
+			
+			@Override
+			public void keyPressed(KeyEvent arg0) {
 				if(arg0.keyCode==16777220)
 					System.out.println("right");				
 				if(arg0.keyCode==16777219)
@@ -91,11 +106,6 @@ public class MazeViewWidget extends Canvas {
 					System.out.println("up");
 				if(arg0.keyCode==16777218)
 					System.out.println("down");	
-			}
-			
-			@Override
-			public void keyPressed(KeyEvent arg0) {
-				// TODO Auto-generated method stub
 				
 			}
 		});
@@ -124,6 +134,29 @@ public class MazeViewWidget extends Canvas {
 	
 	public void clue(){
 		System.out.println("clue");
+	}
+	@Override
+	public void start() {
+	}
+	@Override
+	public void setCommands(HashMap<String, Command> commands) {
+		helper.setCommands(commands);
+	}
+	@Override
+	public Command getUserCommand() {
+		return helper.getUserCommand();
+	}
+	@Override
+	public void displayMaze(algorithms.mazeGenerators.Maze m) {
+		
+	}
+	@Override
+	public void displaySolution(Solution s) {
+		
+	}
+	@Override
+	public void displayString(String msg) {
+		msg
 	}
 
 
