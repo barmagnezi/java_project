@@ -1,4 +1,4 @@
-package view.viewGUI.GameWidjet;
+package view.viewGUI.GameWidget;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ControlAdapter;
@@ -15,20 +15,20 @@ import org.eclipse.swt.widgets.Text;
 
 import view.viewGUI.MazeViewWidget;
 
-public class CreateNMaze extends BasicWindow{
+public class SolveMaze extends BasicWindow{
 	int hight, witdh;
 
 	MazeViewWidget mazeView;
-	public CreateNMaze(String title, int width, int height, Display disp,MazeViewWidget mazeview) {
+	public SolveMaze(String title, int width, int height, Display disp, MazeViewWidget mazeView) {
 		super(title, width, height, disp);
-		mazeView=mazeview;
+		this.mazeView=mazeView;
 		this.hight=height;
 		this.witdh=width;
 	}
 
 	@Override
 	void initWidgets() {
-		shell.setLayout(new GridLayout(4,false));
+		shell.setLayout(new GridLayout(2,false));
 		
 		Label LBEMazeName = new Label(shell, SWT.NONE);
 		LBEMazeName.setText("Enter the mazes name:");
@@ -37,23 +37,14 @@ public class CreateNMaze extends BasicWindow{
 		Text TMazeName = new Text(shell, SWT.BORDER);
 		TMazeName.setLayoutData(new GridData(SWT.None, SWT.None, false, false, 3, 1));
 		
-		new Label(shell, SWT.NONE).setText("Enter the mazes size(rows,cols):");
-		
-		Text Trow = new Text(shell, SWT.BORDER);
-		Trow.setLayoutData(new GridData(SWT.LEFT, SWT.NONE, false, false, 1, 1));
-		Trow.setText("rows");
-		new Label(shell, SWT.NONE).setText(",");
-		Text Tcol = new Text(shell, SWT.BORDER);
-		Tcol.setText("cols");
-		Tcol.setLayoutData(new GridData(SWT.LEFT, SWT.NONE, false, false, 1, 1));
 
 		Button BOpenMaze=new Button(shell, SWT.PUSH);
-		BOpenMaze.setLayoutData(new GridData(SWT.RIGHT, SWT.None, false, false, 4, 1));		
-		BOpenMaze.setText("Create this maze");
+		BOpenMaze.setLayoutData(new GridData(SWT.RIGHT, SWT.None, false, false, 2, 1));		
+		BOpenMaze.setText("Solve this maze");
 		BOpenMaze.addSelectionListener(new SelectionListener() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				mazeView.generateMaze(TMazeName.getText(),Integer.parseInt(Trow.getText()),Integer.parseInt(Tcol.getText()));
+				mazeView.solve(TMazeName.getText());
 				shell.dispose();
 			}
 			@Override
@@ -64,7 +55,7 @@ public class CreateNMaze extends BasicWindow{
 			public void controlResized(ControlEvent e){
                 Rectangle rect = shell.getBounds();
                 if(rect.height!=hight || rect.width != witdh)
-                    shell.setBounds(rect.x, rect.y, witdh, hight);
+                	shell.setBounds(rect.x, rect.y, witdh, hight);
 			}
 		});
 	}

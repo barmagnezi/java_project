@@ -1,4 +1,4 @@
-package view.viewGUI.GameWidjet;
+package view.viewGUI.GameWidget;
 
 public class test {
 	public static void main(String[] args) {
