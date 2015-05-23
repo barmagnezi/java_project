@@ -10,15 +10,15 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
-public class CreateNMaze extends BasicWindow{
+public class OpenMaze extends BasicWindow{
 
-	public CreateNMaze(String title, int width, int height, Display disp) {
+	public OpenMaze(String title, int width, int height, Display disp) {
 		super(title, width, height, disp);
 	}
 
 	@Override
 	void initWidgets() {
-		shell.setLayout(new GridLayout(4,false));
+		shell.setLayout(new GridLayout(2,false));
 		
 		Label LBEMazeName = new Label(shell, SWT.NONE);
 		LBEMazeName.setText("Enter the mazes name:");
@@ -27,24 +27,15 @@ public class CreateNMaze extends BasicWindow{
 		Text TMazeName = new Text(shell, SWT.BORDER);
 		TMazeName.setLayoutData(new GridData(SWT.None, SWT.None, false, false, 3, 1));
 		
-		new Label(shell, SWT.NONE).setText("Enter the mazes size(rows,cols):");
-		
-		Text Trow = new Text(shell, SWT.BORDER);
-		Trow.setLayoutData(new GridData(SWT.LEFT, SWT.NONE, false, false, 1, 1));
-		Trow.setText("rows");
-		new Label(shell, SWT.NONE).setText(",");
-		Text Tcol = new Text(shell, SWT.BORDER);
-		Tcol.setText("cols");
-		Tcol.setLayoutData(new GridData(SWT.LEFT, SWT.NONE, false, false, 1, 1));
 
 		Button BOpenMaze=new Button(shell, SWT.PUSH);
-		BOpenMaze.setLayoutData(new GridData(SWT.RIGHT, SWT.None, false, false, 4, 1));		
-		BOpenMaze.setText("Create this maze");
+		BOpenMaze.setLayoutData(new GridData(SWT.RIGHT, SWT.None, false, false, 2, 1));		
+		BOpenMaze.setText("Open this maze");
 		BOpenMaze.addSelectionListener(new SelectionListener() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
 				MazeViewWidgetStub Stub = new MazeViewWidgetStub(shell, 0);
-				Stub.generateMaze(TMazeName.getText(),Integer.parseInt(Trow.getText()),Integer.parseInt(Tcol.getText()));
+				Stub.loadMaze(TMazeName.getText());
 			}
 			@Override
 			public void widgetDefaultSelected(SelectionEvent arg0) {}
@@ -68,3 +59,4 @@ public class CreateNMaze extends BasicWindow{
 	}
 
 }
+

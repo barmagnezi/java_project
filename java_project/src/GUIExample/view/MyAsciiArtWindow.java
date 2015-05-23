@@ -1,4 +1,4 @@
-package GUIExample.view;
+/*package GUIExample.view;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -85,4 +85,4 @@ public class MyAsciiArtWindow extends BasicWindow implements View{
 		}
 	}
 
-}
+}*/

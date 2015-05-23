@@ -12,11 +12,11 @@ public class MazeViewWidgetStub extends Canvas {
 	}
 
 	public void generateMaze(String name,int rows,int cols){
-		System.out.println("generateMaze");
+		System.out.println("generateMaze,name: "+name+" rows,cols: "+rows+","+cols);
 	}
 	
 	public void loadMaze(String name){
-		System.out.println("loadMaze");
+		System.out.println("loadMaze,name: "+name);
 	}
 	
 	public void solve(){
