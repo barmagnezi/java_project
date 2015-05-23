@@ -112,7 +112,7 @@ public class MazeViewWidget extends Canvas implements View{
 		});
 
 	  //button5 - Load settings
-	  		Button BLoad=new Button(getParent(), SWT.PUSH);
+	  		Button BLoad=new Button(this, SWT.PUSH);
 	  		BLoad.setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, false, false, 2, 1));		
 	  		BLoad.setText("Load settings");
 	  		BLoad.addSelectionListener(new SelectionListener() {
