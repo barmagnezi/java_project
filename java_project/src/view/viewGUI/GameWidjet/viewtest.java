@@ -1,17 +1,17 @@
-package view.viewGUI;
+package view.viewGUI.GameWidjet;
 
 import model.MyModel;
 import presenter.Presenter;
 
 public class viewtest {
 	public static void main(String[] args) {
-		/*
+		
 		MyModel m = new MyModel();
-		MyView v =  new MyView("Game",500,500);
-		Presenter p=new Presenter(v, m);
+		GameWidjet v =  new GameWidjet("Game",500,500);
+		Presenter p=new Presenter(v.getView(), m);
 		v.addObserver(p);
 		m.addObserver(p);
-		v.start();*/
-		new MyViewGUI("Game",500,500).run();
+		v.run();
+		//new MyViewGUI("Game",500,500).run();
 	}
 }

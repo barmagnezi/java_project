@@ -1,4 +1,4 @@
-package view.viewGUI;
+package view.viewGUI.GameWidjet;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.HelpEvent;
@@ -7,6 +7,8 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.MessageBox;
+
+import view.viewGUI.MazeViewWidget;
 
 public class testwindow extends BasicWindow {
 
@@ -27,8 +29,6 @@ public class testwindow extends BasicWindow {
 				messageBox.setMessage("help.........");
 				messageBox.setText("help");
 				messageBox.open();
-
-				
 			}
 		});
 	}

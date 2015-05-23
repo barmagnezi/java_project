@@ -1,4 +1,4 @@
-package view.viewGUI;
+package view.viewGUI.GameWidjet;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
@@ -10,10 +10,14 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
+import view.viewGUI.MazeViewWidget;
+
 public class CreateNMaze extends BasicWindow{
 
-	public CreateNMaze(String title, int width, int height, Display disp) {
+	MazeViewWidget mazeView;
+	public CreateNMaze(String title, int width, int height, Display disp,MazeViewWidget mazeview) {
 		super(title, width, height, disp);
+		mazeView=mazeview;
 	}
 
 	@Override
@@ -43,8 +47,7 @@ public class CreateNMaze extends BasicWindow{
 		BOpenMaze.addSelectionListener(new SelectionListener() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				MazeViewWidgetStub Stub = new MazeViewWidgetStub(shell, 0);
-				Stub.generateMaze(TMazeName.getText(),Integer.parseInt(Trow.getText()),Integer.parseInt(Tcol.getText()));
+				mazeView.generateMaze(TMazeName.getText(),Integer.parseInt(Trow.getText()),Integer.parseInt(Tcol.getText()));
 				shell.dispose();
 			}
 			@Override

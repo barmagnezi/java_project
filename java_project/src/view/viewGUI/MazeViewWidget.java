@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.Observer;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.FocusEvent;
+import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.SelectionEvent;
@@ -25,11 +27,11 @@ import View.Command;
 import algorithms.search.Solution;
 import view.View;
 
-public class MazeViewWidget extends Canvas implements View{
+public class MazeViewWidget extends Canvas {
 
 	private String mazeName="Not loaded maze";
 	private int steps=0;
-	brainOfGUI helper=new brainOfGUI();
+	ViewGUI ViewGUI=new ViewGUI(this);
 	
 	Label LBmazeName;
 	Label LHelp;
@@ -41,10 +43,10 @@ public class MazeViewWidget extends Canvas implements View{
 	Group GroupBackgroundMaze;
 	Button[] BackgroundsButtons;
 	public void setProperties(String path){
-		helper.setproperties(path);
+		ViewGUI.setproperties(path);
 	}
 	public void addObserver(Observer presenter){
-		helper.addObserver(presenter);
+		ViewGUI.addObserver(presenter);
 	}
 	public MazeViewWidget(Composite parent, int style) {
 		super(parent, style);		
@@ -75,6 +77,17 @@ public class MazeViewWidget extends Canvas implements View{
 			}
 			@Override
 			public void widgetDefaultSelected(SelectionEvent arg0) {}
+		});
+		Bstartover.addFocusListener(new FocusListener() {
+			@Override
+			public void focusLost(FocusEvent arg0) {
+				MazeDisplayer.setFocus();
+			}
+			
+			@Override
+			public void focusGained(FocusEvent arg0) {
+				MazeDisplayer.setFocus();
+			}
 		});
 		
 		MazeDisplayer=new MazeDisplayerGUI(this, SWT.BORDER_SOLID);
@@ -108,8 +121,8 @@ public class MazeViewWidget extends Canvas implements View{
 			
 			@Override
 			public void keyReleased(KeyEvent arg0) {
-
 			}
+			
 			@Override
 			public void keyPressed(KeyEvent arg0) {
 				if(arg0.keyCode==16777220)
@@ -148,62 +161,51 @@ public class MazeViewWidget extends Canvas implements View{
 	  			@Override
 	  			public void widgetDefaultSelected(SelectionEvent arg0) {}
 	  		});
-	  	MazeDisplayer.setFocus();
+	  	
 		load();
 
 	}
 	public void load(){
 		this.setBackgroundImage(new Image(null, "resources/images/background.png"));
 		LBmazeName.setText("Maze name: "+mazeName);
-		LBsteps.setText("Number of steps: "+steps);
-		MazeDisplayer.setFocus();
+		LBsteps.setText("Number of steps: "+steps);;
 	}
 	
 	public void generateMaze(String name,int rows,int cols){
 		System.out.println("generateMaze");
-		helper.generateMaze(name,rows,cols);
+		ViewGUI.generateMaze(name,rows,cols);
 	}
 	
 	public void loadMaze(String name){
-		helper.displaymaze(name);		
+		ViewGUI.displaymaze(name);		
 	}
 	
-	public void solve(){
-		System.out.println("solve");
+	public void solve(String name){
+		ViewGUI.solveMaze(name);
 	}
 	
 	public void clue(){
 		System.out.println("clue");
 	}
 	
-	//View @Override
-	
-	@Override
-	public void start() {
-	}
-	@Override
-	public void setCommands(HashMap<String, Command> commands) {
-		helper.setCommands(commands);
-	}
-	@Override
-	public Command getUserCommand() {
-		return helper.getUserCommand();
-	}
-	@Override
 	public void displayMaze(algorithms.mazeGenerators.Maze m) {
 		System.out.println("MazeDisplayer.showMaze(m);");
 		MazeDisplayer.showMaze(m);
 	}
-	@Override
+	
 	public void displaySolution(Solution s) {
 		System.out.println("print sol on MazeDisplayer canvas");
 	}
-	@Override
+
+	
 	public void displayString(String msg) {
 		MessageBox messageBox = new MessageBox(this.getShell(),  SWT.OK);
-		messageBox.setMessage("help.........");
-		messageBox.setText("help");
+		messageBox.setMessage(msg);
+		messageBox.setText("MESSEGE");
 		messageBox.open();
+	}
+	public View getView() {
+		return ViewGUI;
 	}
 	
 

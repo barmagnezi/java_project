@@ -130,8 +130,6 @@ public class Presenter implements Observer{
 		public void doCommand(String arg,PrintStream out) {
 			if(model.getMaze(arg)!=null)
 				view.displayMaze(model.getMaze(arg));
-			else
-				view.displayString("Such maze was not found.");
 		}
 	}
 	

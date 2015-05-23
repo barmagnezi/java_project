@@ -1,4 +1,4 @@
-package view.viewGUI;
+package view.viewGUI.GameWidjet;
 
 import java.util.HashMap;
 import java.util.Observer;
@@ -17,13 +17,16 @@ import View.Command;
 import algorithms.mazeGenerators.Maze;
 import algorithms.search.Solution;
 import view.View;
+import view.viewGUI.MazeViewWidget;
 
-public class MyViewGUI extends BasicWindow implements View {
+public class GameWidjet extends BasicWindow {
 	MazeViewWidget gameView;
 	String filepath;
 	
-	public MyViewGUI(String title, int width, int height) {
+	public GameWidjet(String title, int width, int height) {
 		super(title, width, height);
+		gameView=new MazeViewWidget(shell, SWT.BORDER);	
+		
 	}
 	public void addObserver(Observer presenter){
 		gameView.addObserver(presenter);
@@ -42,7 +45,7 @@ public class MyViewGUI extends BasicWindow implements View {
 				shell.getDisplay().syncExec(new Runnable() {
 					@Override
 					public void run() {
-						new CreateNMaze("New Maze", 300, 150, display).run();
+						new CreateNMaze("New Maze", 300, 150, display,gameView).run();
 						gameView.setFocus();
 					}
 				});
@@ -61,7 +64,7 @@ public class MyViewGUI extends BasicWindow implements View {
 				shell.getDisplay().syncExec(new Runnable() {
 					@Override
 					public void run() {
-						new OpenMaze("Open a maze",250,130, display).run();
+						new OpenMaze("Open a maze",250,130, display,gameView).run();
 						gameView.setFocus();
 					}
 				});
@@ -80,8 +83,7 @@ public class MyViewGUI extends BasicWindow implements View {
 				shell.getDisplay().syncExec(new Runnable() {
 					@Override
 					public void run() {
-						MazeViewWidgetStub Stub = new MazeViewWidgetStub(shell, 0);
-						Stub.solve();
+						gameView.solve();
 						gameView.setFocus();
 					}
 				});
@@ -100,8 +102,7 @@ public class MyViewGUI extends BasicWindow implements View {
 				shell.getDisplay().syncExec(new Runnable() {
 					@Override
 					public void run() {
-						MazeViewWidgetStub Stub = new MazeViewWidgetStub(shell, 0);
-						Stub.clue();
+						gameView.clue();
 						gameView.setFocus();
 					}
 				});
@@ -110,33 +111,6 @@ public class MyViewGUI extends BasicWindow implements View {
 			@Override
 			public void widgetDefaultSelected(SelectionEvent arg0) {}
 		});
-		
-		/*//button5 - Load settings
-		Button BLoad=new Button(shell, SWT.PUSH);
-		BLoad.setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, false, false, 2, 1));		
-		BLoad.setText("Load settings");
-		BLoad.addSelectionListener(new SelectionListener() {
-			@Override
-			public void widgetSelected(SelectionEvent arg0) {
-				shell.getDisplay().syncExec(new Runnable() {
-					@Override
-					public void run() {
-						FileDialog fd=new FileDialog(shell,SWT.OPEN);
-						fd.setText("open");
-						fd.setFilterPath("");
-						String[] filterExt = { "*.xml"};
-						fd.setFilterExtensions(filterExt);
-						filepath = fd.open();
-						MazeViewWidgetStub Stub = new MazeViewWidgetStub(shell, 0);
-
-					}
-				});
-			}
-			@Override
-			public void widgetDefaultSelected(SelectionEvent arg0) {}
-		});*/
-		
-		gameView=new MazeViewWidget(shell, SWT.BORDER);	
 		gameView.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
 		gameView.setFocus();
 		shell.addHelpListener(new HelpListener() {
@@ -149,38 +123,36 @@ public class MyViewGUI extends BasicWindow implements View {
 				messageBox.open();
 			}
 		});
-
-		
 		
 	}	//initWidgets
+	public View getView(){
+		return gameView.getView();
+	}
+	/*
 	@Override
 	public void start() {
-		// TODO Auto-generated method stub
-		
+		this.run();
+		gameView.start();
 	}
 	@Override
 	public void setCommands(HashMap<String, Command> commands) {
-		// TODO Auto-generated method stub
-		
+		gameView.setCommands(commands);
 	}
 	@Override
 	public Command getUserCommand() {
-		// TODO Auto-generated method stub
-		return null;
+		return gameView.getUserCommand();
 	}
 	@Override
 	public void displayMaze(Maze m) {
-		// TODO Auto-generated method stub
-		
+		gameView.displayMaze(m);
 	}
 	@Override
 	public void displaySolution(Solution s) {
-		// TODO Auto-generated method stub
+		gameView.displaySolution(s);
 		
 	}
 	@Override
 	public void displayString(String msg) {
-		// TODO Auto-generated method stub
-		
-	}
+		gameView.displayString(msg);
+	}*/
 } //Class close

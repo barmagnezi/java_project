@@ -1,4 +1,4 @@
-package view.viewGUI;
+package view.viewGUI.GameWidjet;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
@@ -10,10 +10,14 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
+import view.viewGUI.MazeViewWidget;
+
 public class OpenMaze extends BasicWindow{
 
-	public OpenMaze(String title, int width, int height, Display disp) {
+	MazeViewWidget mazeView;
+	public OpenMaze(String title, int width, int height, Display disp,MazeViewWidget mazeView) {
 		super(title, width, height, disp);
+		this.mazeView=mazeView;
 	}
 
 	@Override
@@ -34,8 +38,7 @@ public class OpenMaze extends BasicWindow{
 		BOpenMaze.addSelectionListener(new SelectionListener() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				MazeViewWidgetStub Stub = new MazeViewWidgetStub(shell, 0);
-				Stub.loadMaze(TMazeName.getText());
+				mazeView.loadMaze(TMazeName.getText());
 				shell.dispose();
 			}
 			@Override
