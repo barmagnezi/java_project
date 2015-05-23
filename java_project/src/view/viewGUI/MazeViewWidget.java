@@ -29,7 +29,7 @@ public class MazeViewWidget extends Canvas {
 	private String mazeName="Not loaded maze";
 	private int steps=0;
 	ViewGUI ViewGUI=new ViewGUI(this);
-	Character Character=new Character();
+	Character Character=new Character(0,0);
 	
 	Label LBmazeName;
 	Label LHelp;
@@ -130,6 +130,17 @@ public class MazeViewWidget extends Canvas {
 			
 			@Override
 			public void widgetDefaultSelected(SelectionEvent arg0) {	
+			}
+		});
+		BgiveClue.addFocusListener(new FocusListener() {
+			@Override
+			public void focusLost(FocusEvent arg0) {
+				MazeDisplayer.setFocus();
+			}
+			
+			@Override
+			public void focusGained(FocusEvent arg0) {
+				MazeDisplayer.setFocus();
 			}
 		});
 		
