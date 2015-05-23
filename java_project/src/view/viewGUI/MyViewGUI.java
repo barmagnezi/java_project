@@ -4,21 +4,25 @@ import java.util.HashMap;
 import java.util.Observer;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.HelpEvent;
+import org.eclipse.swt.events.HelpListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.MessageBox;
+
 import View.Command;
 import algorithms.mazeGenerators.Maze;
 import algorithms.search.Solution;
 import view.View;
 
-public class MyView extends BasicWindow implements View {
+public class MyViewGUI extends BasicWindow implements View {
 	MazeViewWidget gameView;
 	String filepath;
 	
-	public MyView(String title, int width, int height) {
+	public MyViewGUI(String title, int width, int height) {
 		super(title, width, height);
 	}
 	public void addObserver(Observer presenter){
@@ -39,6 +43,7 @@ public class MyView extends BasicWindow implements View {
 					@Override
 					public void run() {
 						new CreateNMaze("New Maze", 300, 150, display).run();
+						gameView.setFocus();
 					}
 				});
 			}
@@ -57,6 +62,7 @@ public class MyView extends BasicWindow implements View {
 					@Override
 					public void run() {
 						new OpenMaze("Open a maze",250,130, display).run();
+						gameView.setFocus();
 					}
 				});
 			}
@@ -76,6 +82,7 @@ public class MyView extends BasicWindow implements View {
 					public void run() {
 						MazeViewWidgetStub Stub = new MazeViewWidgetStub(shell, 0);
 						Stub.solve();
+						gameView.setFocus();
 					}
 				});
 			}
@@ -95,8 +102,10 @@ public class MyView extends BasicWindow implements View {
 					public void run() {
 						MazeViewWidgetStub Stub = new MazeViewWidgetStub(shell, 0);
 						Stub.clue();
+						gameView.setFocus();
 					}
 				});
+				gameView.setFocus();
 			}
 			@Override
 			public void widgetDefaultSelected(SelectionEvent arg0) {}
@@ -130,6 +139,16 @@ public class MyView extends BasicWindow implements View {
 		gameView=new MazeViewWidget(shell, SWT.BORDER);	
 		gameView.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
 		gameView.setFocus();
+		shell.addHelpListener(new HelpListener() {
+			
+			@Override
+			public void helpRequested(HelpEvent arg0) {
+				MessageBox messageBox = new MessageBox(shell,  SWT.OK);
+				messageBox.setMessage("help.........");
+				messageBox.setText("help");
+				messageBox.open();
+			}
+		});
 
 		
 		

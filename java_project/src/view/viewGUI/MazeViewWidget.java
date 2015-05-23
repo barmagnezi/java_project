@@ -62,6 +62,20 @@ public class MazeViewWidget extends Canvas implements View{
 		Bstartover=new Button(this, SWT.PUSH);
 		Bstartover.setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, false, false, 1, 1));
 		Bstartover.setText("start over");
+		Bstartover.addSelectionListener(new SelectionListener() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				getDisplay().syncExec(new Runnable() {
+					@Override
+					public void run() {
+						//new CreateNMaze("New Maze", 300, 150, getDisplay()).run();
+						MazeDisplayer.setFocus();
+					}
+				});
+			}
+			@Override
+			public void widgetDefaultSelected(SelectionEvent arg0) {}
+		});
 		
 		MazeDisplayer=new MazeDisplayerGUI(this, SWT.BORDER_SOLID);
 		MazeDisplayer.setBackground(new Color(null,10,50,30));
@@ -90,24 +104,22 @@ public class MazeViewWidget extends Canvas implements View{
 		}
 		BackgroundsButtons[0].setSelection(true);
 		
-	    this.addKeyListener(new KeyListener() {
+		MazeDisplayer.addKeyListener(new KeyListener() {
 			
 			@Override
 			public void keyReleased(KeyEvent arg0) {
 
 			}
-			
 			@Override
 			public void keyPressed(KeyEvent arg0) {
 				if(arg0.keyCode==16777220)
-					System.out.println("right");				
+					System.out.println("right");			
 				if(arg0.keyCode==16777219)
 					System.out.println("left");
 				if(arg0.keyCode==16777217)
 					System.out.println("up");
 				if(arg0.keyCode==16777218)
-					System.out.println("down");	
-				
+					System.out.println("down");
 			}
 		});
 
@@ -129,12 +141,14 @@ public class MazeViewWidget extends Canvas implements View{
 	  						if(fd.open()==null)
 	  							return;
 	  						setProperties(fd.open());
+	  						MazeDisplayer.setFocus();
 	  					}
 	  				});
 	  			}
 	  			@Override
 	  			public void widgetDefaultSelected(SelectionEvent arg0) {}
-	  		});	  		
+	  		});
+	  	MazeDisplayer.setFocus();
 		load();
 
 	}
@@ -142,6 +156,7 @@ public class MazeViewWidget extends Canvas implements View{
 		this.setBackgroundImage(new Image(null, "resources/images/background.png"));
 		LBmazeName.setText("Maze name: "+mazeName);
 		LBsteps.setText("Number of steps: "+steps);
+		MazeDisplayer.setFocus();
 	}
 	
 	public void generateMaze(String name,int rows,int cols){
