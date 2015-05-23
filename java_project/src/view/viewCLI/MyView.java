@@ -78,7 +78,7 @@ public class MyView extends Observable implements View {
 	 * @param m Maze.
 	 */
 	@Override
-	public void displayMaze(Maze m) {
+	public void displayMaze(Maze m,String name) {
 		MyMazeDispleyer md = new MyMazeDispleyer();
 		md.DisplayMaze(m, out);
 	}

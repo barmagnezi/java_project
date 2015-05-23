@@ -30,7 +30,7 @@ public interface View {
 	 * Displays the received maze using MyMazeDispleyer.
 	 * @param m Maze.
 	 */
-	void displayMaze(Maze m); 
+	void displayMaze(Maze m,String name); 
 	/**
 	 * Displays the received solution using MySolutionDispleyer.
 	 * @param s Solution.

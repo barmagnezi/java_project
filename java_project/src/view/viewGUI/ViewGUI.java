@@ -15,7 +15,7 @@ public class ViewGUI extends Observable implements View{
 	HashMap<String, Command> commands;
 	Queue<Command> commandsList;
 	MazeViewWidget Widget;
-	
+	//only for ViewGUI work!!!!!
 	public ViewGUI(MazeViewWidget widget) {
 		super();
 		Widget = widget;
@@ -30,6 +30,7 @@ public class ViewGUI extends Observable implements View{
 	public Command getUserCommand() {
 		return commandsList.poll();
 	}
+	///////////////////////////////////////////////////
 	
 	public void generateMaze(String name,int rows,int cols){
 		if (commands.get("generateMaze")==null)
@@ -50,8 +51,18 @@ public class ViewGUI extends Observable implements View{
 		this.setChanged();
 		this.notifyObservers(name);
 	}
+	public void displaySolution(String name){
+		commandsList.add(commands.get("displaySolution"));
+		this.setChanged();
+		this.notifyObservers(name);
+	}
 
-
+	public void getclue(int x,int y){
+		commandsList.add(commands.get("getClue"));
+		this.setChanged();
+		this.notifyObservers(x+" "+y);
+		
+	}
 	public void setproperties(String path) {
 		commandsList.add(commands.get("setProperties"));
 		this.setChanged();
@@ -65,7 +76,8 @@ public class ViewGUI extends Observable implements View{
 	}
 
 	@Override
-	public void displayMaze(Maze m) {
+	public void displayMaze(Maze m,String name) {
+		Widget.setMazeName(name);
 		Widget.displayMaze(m);
 	}
 
@@ -77,6 +89,8 @@ public class ViewGUI extends Observable implements View{
 
 	@Override
 	public void displayString(String msg) {
+		if(msg.startsWith("clue:"))
+			Widget.showClue(msg.substring(5));
 		Widget.displayString(msg);
 	}
 

@@ -14,12 +14,13 @@ public class MazeDisplayerGUI extends Canvas {
 	}
 
 	public void showMaze(Maze m){
+		System.out.println("senia");
 		this.addPaintListener(new PaintListener() {
 			@Override
 			public void paintControl(PaintEvent e) {
 				e.gc.setForeground(new Color(null,0,0,0));
 				   e.gc.setBackground(new Color(null,0,0,0));
-				   System.out.println("senia");
+				   
 				   int width=getSize().x;
 				   int height=getSize().y;
 

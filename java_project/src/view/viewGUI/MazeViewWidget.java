@@ -1,7 +1,5 @@
 package view.viewGUI;
 
-
-import java.util.HashMap;
 import java.util.Observer;
 
 import org.eclipse.swt.SWT;
@@ -23,7 +21,6 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.MessageBox;
 
-import View.Command;
 import algorithms.search.Solution;
 import view.View;
 
@@ -32,11 +29,14 @@ public class MazeViewWidget extends Canvas {
 	private String mazeName="Not loaded maze";
 	private int steps=0;
 	ViewGUI ViewGUI=new ViewGUI(this);
+	Character Character=new Character();
 	
 	Label LBmazeName;
 	Label LHelp;
 	Label LBsteps;
 	Button Bstartover;
+	Button BshowSolution;
+	Button BgiveClue;
 	MazeDisplayerGUI MazeDisplayer;
 	Group GroupCharacters;
 	Button[] CharactersButtons;
@@ -90,8 +90,50 @@ public class MazeViewWidget extends Canvas {
 			}
 		});
 		
+		BshowSolution=new Button(this, SWT.PUSH);
+		BshowSolution.setLayoutData(new GridData(SWT.LEFT, SWT.TOP, false, false, 2, 1));
+		BshowSolution.setText("show solution");
+		BshowSolution.addSelectionListener(new SelectionListener() {
+			
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				MazeDisplayer.setFocus();
+				ViewGUI.displaySolution(mazeName);
+			}
+			
+			@Override
+			public void widgetDefaultSelected(SelectionEvent arg0) {	
+			}
+		});
+		BshowSolution.addFocusListener(new FocusListener() {
+			@Override
+			public void focusLost(FocusEvent arg0) {
+				MazeDisplayer.setFocus();
+			}
+			
+			@Override
+			public void focusGained(FocusEvent arg0) {
+				MazeDisplayer.setFocus();
+			}
+		});
+		
+		BgiveClue=new Button(this, SWT.PUSH);
+		BgiveClue.setLayoutData(new GridData(SWT.LEFT, SWT.TOP, false, false, 1, 1));
+		BgiveClue.setText("give me clue");
+		BgiveClue.addSelectionListener(new SelectionListener() {
+			
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				MazeDisplayer.setFocus();
+				ViewGUI.getclue(Character.getX(), Character.getY());
+			}
+			
+			@Override
+			public void widgetDefaultSelected(SelectionEvent arg0) {	
+			}
+		});
+		
 		MazeDisplayer=new MazeDisplayerGUI(this, SWT.BORDER_SOLID);
-		MazeDisplayer.setBackground(new Color(null,10,50,30));
 		MazeDisplayer.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
 		
 		GroupCharacters=new Group(this, SWT.SHADOW_OUT);
@@ -161,12 +203,11 @@ public class MazeViewWidget extends Canvas {
 	  			@Override
 	  			public void widgetDefaultSelected(SelectionEvent arg0) {}
 	  		});
-	  	
+		this.setBackgroundImage(new Image(null, "resources/images/background.png"));
 		load();
 
 	}
 	public void load(){
-		this.setBackgroundImage(new Image(null, "resources/images/background.png"));
 		LBmazeName.setText("Maze name: "+mazeName);
 		LBsteps.setText("Number of steps: "+steps);;
 	}
@@ -177,7 +218,7 @@ public class MazeViewWidget extends Canvas {
 	}
 	
 	public void loadMaze(String name){
-		ViewGUI.displaymaze(name);		
+		ViewGUI.displaymaze(name);	
 	}
 	
 	public void solve(String name){
@@ -206,6 +247,16 @@ public class MazeViewWidget extends Canvas {
 	}
 	public View getView() {
 		return ViewGUI;
+	}
+	public void showClue(String clue) {
+		String[] RowCol=clue.split(",");
+		int row=Integer.parseInt(RowCol[0]);
+		int col=Integer.parseInt(RowCol[1]);
+		///need print the clue on the 
+	}
+	public void setMazeName(String name){
+		mazeName=name;
+		load();
 	}
 	
 

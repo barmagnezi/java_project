@@ -129,7 +129,7 @@ public class Presenter implements Observer{
 		@Override
 		public void doCommand(String arg,PrintStream out) {
 			if(model.getMaze(arg)!=null)
-				view.displayMaze(model.getMaze(arg));
+				view.displayMaze(model.getMaze(arg),arg);
 		}
 	}
 	
