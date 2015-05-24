@@ -29,7 +29,7 @@ public class MazeViewWidget extends Canvas {
 	private String mazeName="Not loaded maze";
 	private int steps=0;
 	ViewGUI ViewGUI=new ViewGUI(this);
-	Character Character=new Character(0,0,null);
+	Character Character;
 	
 	Label LBmazeName;
 	Label LHelp;
@@ -257,6 +257,7 @@ public class MazeViewWidget extends Canvas {
 	  			@Override
 	  			public void widgetDefaultSelected(SelectionEvent arg0) {}
 	  		});
+	  	Character=new Character(0,0,this);
 		this.setBackgroundImage(new Image(null, "resources/images/background.png"));
 		load();
 

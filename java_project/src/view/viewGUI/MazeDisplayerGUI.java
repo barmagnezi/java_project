@@ -19,6 +19,7 @@ public class MazeDisplayerGUI extends Canvas {
 	String scrWalls;
 	Maze maze;
 	GC lastPaint=null;
+	Character character;
 	public MazeDisplayerGUI(Composite parent, int style,String scrBackground,String scrwalls) {
 		super(parent, style);
 		this.scrBackground=scrBackground;
@@ -30,11 +31,12 @@ public class MazeDisplayerGUI extends Canvas {
 			public void paintControl(PaintEvent arg0) {
 				if(maze==null)
 					return;
+				int width=(maze.getCols()*4+maze.getCols()+1);
+				int height=(maze.getRows()*4+maze.getRows()+1);
+				//new Character(1, 1, (MazeViewWidget) getParent());
 				if(lastPaint!=null)
 					lastPaint.dispose();
 				lastPaint=arg0.gc;
-				int width=(maze.getCols()*4+maze.getCols()+1);
-				int height=(maze.getRows()*4+maze.getRows()+1);
 				arg0.gc.setBackgroundPattern(new Pattern(null, new Image(null, scrWalls)));
 				//System.out.println(scrWalls);
 				int wallWidth=getSize().x/width;
