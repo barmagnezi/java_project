@@ -1,8 +1,6 @@
 package view.viewGUI.GameWidget;
 
-import java.util.HashMap;
 import java.util.Observer;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.HelpEvent;
 import org.eclipse.swt.events.HelpListener;
@@ -11,11 +9,9 @@ import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.MessageBox;
-
-import View.Command;
-import algorithms.mazeGenerators.Maze;
-import algorithms.search.Solution;
 import view.View;
 import view.viewGUI.MazeViewWidget;
 
@@ -105,6 +101,21 @@ public class GameWidget extends BasicWindow {
 			}
 		});
 		
+		//http://stackoverflow.com/questions/16899807/swt-modifying-window-close-button-red-x
+		shell.addListener(SWT.Close, new Listener() {
+			@Override
+			public void handleEvent(Event arg) {
+	            int style = SWT.APPLICATION_MODAL | SWT.YES | SWT.NO;
+	            MessageBox messageBox = new MessageBox(shell, style);
+	            messageBox.setText("Exit");
+	            messageBox.setMessage("Close the game?");
+	            if(messageBox.open() == SWT.YES){
+
+	            	shell.dispose();
+	            }
+	            //arg.doit = messageBox.open() == SWT.YES;
+			}
+		});
 	}	//initWidgets
 	
 	public View getView(){
