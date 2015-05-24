@@ -76,7 +76,7 @@ public class GameWidget extends BasicWindow {
 		//button3 - Solve Maze
 		Button BSolveMaze=new Button(shell, SWT.PUSH);
 		BSolveMaze.setLayoutData(new GridData(SWT.LEFT, SWT.None, false, false, 1, 1));		
-		BSolveMaze.setText("Solve the maze");
+		BSolveMaze.setText("Solve a maze");
 		BSolveMaze.addSelectionListener(new SelectionListener() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
@@ -92,25 +92,6 @@ public class GameWidget extends BasicWindow {
 			public void widgetDefaultSelected(SelectionEvent arg0) {}
 		});
 		
-		//button4 - Clue
-		/*Button BClue=new Button(shell, SWT.PUSH);
-		BClue.setLayoutData(new GridData(SWT.LEFT, SWT.None, false, false, 1, 1));		
-		BClue.setText("Give me a clue");
-		BClue.addSelectionListener(new SelectionListener() {
-			@Override
-			public void widgetSelected(SelectionEvent arg0) {
-				shell.getDisplay().syncExec(new Runnable() {
-					@Override
-					public void run() {
-						gameView.clue();
-						gameView.setFocus();
-					}
-				});
-				gameView.setFocus();
-			}
-			@Override
-			public void widgetDefaultSelected(SelectionEvent arg0) {}
-		});*/
 		gameView.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 3, 1));
 		gameView.setFocus();
 		shell.addHelpListener(new HelpListener() {

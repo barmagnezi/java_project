@@ -11,6 +11,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Text;
 
 import view.viewGUI.MazeViewWidget;
@@ -44,8 +45,17 @@ public class OpenMaze extends BasicWindow{
 		BOpenMaze.addSelectionListener(new SelectionListener() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				mazeView.loadMaze(TMazeName.getText());
-				shell.dispose();
+				if(TMazeName.getText().length()!=0){
+					mazeView.loadMaze(TMazeName.getText());
+					shell.dispose();
+				}
+				else{
+					MessageBox messageBox = new MessageBox(shell,  SWT.OK);
+					messageBox.setMessage("The name of the maze can't be empty");
+					messageBox.setText("Error");
+					messageBox.open();
+					TMazeName.setFocus();
+				}
 			}
 			@Override
 			public void widgetDefaultSelected(SelectionEvent arg0) {}

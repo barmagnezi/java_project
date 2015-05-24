@@ -11,6 +11,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Text;
 
 import view.viewGUI.MazeViewWidget;
@@ -53,8 +54,71 @@ public class CreateNMaze extends BasicWindow{
 		BOpenMaze.addSelectionListener(new SelectionListener() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				mazeView.generateMaze(TMazeName.getText(),Integer.parseInt(Trow.getText()),Integer.parseInt(Tcol.getText()));
-				shell.dispose();
+				boolean flag=false;
+				if(TMazeName.getText().length()==0){		//Name check(!=null)
+					MessageBox messageBox = new MessageBox(shell,  SWT.OK);
+					messageBox.setMessage("The name of the maze can't be empty");
+					messageBox.setText("Error");
+					messageBox.open();
+					TMazeName.setFocus();
+					flag=true;
+				}
+				//Rows check, !=null,isInt --> >2
+				if(flag==false && Trow.getText().length()==0){
+					MessageBox messageBox = new MessageBox(shell,  SWT.OK);
+					messageBox.setMessage("The number of rows can't be empty");
+					messageBox.setText("Error");
+					messageBox.open();
+					Trow.setFocus();
+					flag=true;
+				}
+				if(flag==false && !isInteger(Trow.getText())){
+					MessageBox messageBox = new MessageBox(shell,  SWT.OK);
+					messageBox.setMessage("The number of rows have to be an integer");
+					messageBox.setText("Error");
+					messageBox.open();
+					Trow.setFocus();
+					flag=true;
+				}else{
+					if(flag==false && Integer.parseInt(Trow.getText())<3){
+						MessageBox messageBox = new MessageBox(shell,  SWT.OK);
+						messageBox.setMessage("The number of rows have to be >2");
+						messageBox.setText("Error");
+						messageBox.open();
+						Trow.setFocus();
+						flag=true;
+						}
+				}
+				//Cols check, !=null,isInt --> >2
+				if(flag==false && Tcol.getText().length()==0){
+					MessageBox messageBox = new MessageBox(shell,  SWT.OK);
+					messageBox.setMessage("The number of columns can't be empty");
+					messageBox.setText("Error");
+					messageBox.open();
+					Tcol.setFocus();
+					flag=true;
+				}
+				if(flag==false && !isInteger(Tcol.getText())){
+					MessageBox messageBox = new MessageBox(shell,  SWT.OK);
+					messageBox.setMessage("The number of columns have to be an integer");
+					messageBox.setText("Error");
+					messageBox.open();
+					Tcol.setFocus();
+					flag=true;
+				}else{
+					if(flag==false && Integer.parseInt(Tcol.getText())<3){
+						MessageBox messageBox = new MessageBox(shell,  SWT.OK);
+						messageBox.setMessage("The number of columns have to be >2");
+						messageBox.setText("Error");
+						messageBox.open();
+						Tcol.setFocus();
+						flag=true;
+						}
+				}
+				if(flag==false){
+					mazeView.generateMaze(TMazeName.getText(),Integer.parseInt(Trow.getText()),Integer.parseInt(Tcol.getText()));
+					shell.dispose();
+				}
 			}
 			@Override
 			public void widgetDefaultSelected(SelectionEvent arg0) {}
@@ -67,6 +131,10 @@ public class CreateNMaze extends BasicWindow{
                     shell.setBounds(rect.x, rect.y, witdh, hight);
 			}
 		});
+		
+		addSelectOnFocusToText(TMazeName);
+		addSelectOnFocusToText(Trow);
+		addSelectOnFocusToText(Tcol);
 	}
 	
 	@Override
