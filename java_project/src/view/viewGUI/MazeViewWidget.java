@@ -15,6 +15,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
@@ -283,7 +284,11 @@ public class MazeViewWidget extends Canvas {
 	}
 	
 	public void displayMaze(algorithms.mazeGenerators.Maze m) {
-		System.out.println("MazeDisplayer.showMaze(m);");
+		/*System.out.println("MazeDisplayer");
+		MazeDisplayer=new MazeDisplayerGUI(this, SWT.BORDER_SOLID,"" , "");
+		for(Button b:BackgroundsButtons)
+			if(b.isEnabled())
+				b.notifyListeners(SWT.Selection, new Event());*/
 		MazeDisplayer.showMaze(m);
 	}
 	
