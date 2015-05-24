@@ -50,6 +50,8 @@ public class MazeDisplayerGUI extends Canvas {
 					//System.out.println(scrWalls);
 					//System.out.println("X: "+getSize().x);
 					//System.out.println("Y: "+getSize().y);
+					//if(wallHeight!=getSize().x/width || wallHeight!=getSize().y/height)
+					//	character=new Character(getSize().x/width, getSize().y/height);
 					wallWidth=getSize().x/width;
 					wallHeight=getSize().y/height;
 					if(character==null)
@@ -94,6 +96,7 @@ public class MazeDisplayerGUI extends Canvas {
 	}
 	public void showMaze(Maze m){
 		   maze=m;
+		  // this.character=null;
 		   setBackgroundImage(new Image(null, scrBackground));
 		   redraw();
 	}

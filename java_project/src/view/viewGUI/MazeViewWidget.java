@@ -21,7 +21,13 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.MessageBox;
 
+import algorithms.demo.MazeSearchable;
+import algorithms.mazeGenerators.Maze;
+import algorithms.search.CommonSearcher;
 import algorithms.search.Solution;
+import algorithms.search.State;
+import algorithms.search.aStar.AstarSearcher;
+import algorithms.search.aStar.MazeAirDistance;
 import view.View;
 
 public class MazeViewWidget extends Canvas {
@@ -188,7 +194,6 @@ public class MazeViewWidget extends Canvas {
 			public void widgetSelected(SelectionEvent arg0) {
 				MazeDisplayer.changeDesign("resources/images/desert.jpg","resources/images/brick_texture.jpg");
 				GroupBackgroundMaze.setBackgroundImage(new Image(null, "resources/images/desert.jpg"));
-				
 			}
 			
 			@Override
@@ -202,7 +207,6 @@ public class MazeViewWidget extends Canvas {
 			public void widgetSelected(SelectionEvent arg0) {
 				MazeDisplayer.changeDesign("resources/images/white.png","resources/images/black.png");
 				GroupBackgroundMaze.setBackgroundImage(new Image(null, "resources/images/white.png"));
-				
 			}
 			
 			@Override
@@ -283,8 +287,31 @@ public class MazeViewWidget extends Canvas {
 		ViewGUI.solveMaze(name);
 	}
 	
-	public void clue(){
+	public void clue(Maze maze){
 		System.out.println("clue");
+		int x=MazeDisplayer.character.getX();
+		int y=MazeDisplayer.character.getY();
+		String sol = "0x0->0x1->0x2.....->8x7->7x7->7x8->7x9->8x9->9x9";	//solve(maze);
+		String[] sols = sol.split("->");
+		double min=0;
+		int GotoX,GotoY;
+		for(int i=0; i<sols.length;i++){
+			if(Math.sqrt(	Math.pow((x-sols[i].charAt(0)), 2) + Math.pow((y-sols[i].charAt(2)), 2)	)<min){
+				min=Math.sqrt(Math.pow((x-sols[i].charAt(0)), 2) + Math.pow((y-sols[i].charAt(2)), 2));
+				GotoX=sols[i].charAt(0);
+				GotoY=sols[i].charAt(2);
+			}
+		}
+		
+		MazeSearchable MS = new MazeSearchable(maze, false);	
+		// START state DEFIENED AS 0,0 === WE NEED TO CHANGE IT TO MazeDisplayer.character.getX() , MazeDisplayer.character.getY()
+		// GOAL state DEFIEND AS (n-1),(n-1) === WE NEED TO CHANGE IT GO GotoX , GotoY	(Or delete the code before and leave it like this)
+		CommonSearcher se=new AstarSearcher(new MazeAirDistance());
+		Solution Sol=se.search(MS);
+		//Add toString() In Solution - Almost Exactly as Print()
+		String last = Sol.toString();
+		//Next step(clue) is:
+		System.out.println(last.charAt(0)+last.charAt(2));
 	}
 	
 	public void displayMaze(algorithms.mazeGenerators.Maze m) {
