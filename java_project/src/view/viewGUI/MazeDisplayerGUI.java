@@ -13,24 +13,36 @@ import algorithms.mazeGenerators.Cell;
 import algorithms.mazeGenerators.Maze;
 
 public class MazeDisplayerGUI extends Canvas {
-	public MazeDisplayerGUI(Composite parent, int style) {
+	String scrBackground;
+	String scrWalls;
+	Maze maze;
+	public MazeDisplayerGUI(Composite parent, int style,String scrBackground,String scrWalls) {
 		super(parent, style);
+		this.scrBackground=scrBackground;
+		this.scrWalls=scrWalls;
+		setBackgroundImage(new Image(null, "resources/images/mazedisplayerbackground.png"));
 	}
 
+	public void changeDesign(String scrBackground,String scrWalls){
+		this.scrBackground=scrBackground;
+		this.scrWalls=scrWalls;
+		if(maze!=null)
+			showMaze(maze);
+	}
 	public void showMaze(Maze m){
-
-		   setBackgroundImage(new Image(null, "resources/images/grass.png"));
-		   int width=m.getCols()*4+m.getCols()+1;
-		   int height=m.getRows()*4+m.getRows()+1;
+			maze=m;
+		   setBackgroundImage(new Image(null, scrBackground));
+		   int width=m.getCols()*4+m.getCols();
+		   int height=m.getRows()*4+m.getRows();
 		   
 		   addPaintListener(new PaintListener() {
 				
 				@Override
 				public void paintControl(PaintEvent arg0) {
-					arg0.gc.setBackgroundPattern(new Pattern(null, new Image(null, "resources/images/trees.png")));
+					arg0.gc.setBackgroundPattern(new Pattern(null, new Image(null, scrWalls)));
 					int wallWidth=getSize().x/width;
 					int wallHeight=getSize().y/height;
-					/*
+					
 					//The Frame
 						//Two rows
 						arg0.gc.fillRectangle(0,0,wallWidth*width,wallHeight);	
@@ -38,7 +50,6 @@ public class MazeDisplayerGUI extends Canvas {
 						//Two Columns
 						arg0.gc.fillRectangle(wallWidth*width,0,getSize().x,getSize().y);
 						arg0.gc.fillRectangle(0,0,wallWidth,wallHeight*height);
-						*/
 					//The points that connects walls
 					for(int i=5;i<width;i+=5)
 						for(int j=5;j<height;j+=5)

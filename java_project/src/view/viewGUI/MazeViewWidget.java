@@ -144,7 +144,7 @@ public class MazeViewWidget extends Canvas {
 			}
 		});
 		
-		MazeDisplayer=new MazeDisplayerGUI(this, SWT.BORDER_SOLID);
+		MazeDisplayer=new MazeDisplayerGUI(this, SWT.BORDER_SOLID,"resources/images/grass.png","resources/images/trees.png");
 		MazeDisplayer.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
 		
 		GroupCharacters=new Group(this, SWT.SHADOW_OUT);
@@ -166,9 +166,51 @@ public class MazeViewWidget extends Canvas {
 		BackgroundsButtons=new Button[3];
 		for(int i = 0; i < 3; i++) {
 			BackgroundsButtons[i]=new Button(GroupBackgroundMaze, SWT.RADIO);
-			BackgroundsButtons[i].setText("option " + (i + 1));
 		}
+		BackgroundsButtons[0].setText("garden");
+		BackgroundsButtons[0].addSelectionListener(new SelectionListener() {
+			
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				MazeDisplayer.changeDesign("resources/images/grass.png","resources/images/trees.png");
+				GroupBackgroundMaze.setBackgroundImage(new Image(null, "resources/images/grass.png"));
+			}
+			
+			@Override
+			public void widgetDefaultSelected(SelectionEvent arg0) {
+			}
+		});
+		BackgroundsButtons[1].setText("desert");
+		BackgroundsButtons[1].addSelectionListener(new SelectionListener() {
+			
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				MazeDisplayer.changeDesign("resources/images/desert.jpg","resources/images/brick_texture.jpg");
+				GroupBackgroundMaze.setBackgroundImage(new Image(null, "resources/images/desert.jpg"));
+				
+			}
+			
+			@Override
+			public void widgetDefaultSelected(SelectionEvent arg0) {
+			}
+		});
+		BackgroundsButtons[2].setText("Black&White");
+		BackgroundsButtons[2].addSelectionListener(new SelectionListener() {
+			
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				MazeDisplayer.changeDesign("resources/images/white.png","resources/images/black.png");
+				GroupBackgroundMaze.setBackgroundImage(new Image(null, "resources/images/white.png"));
+				
+			}
+			
+			@Override
+			public void widgetDefaultSelected(SelectionEvent arg0) {
+			}
+		});
+		
 		BackgroundsButtons[0].setSelection(true);
+		GroupBackgroundMaze.setBackgroundImage(new Image(null, "resources/images/grass.png"));
 		
 		MazeDisplayer.addKeyListener(new KeyListener() {
 			
