@@ -112,10 +112,10 @@ public class GameWidget extends BasicWindow {
 	            messageBox.setText("Exit");
 	            messageBox.setMessage("Close the game?");
 	            if(messageBox.open() == SWT.YES){
-
-	            	shell.dispose();
+	            	arg.doit = true;
+	            }else{
+	            	arg.doit = false;
 	            }
-	            //arg.doit = messageBox.open() == SWT.YES;
 			}
 		});
 	}	//initWidgets

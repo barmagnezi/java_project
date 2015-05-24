@@ -1,12 +1,5 @@
 package view.viewGUI;
 
-import java.lang.ProcessBuilder.Redirect;
-
-import org.eclipse.swt.custom.PaintObjectEvent;
-import org.eclipse.swt.events.PaintEvent;
-import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.widgets.Event;
-
 public class Character {
 	int x;
 	int y;

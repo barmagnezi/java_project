@@ -4,8 +4,6 @@ import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.graphics.Color;
 
 public class GameCharecter {
-	
-	
 		   int x,y;
 		   
 		   public GameCharecter(int x,int y) {
@@ -16,6 +14,4 @@ public class GameCharecter {
 			e.gc.setBackground(new Color(null,255,0,0));
 			e.gc.fillOval(x,y, w, h);
 		   }
-		
-
 }
