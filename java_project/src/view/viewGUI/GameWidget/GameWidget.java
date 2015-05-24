@@ -1,6 +1,7 @@
 package view.viewGUI.GameWidget;
 
 import java.util.Observer;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.HelpEvent;
 import org.eclipse.swt.events.HelpListener;
@@ -12,6 +13,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.MessageBox;
+
 import view.View;
 import view.viewGUI.MazeViewWidget;
 
@@ -38,7 +40,7 @@ public class GameWidget extends BasicWindow {
 		BNewMaze.addSelectionListener(new SelectionListener() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				shell.getDisplay().syncExec(new Runnable() {
+				shell.getDisplay().asyncExec(new Runnable() {
 					@Override
 					public void run() {
 						new CreateNMaze("New Maze", 300, 150, display, gameView).run();
@@ -57,7 +59,7 @@ public class GameWidget extends BasicWindow {
 		BOpenMaze.addSelectionListener(new SelectionListener() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				shell.getDisplay().syncExec(new Runnable() {
+				shell.getDisplay().asyncExec(new Runnable() {
 					@Override
 					public void run() {
 						new OpenMaze("Open a maze",250,130, display, gameView).run();
@@ -76,7 +78,7 @@ public class GameWidget extends BasicWindow {
 		BSolveMaze.addSelectionListener(new SelectionListener() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				shell.getDisplay().syncExec(new Runnable() {
+				shell.getDisplay().asyncExec(new Runnable() {
 					@Override
 					public void run() {
 						new SolveMaze("Solve a maze", 250, 130, display, gameView).run();
@@ -120,6 +122,20 @@ public class GameWidget extends BasicWindow {
 	
 	public View getView(){
 		return gameView.getView();
+	}
+	public void start(){
+		new Thread(new Runnable() {
+			
+			@Override
+			public void run() {
+				gameView.start();
+			}
+		}).start();
+		run();
+		
+	}
+	public void exit(){
+		gameView.exit();
 	}
 	/*
 	@Override

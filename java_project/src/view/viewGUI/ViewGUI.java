@@ -69,10 +69,16 @@ public class ViewGUI extends Observable implements View{
 		this.notifyObservers(path);
 		
 	}
-
+	public void exit(){
+		commandsList.add(commands.get("exit"));
+		this.setChanged();
+		this.notifyObservers("");
+	}
 	//view @Override
 	@Override
 	public void start() {
+		this.setChanged();
+		this.notifyObservers("start");
 	}
 
 	@Override
@@ -93,5 +99,6 @@ public class ViewGUI extends Observable implements View{
 			Widget.showClue(msg.substring(5));
 		Widget.displayString(msg);
 	}
+	
 
 }

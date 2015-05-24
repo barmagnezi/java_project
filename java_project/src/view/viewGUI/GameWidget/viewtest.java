@@ -11,7 +11,8 @@ public class viewtest {
 		Presenter p=new Presenter(v.getView(), m);
 		v.addObserver(p);
 		m.addObserver(p);
-		v.run();
+		v.start();
+		v.exit();
 		//new MyViewGUI("Game",500,500).run();
 	}
 }

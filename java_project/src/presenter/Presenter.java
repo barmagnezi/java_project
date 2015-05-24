@@ -63,11 +63,13 @@ public class Presenter implements Observer{
 			Mproperties = new PropertiesModel(null);}		
 		model.setProperties(Mproperties);
 	}
+	
 	@Override
 	public void update(Observable o, Object arg) {
 		if(arg!=null && ((String)arg).equals("start")){
+			System.out.println("model.start()");
 			model.start();
-			view.displayString("\nIf you run the program first time use the 'help -h' command to see how to use this command line interface\n");
+			//view.displayString("\nIf you run the program first time use the 'help -h' command to see how to use this command line interface\n");
 			return;
 		}
 		else{
@@ -159,6 +161,7 @@ public class Presenter implements Observer{
 	public class exitCommand  implements Command {
 		@Override
 		public void doCommand(String arg,PrintStream out) {
+			System.out.println("exit");
 			model.stop();
 			//close all we need
 		}

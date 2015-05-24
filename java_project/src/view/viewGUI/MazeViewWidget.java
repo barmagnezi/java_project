@@ -28,7 +28,7 @@ public class MazeViewWidget extends Canvas {
 	private String mazeName="Not loaded maze";
 	private int steps=0;
 	ViewGUI ViewGUI=new ViewGUI(this);
-	Character Character=new Character(0,0);
+	Character Character=new Character(0,0,null);
 	
 	Label LBmazeName;
 	Label LHelp;
@@ -50,6 +50,7 @@ public class MazeViewWidget extends Canvas {
 	public MazeViewWidget(Composite parent, int style) {
 		super(parent, style);		
 		this.setLayout(new GridLayout(2,false));
+		
 		LBmazeName=new Label(this, SWT.NONE);	
 		LBmazeName.setLayoutData(new GridData(SWT.LEFT, SWT.None, false, false, 1, 1));
 		
@@ -149,7 +150,7 @@ public class MazeViewWidget extends Canvas {
 		GroupCharacters=new Group(this, SWT.SHADOW_OUT);
 		GroupCharacters.setText("Characters");
 		GroupCharacters.setLayout(new GridLayout(3, true));
-		GroupCharacters.setLayoutData(new GridData(SWT.LEFT, SWT.DOWN,  false, false));
+		GroupCharacters.setLayoutData(new GridData(SWT.LEFT, SWT.DOWN,  false, false,2,1));
 		
 		CharactersButtons=new Button[3];
 		for(int i = 0; i < 3; i++) {
@@ -190,7 +191,7 @@ public class MazeViewWidget extends Canvas {
 
 	  //button5 - Load settings
 	  		Button BLoad=new Button(this, SWT.PUSH);
-	  		BLoad.setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, false, false, 2, 1));		
+	  		BLoad.setLayoutData(new GridData(SWT.RIGHT, SWT.DOWN, false, false, 1, 1));		
 	  		BLoad.setText("Load settings");
 	  		BLoad.addSelectionListener(new SelectionListener() {
 	  			@Override
@@ -267,6 +268,12 @@ public class MazeViewWidget extends Canvas {
 	public void setMazeName(String name){
 		mazeName=name;
 		load();
+	}
+	public void exit(){
+		ViewGUI.exit();
+	}
+	public void start() {
+		ViewGUI.start();
 	}
 	
 
