@@ -31,7 +31,6 @@ public class MazeDisplayerGUI extends Canvas {
 		super(parent, style);
 		this.scrBackground=scrBackground;
 		this.scrWalls=scrwalls;
-		character=new Character(0, 0);
 		setBackgroundImage(new Image(null, "resources/images/mazedisplayerbackground.png"));
 		addPaintListener(new PaintListener() {
 			@Override
@@ -53,6 +52,8 @@ public class MazeDisplayerGUI extends Canvas {
 					//System.out.println("Y: "+getSize().y);
 					wallWidth=getSize().x/width;
 					wallHeight=getSize().y/height;
+					if(character==null)
+						character=new Character(wallWidth, wallHeight);
 					//System.out.println("X2: "+wallWidth);
 					//System.out.println("Y2: "+wallHeight);
 					
