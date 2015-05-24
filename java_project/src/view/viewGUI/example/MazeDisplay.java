@@ -41,7 +41,7 @@ public class MazeDisplay extends Canvas {
         super(parent, style);
         
         setBackground(new Color(null, 255, 70, 255));
-        gameCharecter = new GameCharecter(100, 100);
+        gameCharecter = new GameCharecter(300, 100);
         
         addPaintListener(new PaintListener() {
 			@Override
@@ -68,10 +68,6 @@ public class MazeDisplay extends Canvas {
 				   //gameCharecter.x = 3*w;
 				   //gameCharecter.y = 5*h;
 				   gameCharecter.paint(e, w, h);
-
-					
-				
-				
 			}
 		});
         

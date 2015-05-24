@@ -29,7 +29,6 @@ public class MazeViewWidget extends Canvas {
 	private String mazeName="Not loaded maze";
 	private int steps=0;
 	ViewGUI ViewGUI=new ViewGUI(this);
-	Character Character;
 	
 	Label LBmazeName;
 	Label LHelp;
@@ -42,6 +41,7 @@ public class MazeViewWidget extends Canvas {
 	Button[] CharactersButtons;
 	Group GroupBackgroundMaze;
 	Button[] BackgroundsButtons;
+	
 	public void setProperties(String path){
 		ViewGUI.setproperties(path);
 	}
@@ -126,7 +126,7 @@ public class MazeViewWidget extends Canvas {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
 				MazeDisplayer.setFocus();
-				ViewGUI.getclue(Character.getX(), Character.getY());
+				ViewGUI.getclue(MazeDisplayer.getCharacter().getX(), MazeDisplayer.getCharacter().getY());
 			}
 			
 			@Override
@@ -222,13 +222,17 @@ public class MazeViewWidget extends Canvas {
 			@Override
 			public void keyPressed(KeyEvent arg0) {
 				if(arg0.keyCode==16777220)
-					System.out.println("right");			
+					MazeDisplayer.CharMoved(1);
+					//System.out.println("right");			
 				if(arg0.keyCode==16777219)
-					System.out.println("left");
+					MazeDisplayer.CharMoved(3);
+					//System.out.println("left");
 				if(arg0.keyCode==16777217)
-					System.out.println("up");
+					MazeDisplayer.CharMoved(2);
+					//System.out.println("up");
 				if(arg0.keyCode==16777218)
-					System.out.println("down");
+					MazeDisplayer.CharMoved(4);
+					//System.out.println("down");
 			}
 		});
 
@@ -257,7 +261,6 @@ public class MazeViewWidget extends Canvas {
 	  			@Override
 	  			public void widgetDefaultSelected(SelectionEvent arg0) {}
 	  		});
-	  	Character=new Character(0,0,this);
 		this.setBackgroundImage(new Image(null, "resources/images/background.png"));
 		load();
 
