@@ -31,6 +31,8 @@ import algorithms.search.Solution;
 import algorithms.search.aStar.AstarSearcher;
 import algorithms.search.aStar.MazeAirDistance;
 import view.View;
+import view.viewGUI.GameWidget.OpenMaze;
+import view.viewGUI.GameWidget.SelectPic;
 
 public class MazeViewWidget extends Canvas {
 
@@ -177,15 +179,33 @@ public class MazeViewWidget extends Canvas {
 		CharactersButtons[0].addSelectionListener(new SelectionListener() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				//MazeDisplayer.changeBackDesign("resources/images/grass.png","resources/images/trees.png");
-				//GroupBackgroundMaze.setBackgroundImage(new Image(null, "resources/images/grass.png"));
-		        ColorDialog cd = new ColorDialog(getShell());
-		        cd.setText("ColorDialog Demo");
-		        cd.setRGB(new RGB(255, 255, 255));
-		        RGB col = cd.open();
-		        System.out.println(col);
-		        System.out.println(col.red+col.green+col.blue);
-		        MazeDisplayer.changeCharacter(1, col, null);
+				System.out.println("111111111");
+				if(CharactersButtons[0].getSelection()==true){
+			        ColorDialog cd = new ColorDialog(getShell());
+			        cd.setText("ColorDialog Demo");
+			        cd.setRGB(new RGB(255, 255, 255));
+			        RGB col = cd.open();
+			        MazeDisplayer.changeCharacter(1, col, null);
+				}
+			}
+
+			@Override
+			public void widgetDefaultSelected(SelectionEvent arg0) {
+			}
+		});
+		
+		CharactersButtons[1].setText("Picture");
+		CharactersButtons[1].addSelectionListener(new SelectionListener() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				//MazeDisplayer.changeBackDesign("resources/images/desert.jpg","resources/images/brick_texture.jpg");
+				//GroupBackgroundMaze.setBackgroundImage(new Image(null, "resources/images/desert.jpg"));
+				if(CharactersButtons[1].getSelection()==true){
+					String path = null;
+					new SelectPic("Select a picture",400,400, getDisplay(),path).run();
+					System.out.println(path);
+					MazeDisplayer.setFocus();
+				}
 			}
 			
 			@Override

@@ -157,7 +157,7 @@ public class MazeDisplayerGUI extends Canvas {
 	
 	public void changeCharacter(int charOption, RGB nColor, String path){
 		//if(charOption<5 && charOption>0)
-			this.charOp=charOption;
+		this.charOp=charOption;
 		if(nColor!=null)
 			this.Color=nColor;
 		if(path!=null)
