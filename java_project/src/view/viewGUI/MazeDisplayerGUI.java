@@ -46,10 +46,11 @@ public class MazeDisplayerGUI extends Canvas {
 				wallHeight=getSize().y/height;
 				
 				if(character==null){
-					if(charOp==1)
+					character=new MarioCharacter(0, 0);
+					/*if(charOp==1)
 						character=new TheRedBallCharacter(0, 0);
 					if(charOp==2)
-						character=new MarioCharacter(0, 0);
+						character=new MarioCharacter(0, 0);*/
 				}
 				//The Frame
 					//Two rows
@@ -82,6 +83,7 @@ public class MazeDisplayerGUI extends Canvas {
 		if(maze!=null)
 			showMaze(maze);
 	}
+	
 	public void showMaze(Maze m){
 		   if(m!=maze){
 			   this.character=null;
