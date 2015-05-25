@@ -21,6 +21,7 @@ import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.MessageBox;
+
 import algorithms.demo.MazeSearchable;
 import algorithms.mazeGenerators.Maze;
 import algorithms.search.CommonSearcher;
@@ -39,6 +40,7 @@ public class MazeViewWidget extends Canvas {
 	ViewGUI ViewGUI=new ViewGUI(this);
 	boolean Diagonals =false; //!!!!!need to know by the presenter
 	
+	boolean good=true;
 	Label LBmazeName;
 	Label LHelp;
 	Label LBsteps;
@@ -138,15 +140,16 @@ public class MazeViewWidget extends Canvas {
 			
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
+				clue(maze);
+				//ViewGUI.getclue(MazeDisplayer.getCharacter().getRealx(), MazeDisplayer.getCharacter().getRealy());
 				MazeDisplayer.setFocus();
-				ViewGUI.getclue(MazeDisplayer.getCharacter().getRealx(), MazeDisplayer.getCharacter().getRealy());
 			}
 			
 			@Override
 			public void widgetDefaultSelected(SelectionEvent arg0) {	
 			}
 		});
-		BgiveClue.addFocusListener(new FocusListener() {
+		/*BgiveClue.addFocusListener(new FocusListener() {
 			@Override
 			public void focusLost(FocusEvent arg0) {
 				MazeDisplayer.setFocus();
@@ -156,7 +159,7 @@ public class MazeViewWidget extends Canvas {
 			public void focusGained(FocusEvent arg0) {
 				MazeDisplayer.setFocus();
 			}
-		});
+		});*/
 		
 		MazeDisplayer=new MazeDisplayerGUI(this, SWT.BORDER_SOLID,"resources/images/grass.png","resources/images/trees.png");
 		MazeDisplayer.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
@@ -423,27 +426,26 @@ public class MazeViewWidget extends Canvas {
 		System.out.println("clue");
 		int x=MazeDisplayer.character.getRealx();
 		int y=MazeDisplayer.character.getRealy();
-		String sol = "0x0->0x1->0x2.....->8x7->7x7->7x8->7x9->8x9->9x9";	//solve(maze);
-		String[] sols = sol.split("->");
-		double min=0;
-		int GotoX,GotoY;
-		for(int i=0; i<sols.length;i++){
-			if(Math.sqrt(	Math.pow((x-sols[i].charAt(0)), 2) + Math.pow((y-sols[i].charAt(2)), 2)	)<min){
-				min=Math.sqrt(Math.pow((x-sols[i].charAt(0)), 2) + Math.pow((y-sols[i].charAt(2)), 2));
-				GotoX=sols[i].charAt(0);
-				GotoY=sols[i].charAt(2);
-			}
-		}
-		
-		MazeSearchable MS = new MazeSearchable(maze, false);	
-		// START state DEFIENED AS 0,0 === WE NEED TO CHANGE IT TO MazeDisplayer.character.getX() , MazeDisplayer.character.getY()
-		// GOAL state DEFIEND AS (n-1),(n-1) === WE NEED TO CHANGE IT GO GotoX , GotoY	(Or delete the code before and leave it like this)
+		MazeSearchable MS = new MazeSearchable(maze, maze.getCell(y, x), maze.getCell(maze.getRows()-1, maze.getCols()-1), Diagonals, 10, 15); //new MazeSearchable(maze, false);	
 		CommonSearcher se=new AstarSearcher(new MazeAirDistance());
 		Solution Sol=se.search(MS);
-		//Add toString() In Solution - Almost Exactly as Print()
-		String last = Sol.toString();
+
+		String last[] = Sol.toString().split("->");
+
 		//Next step(clue) is:
-		System.out.println(last.charAt(0)+last.charAt(2));
+		if(good){		//if good=false we have finished, next iteration will be error without this if.
+			System.out.println(last[0]);
+			int Cluex=Character.getNumericValue(last[1].charAt(0));
+			int Cluey=Character.getNumericValue(last[1].charAt(2));
+			System.out.println(maze.getCols());
+			if(Cluex==maze.getCols()-1 && Cluey==maze.getCols()-1)
+				good=false;
+			if(Cluex!=maze.getCols() && Cluex!=maze.getCols())
+				MazeDisplayer.mark(Cluey, Cluex);		//Swap because in the solver it set as col,row and here its x,y
+			System.out.println(good);
+			System.out.println(last[0]);
+			System.out.println("next x is: "+Cluex+" next y is: "+Cluey);
+		}
 	}
 	
 	public void displayMaze(algorithms.mazeGenerators.Maze m) {
@@ -477,9 +479,7 @@ public class MazeViewWidget extends Canvas {
 	}
 	public void exit(){
 		ViewGUI.exit();
-		//if() animation set then..
-		if(MazeDisplayer.getCharacter().isAnimation())
-			MazeDisplayer.stop();/// BAR ================================================= This stops the therad for the animaton, this line ok?
+		MazeDisplayer.stop();/// BAR ================================================= This stops the therad for the animaton, this line ok?
 	}
 	public void start() {
 		ViewGUI.start();

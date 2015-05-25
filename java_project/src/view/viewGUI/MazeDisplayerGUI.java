@@ -23,16 +23,20 @@ public class MazeDisplayerGUI extends Canvas {
 	Maze maze;
 	GC lastPaint=null;
 	CommonCharacter character;
+	int wallWidth = 0, wallHeight = 0;
+	
+	int solFlag=0;	//For the solution
+	RecCharacter Sol;
+	int Sx,Sy;
 	
 	int Oldx=0,Oldy=0;	//For saving data when changing the Character
 	
-	RGB Color;
+	RGB Color;	//For changing the character
 	String path;
-	int wallWidth = 0, wallHeight = 0;
 	
 	boolean Moved=false;
 	
-	int frame;
+	int frame;		//For animation
 	TimerTask myTask;
 	Timer timer;
 	
@@ -85,6 +89,8 @@ public class MazeDisplayerGUI extends Canvas {
 							arg0.gc.fillRectangle( (((j+1)*5)) *wallWidth, (i+(1+i*4)) *wallHeight,wallWidth,wallHeight*4);
 					}
 				character.paint(arg0, wallWidth*4, wallHeight*4);
+				if(solFlag==1);
+					//Sol.paint(arg0, Sx, Sy);
 			}
 		});
 		
@@ -92,6 +98,13 @@ public class MazeDisplayerGUI extends Canvas {
 	private void setCharacter(int x,int y){
 		if(charOp==1){
 			character=new BallCharacter(x, y);
+			if(Color!=null)
+				character.setColor(Color);
+			character.setAnimation(false);
+		}
+		if(charOp==777){	//777 is for displaying a solution
+			character=new RecCharacter(x, y);
+			System.out.println("Created the rec");
 			if(Color!=null)
 				character.setColor(Color);
 			character.setAnimation(false);
@@ -137,6 +150,18 @@ public class MazeDisplayerGUI extends Canvas {
 		else
 			startAnimation(character.getLoader().data[frame].delayTime);
 	}
+	}
+	protected void mark(int x,int y){
+		if(solFlag==true){
+			CommonCharacter Oldchar = character;
+			charOp=777;
+			setCharacter(x, y);
+			solFlag=1;
+			System.out.println("Marked it up");
+			redraw();
+		}
+
+		//solFlag=0;
 	}
 	
 	/*private void RestorePos(){	//Restoring old position

@@ -3,9 +3,9 @@ package view.viewGUI;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.graphics.Color;
 
-public class BallCharacter extends CommonCharacter{
+public class RecCharacter extends CommonCharacter{
 	
-	 public BallCharacter(int realx, int realy) {
+	 public RecCharacter(int realx, int realy) {
 		super(realx, realy);
 	}
 
@@ -14,7 +14,8 @@ public class BallCharacter extends CommonCharacter{
 			e.gc.setBackground(new Color(null, col.red,col.green,col.blue));
 		else
 			e.gc.setBackground(new Color(null,255,0,0));
-		e.gc.fillOval((realx*5+1)*Width/4, (realy*5+1)*Hight/4, Width, Hight);
+		//e.gc.fillOval((realx*5+1)*Width/4, (realy*5+1)*Hight/4, Width, Hight);
+		e.gc.fillRectangle((realx*5+1)*Width/4, (realy*5+1)*Hight/4, Width, Hight);
 		updated=false;
 	   }
 	
