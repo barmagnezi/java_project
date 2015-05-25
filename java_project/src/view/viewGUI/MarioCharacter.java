@@ -25,6 +25,19 @@ public class MarioCharacter extends CommonCharacter{
 			Image image = new Image(e.display,"resources/images/MarioChar.png");
 			Image scaled = new Image(null, image.getImageData().scaledTo(Width,Hight));
 			e.gc.drawImage(scaled, (realx*5+1)*Width/4, (realy*5+1)*Hight/4);
+			
+			//Tests:
+			/*Image ideaImage = new Image(e.display,"resources/images/MarioChar.png");
+		    Label label = new Label(e.display.getShells()[0],SWT.NONE);
+		    label.setImage(ideaImage);
+		    Canvas canvas = new Canvas(shell,SWT.NO_REDRAW_RESIZE);
+		    canvas.addPaintListener(new PaintListener() {
+		        public void paintControl(PaintEvent e) {
+		         e.gc.drawImage(ideaImage,0,0);
+		        }
+		    });*/
+
+
 
 			updated=false;
 		   }

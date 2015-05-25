@@ -21,7 +21,7 @@ public class MazeDisplayerGUI extends Canvas {
 	CommonCharacter character;
 	int wallWidth = 0, wallHeight = 0;
 	
-	public MazeDisplayerGUI(Composite parent, int style,String scrBackground,String scrwalls) {
+	public MazeDisplayerGUI(Composite parent, int style,String scrBackground,String scrwalls, String CharStr) {
 		super(parent, style);
 		this.scrBackground=scrBackground;
 		this.scrWalls=scrwalls;
@@ -44,7 +44,7 @@ public class MazeDisplayerGUI extends Canvas {
 				arg0.gc.setBackgroundPattern(new Pattern(null, new Image(null, scrWalls)));
 				wallWidth=getSize().x/width;
 				wallHeight=getSize().y/height;
-				
+
 				if(character==null){
 					character=new MarioCharacter(0, 0);
 					/*if(charOp==1)
@@ -84,13 +84,15 @@ public class MazeDisplayerGUI extends Canvas {
 			showMaze(maze);
 	}
 	
-	public void showMaze(Maze m){
-		   if(m!=maze){
-			   this.character=null;
-			   maze=m;
-		   }
-		   setBackgroundImage(new Image(null, scrBackground));
-		   redraw();
+	public void showMaze(Maze m,boolean flag){
+		if(flag==true){
+			if(m!=maze){
+				   this.character=null;
+				   maze=m;
+			   }
+			   setBackgroundImage(new Image(null, scrBackground));
+			   redraw();
+		}
 	}
 	
 	public void CharMoved(int pos){			//1 for Right, 2 for Up, 3 for Left, 4 for Down
