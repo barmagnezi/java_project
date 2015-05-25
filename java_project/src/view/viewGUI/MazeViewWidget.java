@@ -9,7 +9,6 @@ import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.layout.GridData;
@@ -22,8 +21,6 @@ import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.MessageBox;
-import org.eclipse.swt.widgets.Shell;
-
 import algorithms.demo.MazeSearchable;
 import algorithms.mazeGenerators.Maze;
 import algorithms.search.CommonSearcher;
@@ -31,7 +28,7 @@ import algorithms.search.Solution;
 import algorithms.search.aStar.AstarSearcher;
 import algorithms.search.aStar.MazeAirDistance;
 import view.View;
-import view.viewGUI.GameWidget.OpenMaze;
+import view.viewGUI.GameWidget.SelectAnim;
 import view.viewGUI.GameWidget.SelectPic;
 
 public class MazeViewWidget extends Canvas {
@@ -53,6 +50,9 @@ public class MazeViewWidget extends Canvas {
 	Button[] CharactersButtons;
 	Group GroupBackgroundMaze;
 	Button[] BackgroundsButtons;
+	
+	String path;
+	int Op;
 	
 	public void setProperties(String path){
 		ViewGUI.setproperties(path);
@@ -84,7 +84,7 @@ public class MazeViewWidget extends Canvas {
 					@Override
 					public void run() {
 						System.out.println("MazeDisplayer.showMaze(maze,true);");
-						MazeDisplayer.showMaze(maze,true);
+						MazeDisplayer.Startover(maze);
 						MazeDisplayer.setFocus();
 					}
 				});
@@ -92,7 +92,7 @@ public class MazeViewWidget extends Canvas {
 			@Override
 			public void widgetDefaultSelected(SelectionEvent arg0) {}
 		});
-		Bstartover.addFocusListener(new FocusListener() {
+		/*Bstartover.addFocusListener(new FocusListener() {
 			@Override
 			public void focusLost(FocusEvent arg0) {
 				MazeDisplayer.setFocus();
@@ -102,7 +102,7 @@ public class MazeViewWidget extends Canvas {
 			public void focusGained(FocusEvent arg0) {
 				MazeDisplayer.setFocus();
 			}
-		});
+		});*/
 		
 		BshowSolution=new Button(this, SWT.PUSH);
 		BshowSolution.setLayoutData(new GridData(SWT.LEFT, SWT.TOP, false, false, 2, 1));
@@ -179,7 +179,6 @@ public class MazeViewWidget extends Canvas {
 		CharactersButtons[0].addSelectionListener(new SelectionListener() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				System.out.println("111111111");
 				if(CharactersButtons[0].getSelection()==true){
 			        ColorDialog cd = new ColorDialog(getShell());
 			        cd.setText("ColorDialog Demo");
@@ -198,12 +197,13 @@ public class MazeViewWidget extends Canvas {
 		CharactersButtons[1].addSelectionListener(new SelectionListener() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				//MazeDisplayer.changeBackDesign("resources/images/desert.jpg","resources/images/brick_texture.jpg");
-				//GroupBackgroundMaze.setBackgroundImage(new Image(null, "resources/images/desert.jpg"));
 				if(CharactersButtons[1].getSelection()==true){
-					String path = null;
-					new SelectPic("Select a picture",400,400, getDisplay(),path).run();
-					System.out.println(path);
+					SelectPic SP= new SelectPic("Select a picture",350,250, getDisplay(),MazeDisplayer.getCharOp());
+					SP.run();
+					if(SP.getStr()==null){
+						MazeDisplayer.changeCharacter(SP.getChoise(), null, null);
+					}else
+						MazeDisplayer.changeCharacter(1001, null, SP.getStr());
 					MazeDisplayer.setFocus();
 				}
 			}
@@ -212,6 +212,49 @@ public class MazeViewWidget extends Canvas {
 			public void widgetDefaultSelected(SelectionEvent arg0) {
 			}
 		});
+		
+		CharactersButtons[2].setText("Animation");
+		/*int before1 = 0;
+		int coi;
+		if(CharactersButtons[0].getSelection()==true)
+			before1=0;
+		if(CharactersButtons[1].getSelection()==true)
+			before1=1;
+		if(CharactersButtons[2].getSelection()==true)
+			before1=2;
+			
+			if Clicked No on save setting ==> SP.getChoise()==-2.		
+		CharactersButtons[0].setSelection(false);
+		CharactersButtons[0].setSelection(false);
+		CharactersButtons[0].setSelection(false);
+		if(before1==0)
+			CharactersButtons[0].setSelection(true);
+		if(before1==1)
+			CharactersButtons[1].setSelection(true);
+		if(before1==1)
+			CharactersButtons[2].setSelection(true);
+		*/
+		
+		CharactersButtons[2].addSelectionListener(new SelectionListener() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				if(CharactersButtons[2].getSelection()==true){
+					SelectAnim SP= new SelectAnim("Select an animation",350,350, getDisplay(),MazeDisplayer.getCharOp());
+					SP.run();
+					//System.out.println(SP.getStr());
+					//System.out.println(SP.getChoise());
+					if(SP.getStr()==null){
+						MazeDisplayer.changeCharacter(SP.getChoise(), null, null);
+					}else
+						MazeDisplayer.changeCharacter(1002, null, SP.getStr());
+					MazeDisplayer.setFocus();
+				}
+			}
+			@Override
+			public void widgetDefaultSelected(SelectionEvent arg0) {
+			}
+		});
+		
 		//														=== BackGround Settings ===
 		GroupBackgroundMaze=new Group(this, SWT.SHADOW_OUT);
 		GroupBackgroundMaze.setText("background");
@@ -340,7 +383,10 @@ public class MazeViewWidget extends Canvas {
 	  						FileDialog fd=new FileDialog(getShell(),SWT.OPEN);
 	  						fd.setText("open");
 	  						fd.setFilterPath("");
-	  						String[] filterExt = { "*.xml"};
+	  					  String[] names = {
+	  					      "Microsoft Excel Spreadsheet Files (*.xls)", "All Files (*.*)"};
+	  						String[] filterExt = { "*.xml", "*.*"};
+	  						fd.setFilterNames(names);
 	  						fd.setFilterExtensions(filterExt);
 	  						if(fd.open()==null)
 	  							return;
@@ -432,14 +478,15 @@ public class MazeViewWidget extends Canvas {
 	public void exit(){
 		ViewGUI.exit();
 		//if() animation set then..
-		MazeDisplayer.stop();					/// BAR ================================================= This stops the therad for the animaton, this line ok?
+		if(MazeDisplayer.getCharacter().isAnimation())
+			MazeDisplayer.stop();/// BAR ================================================= This stops the therad for the animaton, this line ok?
 	}
 	public void start() {
 		ViewGUI.start();
 	}
 	public boolean checkMotion(int CurrentX,int CurrentY,int nextX,int nextY){
 		boolean flag=true;
-		System.out.println();
+		//System.out.println();
 		if(nextX<0 || nextY<0)
 			return false;
 		//for Diagonals
