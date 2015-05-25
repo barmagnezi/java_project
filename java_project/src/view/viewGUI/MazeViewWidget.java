@@ -22,8 +22,10 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.MessageBox;
 
 import algorithms.demo.MazeSearchable;
+import algorithms.mazeGenerators.Cell;
 import algorithms.mazeGenerators.Maze;
 import algorithms.search.CommonSearcher;
+import algorithms.search.Searchable;
 import algorithms.search.Solution;
 import algorithms.search.State;
 import algorithms.search.aStar.AstarSearcher;
@@ -32,9 +34,11 @@ import view.View;
 
 public class MazeViewWidget extends Canvas {
 
-	private String mazeName="Not loaded maze";
-	private int steps=0;
+	String mazeName="Not loaded maze";
+	Maze maze=null;
+	int steps=0;
 	ViewGUI ViewGUI=new ViewGUI(this);
+	boolean Diagonals =false; //!!!!!need to know by the presenter
 	
 	Label LBmazeName;
 	Label LHelp;
@@ -132,7 +136,7 @@ public class MazeViewWidget extends Canvas {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
 				MazeDisplayer.setFocus();
-				ViewGUI.getclue(MazeDisplayer.getCharacter().getX(), MazeDisplayer.getCharacter().getY());
+				ViewGUI.getclue(MazeDisplayer.getCharacter().getRealx(), MazeDisplayer.getCharacter().getRealy());
 			}
 			
 			@Override
@@ -225,18 +229,31 @@ public class MazeViewWidget extends Canvas {
 			
 			@Override
 			public void keyPressed(KeyEvent arg0) {
-				if(arg0.keyCode==16777220)
+				if(arg0.keyCode==16777220){		//right
+					int currentX=MazeDisplayer.getCharacter().getRealx();
+					int currentY=MazeDisplayer.getCharacter().getRealy();
+					System.out.println(checkMotion(currentX, currentY, currentX+1, currentY));
 					MazeDisplayer.CharMoved(1);
-					//System.out.println("right");			
-				if(arg0.keyCode==16777219)
+				}			
+				if(arg0.keyCode==16777219)			//left
 					MazeDisplayer.CharMoved(3);
 					//System.out.println("left");
-				if(arg0.keyCode==16777217)
+				if(arg0.keyCode==16777217)			//up
 					MazeDisplayer.CharMoved(2);
 					//System.out.println("up");
-				if(arg0.keyCode==16777218)
+				if(arg0.keyCode==16777218)			//down
 					MazeDisplayer.CharMoved(4);
 					//System.out.println("down");
+				//diag
+				if(arg0.character=='1')  			//down-left			
+					MazeDisplayer.CharMoved(5);
+				if(arg0.character=='2') 			//down-right
+					MazeDisplayer.CharMoved(6);
+				if(arg0.character=='4') 			//up-left
+					MazeDisplayer.CharMoved(7);
+				if(arg0.character=='5') 			//up-right
+					MazeDisplayer.CharMoved(8);
+				
 			}
 		});
 
@@ -275,7 +292,6 @@ public class MazeViewWidget extends Canvas {
 	}
 	
 	public void generateMaze(String name,int rows,int cols){
-		System.out.println("generateMaze");
 		ViewGUI.generateMaze(name,rows,cols);
 	}
 	
@@ -289,8 +305,8 @@ public class MazeViewWidget extends Canvas {
 	
 	public void clue(Maze maze){
 		System.out.println("clue");
-		int x=MazeDisplayer.character.getX();
-		int y=MazeDisplayer.character.getY();
+		int x=MazeDisplayer.character.getRealx();
+		int y=MazeDisplayer.character.getRealy();
 		String sol = "0x0->0x1->0x2.....->8x7->7x7->7x8->7x9->8x9->9x9";	//solve(maze);
 		String[] sols = sol.split("->");
 		double min=0;
@@ -315,11 +331,7 @@ public class MazeViewWidget extends Canvas {
 	}
 	
 	public void displayMaze(algorithms.mazeGenerators.Maze m) {
-		/*System.out.println("MazeDisplayer");
-		MazeDisplayer=new MazeDisplayerGUI(this, SWT.BORDER_SOLID,"" , "");
-		for(Button b:BackgroundsButtons)
-			if(b.isEnabled())
-				b.notifyListeners(SWT.Selection, new Event());*/
+		maze=m;
 		MazeDisplayer.showMaze(m);
 	}
 	
@@ -352,6 +364,17 @@ public class MazeViewWidget extends Canvas {
 	}
 	public void start() {
 		ViewGUI.start();
+	}
+	public boolean checkMotion(int CurrentX,int CurrentY,int nextX,int nextY){
+		MazeSearchable smaze=new MazeSearchable(maze, Diagonals);
+		System.out.println(CurrentX+","+CurrentY+"->"+smaze.CellToState(maze.getCell(nextX, nextY)).getState());
+		for(State i:smaze.getAllPossibleStates(smaze.CellToState(maze.getCell(CurrentX, CurrentY)))){
+			System.out.println(i.getState());
+			if(i.getState().equals(smaze.CellToState(maze.getCell(nextX, nextY)).getState()))
+				System.out.println(true);
+		}
+			
+		return false;
 	}
 	
 
