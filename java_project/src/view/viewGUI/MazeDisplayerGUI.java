@@ -20,7 +20,7 @@ public class MazeDisplayerGUI extends Canvas {
 	CommonCharacter character;
 	int wallWidth = 0, wallHeight = 0;
 	
-	public MazeDisplayerGUI(Composite parent, int style,String scrBackground,String scrwalls) {
+	public MazeDisplayerGUI(Composite parent, int style,String scrBackground,String scrwalls, int charOp) {
 		super(parent, style);
 		this.scrBackground=scrBackground;
 		this.scrWalls=scrwalls;
@@ -44,9 +44,12 @@ public class MazeDisplayerGUI extends Canvas {
 				wallWidth=getSize().x/width;
 				wallHeight=getSize().y/height;
 				
-				if(character==null)
-					character=new MarioCharacter(0, 0);
-					//character=new TheRedBallCharacter(0, 0);
+				if(character==null){
+					if(charOp==1)
+						character=new TheRedBallCharacter(0, 0);
+					if(charOp==2)
+						character=new MarioCharacter(0, 0);
+				}
 				//The Frame
 					//Two rows
 					arg0.gc.fillRectangle(0,0,wallWidth*width,wallHeight);
