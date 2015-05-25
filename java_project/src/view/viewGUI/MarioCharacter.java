@@ -33,7 +33,7 @@ public class MarioCharacter extends CommonCharacter{
 			//e.gc.setBackgroundPattern(new Pattern(null, new Image(null, "resources/images/char1.png")));
 			e.gc.fillOval((realx*5+1)*Width/4, (realy*5+1)*Hight/4, Width, Hight);		// CIRCLE
 			System.out.println("ASADADS"+e.display);
-			Image image = new Image(e.display, getClass().getResourceAsStream("resources/images/MarioChar.png"));
+			Image image = new Image(e.display,"resources/images/MarioChar.png");
 			int width = image.getBounds().width;
 			int height = image.getBounds().height;
 

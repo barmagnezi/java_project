@@ -232,21 +232,35 @@ public class MazeViewWidget extends Canvas {
 				if(arg0.keyCode==16777220){		//right
 					int currentX=MazeDisplayer.getCharacter().getRealx();
 					int currentY=MazeDisplayer.getCharacter().getRealy();
-					System.out.println(checkMotion(currentX, currentY, currentX+1, currentY));
-					MazeDisplayer.CharMoved(1);
+					if(checkMotion(currentX, currentY, currentX+1, currentY))
+						MazeDisplayer.CharMoved(1);
 				}			
-				if(arg0.keyCode==16777219)			//left
-					MazeDisplayer.CharMoved(3);
-					//System.out.println("left");
-				if(arg0.keyCode==16777217)			//up
-					MazeDisplayer.CharMoved(2);
-					//System.out.println("up");
-				if(arg0.keyCode==16777218)			//down
-					MazeDisplayer.CharMoved(4);
-					//System.out.println("down");
+				if(arg0.keyCode==16777219){			//left
+					int currentX=MazeDisplayer.getCharacter().getRealx();
+					int currentY=MazeDisplayer.getCharacter().getRealy();
+					if(checkMotion(currentX, currentY, currentX-1, currentY))
+						MazeDisplayer.CharMoved(3);
+				}
+				if(arg0.keyCode==16777217){		//up
+					int currentX=MazeDisplayer.getCharacter().getRealx();
+					int currentY=MazeDisplayer.getCharacter().getRealy();
+					if(checkMotion(currentX, currentY, currentX, currentY-1))
+						MazeDisplayer.CharMoved(2);
+				}
+				if(arg0.keyCode==16777218){			//down
+					int currentX=MazeDisplayer.getCharacter().getRealx();
+					int currentY=MazeDisplayer.getCharacter().getRealy();
+					if(checkMotion(currentX, currentY, currentX, currentY+1))
+						MazeDisplayer.CharMoved(4);
+				}
 				//diag
-				if(arg0.character=='1')  			//down-left			
-					MazeDisplayer.CharMoved(5);
+				if(arg0.character=='1'){			//down-left		
+					int currentX=MazeDisplayer.getCharacter().getRealx();
+					int currentY=MazeDisplayer.getCharacter().getRealy();
+					if(checkMotion(currentX, currentY, currentX-1, currentY+1))
+						MazeDisplayer.CharMoved(5);
+				}
+					
 				if(arg0.character=='2') 			//down-right
 					MazeDisplayer.CharMoved(6);
 				if(arg0.character=='4') 			//up-left
@@ -366,15 +380,31 @@ public class MazeViewWidget extends Canvas {
 		ViewGUI.start();
 	}
 	public boolean checkMotion(int CurrentX,int CurrentY,int nextX,int nextY){
-		MazeSearchable smaze=new MazeSearchable(maze, Diagonals);
-		System.out.println(CurrentX+","+CurrentY+"->"+smaze.CellToState(maze.getCell(nextX, nextY)).getState());
-		for(State i:smaze.getAllPossibleStates(smaze.CellToState(maze.getCell(CurrentX, CurrentY)))){
-			System.out.println(i.getState());
-			if(i.getState().equals(smaze.CellToState(maze.getCell(nextX, nextY)).getState()))
-				System.out.println(true);
+		boolean flag=true;
+		System.out.println();
+		if(nextX<0 || nextY<0)
+			return false;
+		//for Diagonals
+		if(CurrentX!= nextX&& CurrentY!=nextY){
+			int i=0;
+			if(CurrentX+1==nextX)
+				if(maze.getCell(CurrentY, CurrentX).getRightWall().isExist())
+					i++;
+			if(CurrentX-1==nextX)
+				if(maze.getCell(CurrentY, nextX).getRightWall().isExist())
+					i++;
+			//if(CurrentY+1==nextY)
+				
 		}
-			
-		return false;
+		if(CurrentX+1==nextX)
+			flag=flag&&(!maze.getCell(CurrentY, CurrentX).getRightWall().isExist());
+		if(CurrentX-1==nextX)
+			flag=flag&&(!maze.getCell(nextY, nextX).getRightWall().isExist());
+		if(CurrentY+1==nextY)
+			flag=flag&&(!maze.getCell(CurrentY, CurrentX).getBottomWall().isExist());
+		if(CurrentY-1==nextY)
+			flag=flag&&(!maze.getCell(nextY, nextX).getBottomWall().isExist());
+		return flag;
 	}
 	
 
