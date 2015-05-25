@@ -262,12 +262,24 @@ public class MazeViewWidget extends Canvas {
 						MazeDisplayer.CharMoved(5);
 				}
 					
-				if(arg0.character=='2') 			//down-right
-					MazeDisplayer.CharMoved(6);
-				if(arg0.character=='4') 			//up-left
-					MazeDisplayer.CharMoved(7);
-				if(arg0.character=='5') 			//up-right
-					MazeDisplayer.CharMoved(8);
+				if(arg0.character=='2'){ 			//down-right
+					int currentX=MazeDisplayer.getCharacter().getRealx();
+					int currentY=MazeDisplayer.getCharacter().getRealy();
+					if(checkMotion(currentX, currentY, currentX+1, currentY+1))
+						MazeDisplayer.CharMoved(6);
+				}
+				if(arg0.character=='4'){ 			//up-left
+					int currentX=MazeDisplayer.getCharacter().getRealx();
+					int currentY=MazeDisplayer.getCharacter().getRealy();
+					if(checkMotion(currentX, currentY, currentX-1, currentY-1))
+						MazeDisplayer.CharMoved(7);
+				}
+				if(arg0.character=='5'){ 			//up-right
+					int currentX=MazeDisplayer.getCharacter().getRealx();
+					int currentY=MazeDisplayer.getCharacter().getRealy();
+					if(checkMotion(currentX, currentY, currentX+1, currentY-1))
+						MazeDisplayer.CharMoved(8);
+				}
 				
 			}
 		});
@@ -397,7 +409,7 @@ public class MazeViewWidget extends Canvas {
 			if(CurrentY+1==nextY)
 				if(maze.getCell(CurrentY, CurrentX).getBottomWall().isExist())
 					i++;
-			System.out.println(CurrentY+"=?"+nextY);
+			System.out.println(CurrentX+","+CurrentY);
 			if(CurrentY-1==nextY){maze.getCell(nextY, CurrentX).printRowCol();
 				if(maze.getCell(nextY, CurrentX).getBottomWall().isExist())
 					i++;}
