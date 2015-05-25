@@ -15,12 +15,13 @@ import algorithms.mazeGenerators.Maze;
 public class MazeDisplayerGUI extends Canvas {
 	String scrBackground;
 	String scrWalls;
+	int charOp;
 	Maze maze;
 	GC lastPaint=null;
 	CommonCharacter character;
 	int wallWidth = 0, wallHeight = 0;
 	
-	public MazeDisplayerGUI(Composite parent, int style,String scrBackground,String scrwalls, int charOp) {
+	public MazeDisplayerGUI(Composite parent, int style,String scrBackground,String scrwalls) {
 		super(parent, style);
 		this.scrBackground=scrBackground;
 		this.scrWalls=scrwalls;
