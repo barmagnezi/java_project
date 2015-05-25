@@ -1,17 +1,16 @@
 package view.viewGUI;
 
 
-import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.graphics.ImageLoader;
 import org.eclipse.swt.graphics.Pattern;
+import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 
@@ -25,10 +24,12 @@ public class MazeDisplayerGUI extends Canvas {
 	Maze maze;
 	GC lastPaint=null;
 	CommonCharacter character;
-	CommonAnimation AnimChar;
-	int frame;
+	
+	RGB Color;
+	String path;
 	int wallWidth = 0, wallHeight = 0;
 	
+	int frame;
 	TimerTask myTask;
 	Timer timer;
 	
@@ -37,7 +38,7 @@ public class MazeDisplayerGUI extends Canvas {
 		this.scrBackground=scrBackground;
 		this.scrWalls=scrwalls;
 		setBackgroundImage(new Image(null, "resources/images/mazedisplayerbackground.png"));
-		charOp=4;
+		charOp=1;
 		
 		addPaintListener(new PaintListener() {
 			@Override
@@ -59,19 +60,22 @@ public class MazeDisplayerGUI extends Canvas {
 				wallHeight=getSize().y/height;
 
 				if(character==null){
-					if(charOp==1)
-						character=new TheRedBallCharacter(0, 0);
+					if(charOp==1){
+						character=new BallCharacter(0, 0);
+						if(Color!=null)
+							character.setColor(Color);
+					}
 					if(charOp==2){
 						character=new PicCharacter(0, 0);
 						character.setPath("resources/images/MarioChar.png");
 					}
 					if(charOp==3){
-						character=new MarioAnimation(0, 0);
+						character=new AnimCharacter(0, 0);
 						character.setAnimation(true);
 						character.setLoader("resources/images/marioAnimation.gif");
 					}
 					if(charOp==4){
-						character=new MarioAnimation(0, 0);
+						character=new AnimCharacter(0, 0);
 						character.setAnimation(true);
 						character.setLoader("resources/images/dogAnimation.gif");
 					}
@@ -113,13 +117,13 @@ public class MazeDisplayerGUI extends Canvas {
 			
 			@Override
 			public void run() {
-			
+			if(!isDisposed()){
 			      getDisplay().syncExec(new Runnable() {
 
 			    		@Override
 			    		public void run() {
-			    			if(AnimChar!=null){
-			    				if(frame==AnimChar.getLoader().data.length-1)
+			    			if(character!=null){
+			    				if(frame==character.getLoader().data.length-1)
 			    					frame=0;
 			    				else
 			    					frame++;
@@ -128,7 +132,7 @@ public class MazeDisplayerGUI extends Canvas {
 			    			   redraw();
 			    		}
 			    	 });
-				
+				}
 			}
 		};
 		timer = new Timer();
@@ -144,11 +148,21 @@ public class MazeDisplayerGUI extends Canvas {
 		}
 	}
 	
-	public void changeDesign(String scrBackground,String scrWalls){
+	public void changeBackDesign(String scrBackground,String scrWalls){
 		this.scrBackground=scrBackground;
 		this.scrWalls=scrWalls;
 		if(maze!=null)
 			showMaze(maze, false);
+	}
+	
+	public void changeCharacter(int charOption, RGB nColor, String path){
+		//if(charOption<5 && charOption>0)
+			this.charOp=charOption;
+		if(nColor!=null)
+			this.Color=nColor;
+		if(path!=null)
+			this.path=path;
+		showMaze(maze, true);
 	}
 	
 	public void showMaze(Maze m,boolean resetChar){

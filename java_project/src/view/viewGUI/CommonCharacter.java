@@ -3,8 +3,7 @@ package view.viewGUI;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.ImageLoader;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.graphics.RGB;
 
 
 public abstract class CommonCharacter {
@@ -13,14 +12,16 @@ public abstract class CommonCharacter {
 		super();
 		this.realx = realx;
 		this.realy = realy;
+		this.Animation=false;
 		updated=false;
 	}
 
 	protected int realx;
 	protected int realy;
 	protected boolean Animation;
-	String path;
-	ImageLoader loader = new ImageLoader();
+	protected String path;
+	protected RGB col;
+	protected ImageLoader loader = new ImageLoader();
 	protected boolean updated;
 	
 	abstract public void paint(PaintEvent e,int Width,int Hight);
@@ -70,6 +71,10 @@ public abstract class CommonCharacter {
 
 	public void setPath(String path) {
 		this.path = path;
+	}
+	
+	public void setColor(RGB nCol){
+		this.col=nCol;
 	}
 
 }

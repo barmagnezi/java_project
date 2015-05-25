@@ -9,25 +9,25 @@ import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Canvas;
+import org.eclipse.swt.widgets.ColorDialog;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.MessageBox;
+import org.eclipse.swt.widgets.Shell;
 
 import algorithms.demo.MazeSearchable;
-import algorithms.mazeGenerators.Cell;
 import algorithms.mazeGenerators.Maze;
 import algorithms.search.CommonSearcher;
-import algorithms.search.Searchable;
 import algorithms.search.Solution;
-import algorithms.search.State;
 import algorithms.search.aStar.AstarSearcher;
 import algorithms.search.aStar.MazeAirDistance;
 import view.View;
@@ -175,11 +175,17 @@ public class MazeViewWidget extends Canvas {
 		
 		CharactersButtons[0].setText("Circle");
 		CharactersButtons[0].addSelectionListener(new SelectionListener() {
-			
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				MazeDisplayer.changeDesign("resources/images/grass.png","resources/images/trees.png");
+				//MazeDisplayer.changeBackDesign("resources/images/grass.png","resources/images/trees.png");
 				//GroupBackgroundMaze.setBackgroundImage(new Image(null, "resources/images/grass.png"));
+		        ColorDialog cd = new ColorDialog(getShell());
+		        cd.setText("ColorDialog Demo");
+		        cd.setRGB(new RGB(255, 255, 255));
+		        RGB col = cd.open();
+		        System.out.println(col);
+		        System.out.println(col.red+col.green+col.blue);
+		        MazeDisplayer.changeCharacter(1, col, null);
 			}
 			
 			@Override
@@ -201,7 +207,7 @@ public class MazeViewWidget extends Canvas {
 			
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				MazeDisplayer.changeDesign("resources/images/grass.png","resources/images/trees.png");
+				MazeDisplayer.changeBackDesign("resources/images/grass.png","resources/images/trees.png");
 				GroupBackgroundMaze.setBackgroundImage(new Image(null, "resources/images/grass.png"));
 			}
 			
@@ -214,7 +220,7 @@ public class MazeViewWidget extends Canvas {
 			
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				MazeDisplayer.changeDesign("resources/images/desert.jpg","resources/images/brick_texture.jpg");
+				MazeDisplayer.changeBackDesign("resources/images/desert.jpg","resources/images/brick_texture.jpg");
 				GroupBackgroundMaze.setBackgroundImage(new Image(null, "resources/images/desert.jpg"));
 			}
 			
@@ -227,7 +233,7 @@ public class MazeViewWidget extends Canvas {
 			
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				MazeDisplayer.changeDesign("resources/images/white.png","resources/images/black.png");
+				MazeDisplayer.changeBackDesign("resources/images/white.png","resources/images/black.png");
 				GroupBackgroundMaze.setBackgroundImage(new Image(null, "resources/images/white.png"));
 			}
 			
