@@ -7,9 +7,9 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 
 
-public abstract class CommonCharacter {
+public abstract class CommonAnimation {
 	
-	public CommonCharacter(int realx, int realy) {
+	public CommonAnimation(int realx, int realy) {
 		super();
 		this.realx = realx;
 		this.realy = realy;
@@ -18,12 +18,11 @@ public abstract class CommonCharacter {
 
 	protected int realx;
 	protected int realy;
-	protected boolean Animation;
-	String path;
-	ImageLoader loader = new ImageLoader();
 	protected boolean updated;
+	protected ImageLoader loader = new ImageLoader();
+
 	
-	abstract public void paint(PaintEvent e,int Width,int Hight);
+	abstract public void paint(PaintEvent e,int Width,int Hight, int frame);
 	
 	public boolean isMoved(){
 		return this.updated;
@@ -46,30 +45,13 @@ public abstract class CommonCharacter {
 		this.realy = realy;
 		this.updated=true;
 	}
-	public boolean isAnimation() {
-		return Animation;
-	}
-	public void setAnimation(boolean animation) {
-		Animation = animation;
-	}
+	
 	public ImageLoader getLoader() {
 		return loader;
 	}
+
 	public void setLoader(ImageLoader loader) {
 		this.loader = loader;
-	}
-	public void setLoader(String str) {
-    	this.loader = new ImageLoader();
-    	loader.load(str);
-    	loader.repeatCount=-1;
-	}
-
-	public String getPath() {
-		return path;
-	}
-
-	public void setPath(String path) {
-		this.path = path;
 	}
 
 }

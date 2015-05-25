@@ -158,7 +158,9 @@ public class MazeViewWidget extends Canvas {
 		
 		MazeDisplayer=new MazeDisplayerGUI(this, SWT.BORDER_SOLID,"resources/images/grass.png","resources/images/trees.png");
 		MazeDisplayer.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
-		
+		//if() animation set..
+		MazeDisplayer.start();
+		//														=== Character Settings ===
 		GroupCharacters=new Group(this, SWT.SHADOW_OUT);
 		GroupCharacters.setText("Characters");
 		GroupCharacters.setLayout(new GridLayout(3, true));
@@ -170,6 +172,21 @@ public class MazeViewWidget extends Canvas {
 			CharactersButtons[i].setText("option " + (i + 1));
 		}
 		CharactersButtons[0].setSelection(true);
+		
+		CharactersButtons[0].setText("Circle");
+		CharactersButtons[0].addSelectionListener(new SelectionListener() {
+			
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				MazeDisplayer.changeDesign("resources/images/grass.png","resources/images/trees.png");
+				//GroupBackgroundMaze.setBackgroundImage(new Image(null, "resources/images/grass.png"));
+			}
+			
+			@Override
+			public void widgetDefaultSelected(SelectionEvent arg0) {
+			}
+		});
+		//														=== BackGround Settings ===
 		GroupBackgroundMaze=new Group(this, SWT.SHADOW_OUT);
 		GroupBackgroundMaze.setText("background");
 		GroupBackgroundMaze.setLayout(new GridLayout(3, true));
@@ -388,6 +405,8 @@ public class MazeViewWidget extends Canvas {
 	}
 	public void exit(){
 		ViewGUI.exit();
+		//if() animation set then..
+		MazeDisplayer.stop();					/// BAR ================================================= This stops the therad for the animaton, this line ok?
 	}
 	public void start() {
 		ViewGUI.start();
