@@ -84,8 +84,8 @@ public class MazeDisplayerGUI extends Canvas {
 			showMaze(maze);
 	}
 	
-	public void showMaze(Maze m,boolean flag){
-		if(flag==true){
+	public void showMaze(Maze m,boolean resetChar){
+		if(resetChar==true){
 			if(m!=maze){
 				   this.character=null;
 				   maze=m;
