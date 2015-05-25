@@ -22,12 +22,12 @@ public class MarioCharacter extends CommonCharacter{
 			e.gc.setForeground(new Color(null,255,0,0));
 			e.gc.setBackground(new Color(null,255,0,0));
 
-			//Image image = new Image(e.display,"resources/images/MarioChar.png");
-			//Image scaled = new Image(null, image.getImageData().scaledTo(Width,Hight));
-			//e.gc.drawImage(scaled, (realx*5+1)*Width/4, (realy*5+1)*Hight/4);
+			Image image = new Image(e.display,"resources/images/MarioChar.png");
+			Image scaled = new Image(null, image.getImageData().scaledTo(Width,Hight));
+			e.gc.drawImage(scaled, (realx*5+1)*Width/4, (realy*5+1)*Hight/4);
 			
 			//Tests:
-			Image ideaImage = new Image(e.display,"resources/images/MarioChar.png");
+			/*Image ideaImage = new Image(e.display,"resources/images/MarioChar.png");
 		    Label label = new Label(e.display.getShells()[0],SWT.NONE);
 		    label.setImage(ideaImage);
 		    Canvas canvas = new Canvas(e.display.getShells()[0],SWT.NO_REDRAW_RESIZE);
@@ -35,7 +35,7 @@ public class MarioCharacter extends CommonCharacter{
 		        public void paintControl(PaintEvent e) {
 		         e.gc.drawImage(ideaImage,0,0);
 		        }
-		    });
+		    });*/
 
 
 
