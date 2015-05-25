@@ -13,19 +13,11 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 
 public class MarioCharacter extends CommonCharacter{
-	Composite parent;
-	Display disp;
 	
 	 public MarioCharacter(int realx, int realy) {
 		super(realx, realy);
 	}
 	 
-	public void setPerent(Composite pap){
-		this.parent=pap;
-	}
-	public void setDisplay(Display D){
-		this.disp=D;
-	}
 	public void paint(PaintEvent e,int Width,int Hight){
 			e.gc.setForeground(new Color(null,255,0,0));
 			e.gc.setBackground(new Color(null,255,0,0));
@@ -34,10 +26,9 @@ public class MarioCharacter extends CommonCharacter{
 			e.gc.fillOval((realx*5+1)*Width/4, (realy*5+1)*Hight/4, Width, Hight);		// CIRCLE
 			System.out.println("ASADADS"+e.display);
 			Image image = new Image(e.display,"resources/images/MarioChar.png");
-			int width = image.getBounds().width;
-			int height = image.getBounds().height;
 
-			//Image scaled = new Image(null, image.getImageData().scaledTo((int)(width*0.5),(int)(height*0.5)));
+			Image scaled = new Image(null, image.getImageData().scaledTo((int)((realx*5+1)*Width/4),(int)((realx*5+1)*Hight/4)));
+			e.gc.drawImage(scaled, Width, Hight);
 			//e.gc.drawImage(new Image(null, "resources/images/MarioChar.gif"),Width,Hight);
 			/*Image ideaImage = new Image(parent, getClass().getResourceAsStream("MarioChar.gif"));
 		    Label label = new Label(parent ,SWT.NONE);

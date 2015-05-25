@@ -43,7 +43,5 @@ public abstract class CommonCharacter {
 		this.realy = realy;
 		this.updated=true;
 	}
-	abstract public void setPerent(Composite pap);
-	abstract public void setDisplay(Display display);
 
 }

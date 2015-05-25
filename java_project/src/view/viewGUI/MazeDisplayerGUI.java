@@ -47,8 +47,6 @@ public class MazeDisplayerGUI extends Canvas {
 				if(character==null)
 					character=new MarioCharacter(0, 0);
 					//character=new TheRedBallCharacter(0, 0);
-				character.setDisplay(arg0.display);
-				character.setPerent(getParent());
 				//The Frame
 					//Two rows
 					arg0.gc.fillRectangle(0,0,wallWidth*width,wallHeight);
