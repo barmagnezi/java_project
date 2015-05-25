@@ -21,7 +21,7 @@ public class MazeDisplayerGUI extends Canvas {
 	CommonCharacter character;
 	int wallWidth = 0, wallHeight = 0;
 	
-	public MazeDisplayerGUI(Composite parent, int style,String scrBackground,String scrwalls, String CharStr) {
+	public MazeDisplayerGUI(Composite parent, int style,String scrBackground,String scrwalls) {
 		super(parent, style);
 		this.scrBackground=scrBackground;
 		this.scrWalls=scrwalls;
@@ -81,7 +81,7 @@ public class MazeDisplayerGUI extends Canvas {
 		this.scrBackground=scrBackground;
 		this.scrWalls=scrWalls;
 		if(maze!=null)
-			showMaze(maze);
+			showMaze(maze, false);
 	}
 	
 	public void showMaze(Maze m,boolean resetChar){
