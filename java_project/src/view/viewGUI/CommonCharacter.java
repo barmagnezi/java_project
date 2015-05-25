@@ -2,6 +2,8 @@ package view.viewGUI;
 
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 
 
 public abstract class CommonCharacter {
@@ -41,4 +43,7 @@ public abstract class CommonCharacter {
 		this.realy = realy;
 		this.updated=true;
 	}
+	abstract public void setPerent(Composite pap);
+	abstract public void setDisplay(Display display);
+
 }
