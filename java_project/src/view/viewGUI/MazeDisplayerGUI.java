@@ -25,11 +25,9 @@ public class MazeDisplayerGUI extends Canvas {
 	CommonCharacter character;
 	int wallWidth = 0, wallHeight = 0;
 	
-	int solFlag=0;	//For the solution
-	RecCharacter Sol;
-	int Sx,Sy;
-	
 	int Oldx=0,Oldy=0;	//For saving data when changing the Character
+	
+	boolean solveFlag=false;
 	
 	RGB Color;	//For changing the character
 	String path;
@@ -49,7 +47,7 @@ public class MazeDisplayerGUI extends Canvas {
 		
 		addPaintListener(new PaintListener() {
 			@Override
-			public void paintControl(PaintEvent arg0) {
+			synchronized public void paintControl(PaintEvent arg0) {
 				if(maze==null)
 					return;
 				/*if(character!=null && character.isMoved()){
@@ -88,9 +86,13 @@ public class MazeDisplayerGUI extends Canvas {
 						if(c.getRightWall().isExist())
 							arg0.gc.fillRectangle( (((j+1)*5)) *wallWidth, (i+(1+i*4)) *wallHeight,wallWidth,wallHeight*4);
 					}
-				character.paint(arg0, wallWidth*4, wallHeight*4);
-				if(solFlag==1);
-					//Sol.paint(arg0, Sx, Sy);
+				
+				if(solveFlag==true){
+					character.solveStep(arg0, wallWidth*4, wallHeight*4);
+					solveFlag=false;
+				}
+				else
+					character.paint(arg0, wallWidth*4, wallHeight*4);
 			}
 		});
 		
@@ -98,13 +100,6 @@ public class MazeDisplayerGUI extends Canvas {
 	private void setCharacter(int x,int y){
 		if(charOp==1){
 			character=new BallCharacter(x, y);
-			if(Color!=null)
-				character.setColor(Color);
-			character.setAnimation(false);
-		}
-		if(charOp==777){	//777 is for displaying a solution
-			character=new RecCharacter(x, y);
-			System.out.println("Created the rec");
 			if(Color!=null)
 				character.setColor(Color);
 			character.setAnimation(false);
@@ -152,16 +147,14 @@ public class MazeDisplayerGUI extends Canvas {
 	}
 	}
 	protected void mark(int x,int y){
-		if(solFlag==true){
-			CommonCharacter Oldchar = character;
-			charOp=777;
-			setCharacter(x, y);
-			solFlag=1;
-			System.out.println("Marked it up");
+		character.setRealx(x);
+		character.setRealy(y);
+		solveFlag=true;
+		synchronized(character){
 			redraw();
+			character.notify();
 		}
 
-		//solFlag=0;
 	}
 	
 	/*private void RestorePos(){	//Restoring old position

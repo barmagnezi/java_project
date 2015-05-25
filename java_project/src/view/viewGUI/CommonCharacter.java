@@ -1,6 +1,9 @@
 package view.viewGUI;
 
+import java.util.Random;
+
 import org.eclipse.swt.events.PaintEvent;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.ImageLoader;
 import org.eclipse.swt.graphics.RGB;
 
@@ -12,6 +15,7 @@ public abstract class CommonCharacter {
 		this.realx = realx;
 		this.realy = realy;
 		this.Animation=false;
+		this.solutionStep=false;
 		updated=false;
 	}
 
@@ -22,8 +26,26 @@ public abstract class CommonCharacter {
 	protected RGB col;
 	protected ImageLoader loader = new ImageLoader();
 	protected boolean updated;
+	protected boolean solutionStep;
 	
 	abstract public void paint(PaintEvent e,int Width,int Hight);
+	
+	protected void solveStep(PaintEvent e,int Width,int Hight){
+		Random rand = new Random();
+		for(int i=0;i<7;i++){
+			//http://stackoverflow.com/questions/4246351/creating-random-colour-in-java
+			int R = (int)(Math.random()*256);
+			int G = (int)(Math.random()*256);
+			int B= (int)(Math.random()*256);
+			Color color = new Color(null, R, G, B); //random color, but can be bright or dull
+			e.gc.setBackground(color);
+			//Wait here for 100 milisec..
+		}
+		//e.gc.setBackground(new Color(null,255,0,0));
+		e.gc.fillRectangle((realx*5+1)*Width/4, (realy*5+1)*Hight/4, Width, Hight);
+		updated=false;
+		
+	}
 	
 	public boolean isMoved(){
 		return this.updated;
