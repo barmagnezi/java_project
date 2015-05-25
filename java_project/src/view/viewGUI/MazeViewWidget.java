@@ -78,10 +78,10 @@ public class MazeViewWidget extends Canvas {
 		Bstartover.addSelectionListener(new SelectionListener() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				getDisplay().syncExec(new Runnable() {
+				getParent().getDisplay().syncExec(new Runnable() {
 					@Override
 					public void run() {
-						
+						System.out.println("MazeDisplayer.showMaze(maze,true);");
 						MazeDisplayer.showMaze(maze,true);
 						MazeDisplayer.setFocus();
 					}
