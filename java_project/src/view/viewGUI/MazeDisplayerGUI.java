@@ -86,13 +86,15 @@ public class MazeDisplayerGUI extends Canvas {
 	
 	public void showMaze(Maze m,boolean resetChar){
 		if(resetChar==true){
-			if(m!=maze){
-				   this.character=null;
-				   maze=m;
-			   }
-			   setBackgroundImage(new Image(null, scrBackground));
-			   redraw();
+			this.character=null;
 		}
+		if(m!=maze){
+			this.character=null;
+			maze=m;
+		}
+		setBackgroundImage(new Image(null, scrBackground));
+		redraw();
+
 	}
 	
 	public void CharMoved(int pos){			//1 for Right, 2 for Up, 3 for Left, 4 for Down

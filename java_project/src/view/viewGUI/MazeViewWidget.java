@@ -81,7 +81,8 @@ public class MazeViewWidget extends Canvas {
 				getDisplay().syncExec(new Runnable() {
 					@Override
 					public void run() {
-						//new CreateNMaze("New Maze", 300, 150, getDisplay()).run();
+						
+						MazeDisplayer.showMaze(maze,true);
 						MazeDisplayer.setFocus();
 					}
 				});
@@ -346,7 +347,7 @@ public class MazeViewWidget extends Canvas {
 	
 	public void displayMaze(algorithms.mazeGenerators.Maze m) {
 		maze=m;
-		MazeDisplayer.showMaze(m);
+		MazeDisplayer.showMaze(m,false);
 	}
 	
 	public void displaySolution(Solution s) {
@@ -385,7 +386,7 @@ public class MazeViewWidget extends Canvas {
 		if(nextX<0 || nextY<0)
 			return false;
 		//for Diagonals
-		if(CurrentX!= nextX&& CurrentY!=nextY){
+		if(CurrentX!= nextX && CurrentY!=nextY){
 			int i=0;
 			if(CurrentX+1==nextX)
 				if(maze.getCell(CurrentY, CurrentX).getRightWall().isExist())
@@ -393,8 +394,17 @@ public class MazeViewWidget extends Canvas {
 			if(CurrentX-1==nextX)
 				if(maze.getCell(CurrentY, nextX).getRightWall().isExist())
 					i++;
-			//if(CurrentY+1==nextY)
-				
+			if(CurrentY+1==nextY)
+				if(maze.getCell(CurrentY, CurrentX).getBottomWall().isExist())
+					i++;
+			System.out.println(CurrentY+"=?"+nextY);
+			if(CurrentY-1==nextY){maze.getCell(nextY, CurrentX).printRowCol();
+				if(maze.getCell(nextY, CurrentX).getBottomWall().isExist())
+					i++;}
+			System.out.println(i);
+			if(i==2)
+				return false;
+			return true;
 		}
 		if(CurrentX+1==nextX)
 			flag=flag&&(!maze.getCell(CurrentY, CurrentX).getRightWall().isExist());
