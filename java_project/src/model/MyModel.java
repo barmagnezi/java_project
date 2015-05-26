@@ -18,10 +18,12 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
+
 import algorithms.compression.HuffmanReader;
 import algorithms.compression.HuffmanWriter;
 import algorithms.mazeGenerators.Maze;
@@ -31,6 +33,7 @@ import algorithms.search.Solution;
 
 //For temp fix:
 import algorithms.search.BFSSearcher;
+import algorithms.search.State;
 import algorithms.search.aStar.AstarSearcher;
 
 /**
@@ -289,6 +292,7 @@ public class MyModel extends Observable implements Model {
 	public void readHashmapsFromFile()
 	{
 		try {
+			System.out.println(properties.FileDataMazes);
 			BufferedReader in=new BufferedReader(new HuffmanReader(new FileInputStream(properties.FileDataMazes)));
 			//BufferedReader in=new BufferedReader(new InputStreamReader(new FileInputStream(properties.FileDataMazes)));
 			String line;
@@ -355,5 +359,11 @@ public class MyModel extends Observable implements Model {
 		}
 		session.close();
 	}
+	
+	public boolean checkMotion(String Mazename,int CurrentRow,int CurrentCol,int nextRow,int nextCol){
+		MazeSearchableFixed MS=new MazeSearchableFixed(nameMaze.get(Mazename), properties.diag);
+		return MS.checkMotion(CurrentRow, CurrentCol, nextRow, nextCol);
+	}
+
 	
 }	//Class close

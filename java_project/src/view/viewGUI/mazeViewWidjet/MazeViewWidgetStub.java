@@ -1,4 +1,4 @@
-package view.viewGUI;
+package view.viewGUI.mazeViewWidjet;
 
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;

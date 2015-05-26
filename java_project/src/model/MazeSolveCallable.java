@@ -28,7 +28,7 @@ public class MazeSolveCallable implements Callable<Solution>{
 	
 	@Override
 	public Solution call() throws Exception {
-		MazeSearchable MS=new MazeSearchable(m, diag);
+		MazeSearchable MS=new MazeSearchableFixed(m, diag);
 		sol=solver.search(MS);
 		return sol;
 	}

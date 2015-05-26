@@ -59,4 +59,11 @@ public class MyModelStub extends Observable implements Model {
 		
 	}
 
+	@Override
+	public boolean checkMotion(String Mazename, int CurrentRow, int CurrentCol,
+			int nextRow, int nextCol) {
+		System.out.println("checkMotion");
+		return false;
+	}
+
 }

@@ -7,6 +7,7 @@ import org.eclipse.swt.events.HelpEvent;
 import org.eclipse.swt.events.HelpListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -15,7 +16,7 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.MessageBox;
 
 import view.View;
-import view.viewGUI.MazeViewWidget;
+import view.viewGUI.mazeViewWidjet.MazeViewWidget;
 
 public class GameWidget extends BasicWindow {
 	MazeViewWidget gameView;
@@ -31,8 +32,10 @@ public class GameWidget extends BasicWindow {
 	}
 	
 	@Override
-	void initWidgets() {
+	protected void initWidgets() {
 		shell.setLayout(new GridLayout(3,false));
+		shell.setBackgroundImage(new Image(null, "resources/images/background.png"));
+		shell.setBackgroundMode(SWT.INHERIT_FORCE);
 		//button1 - Create New Maze
 		Button BNewMaze=new Button(shell, SWT.PUSH);
 		BNewMaze.setLayoutData(new GridData(SWT.LEFT, SWT.None, false, false, 1, 1));		

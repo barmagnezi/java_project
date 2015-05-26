@@ -7,7 +7,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.MessageBox;
 
-import view.viewGUI.MazeViewWidget;
+import view.viewGUI.mazeViewWidjet.MazeViewWidget;
 
 public class testwindow extends BasicWindow {
 
@@ -16,7 +16,7 @@ public class testwindow extends BasicWindow {
 	}
 
 	@Override
-	void initWidgets() {
+	protected void initWidgets() {
 		shell.setLayout(new GridLayout(1,false));		
 		MazeViewWidget barcanvas=new MazeViewWidget(shell, SWT.BORDER);	
 		barcanvas.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));	

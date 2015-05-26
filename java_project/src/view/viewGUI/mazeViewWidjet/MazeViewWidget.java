@@ -1,6 +1,9 @@
-package view.viewGUI;
+package view.viewGUI.mazeViewWidjet;
 
+import java.awt.Color;
 import java.util.Observer;
+
+import model.MazeSearchableFixed;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.FocusEvent;
@@ -26,11 +29,11 @@ import algorithms.demo.MazeSearchable;
 import algorithms.mazeGenerators.Maze;
 import algorithms.search.CommonSearcher;
 import algorithms.search.Solution;
+import algorithms.search.State;
 import algorithms.search.aStar.AstarSearcher;
 import algorithms.search.aStar.MazeAirDistance;
 import view.View;
-import view.viewGUI.GameWidget.SelectAnim;
-import view.viewGUI.GameWidget.SelectPic;
+import view.viewGUI.mazeDisplayerAndCharecters.MazeDisplayerGUI;
 
 public class MazeViewWidget extends Canvas {
 
@@ -40,6 +43,7 @@ public class MazeViewWidget extends Canvas {
 	ViewGUI ViewGUI=new ViewGUI(this);
 	boolean Diagonals =false; //!!!!!need to know by the presenter
 	
+	public Boolean checkMotionFlag=new Boolean(false); //for check motion function 
 	boolean good=true;
 	Label LBmazeName;
 	Label LHelp;
@@ -65,16 +69,16 @@ public class MazeViewWidget extends Canvas {
 	public MazeViewWidget(Composite parent, int style) {
 		super(parent, style);		
 		this.setLayout(new GridLayout(2,false));
-		
+		getShell().setBackgroundMode(SWT.INHERIT_FORCE);
 		LBmazeName=new Label(this, SWT.NONE);	
-		LBmazeName.setLayoutData(new GridData(SWT.LEFT, SWT.None, false, false, 1, 1));
+		LBmazeName.setLayoutData(new GridData(SWT.FILL, SWT.None, false, false, 1, 1));
 		
 		LHelp=new Label(this, SWT.PUSH);
 		LHelp.setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, true, false, 1	, 1));	
 		LHelp.setText("Have a question?press F1 :)");
 		
 		LBsteps=new Label(this, SWT.NONE);	
-		LBsteps.setLayoutData(new GridData(SWT.LEFT, SWT.TOP, false, false, 1, 1));
+		LBsteps.setLayoutData(new GridData(SWT.FILL, SWT.TOP, false, false, 1, 1));
 		
 		Bstartover=new Button(this, SWT.PUSH);
 		Bstartover.setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, false, false, 1, 1));
@@ -87,6 +91,8 @@ public class MazeViewWidget extends Canvas {
 					public void run() {
 						System.out.println("MazeDisplayer.showMaze(maze,true);");
 						MazeDisplayer.Startover(maze);
+						steps=0;
+						load();
 						MazeDisplayer.setFocus();
 					}
 				});
@@ -140,7 +146,8 @@ public class MazeViewWidget extends Canvas {
 			
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				clue(maze);
+				if(maze!=null)
+					clue(maze);
 				//ViewGUI.getclue(MazeDisplayer.getCharacter().getRealx(), MazeDisplayer.getCharacter().getRealy());
 				MazeDisplayer.setFocus();
 			}
@@ -170,7 +177,7 @@ public class MazeViewWidget extends Canvas {
 		GroupCharacters.setText("Characters");
 		GroupCharacters.setLayout(new GridLayout(3, true));
 		GroupCharacters.setLayoutData(new GridData(SWT.LEFT, SWT.DOWN,  false, false,2,1));
-		
+		GroupCharacters.setBackground(new org.eclipse.swt.graphics.Color(null, new RGB(255, 255, 255)));
 		CharactersButtons=new Button[3];
 		for(int i = 0; i < 3; i++) {
 			CharactersButtons[i]=new Button(GroupCharacters, SWT.RADIO);
@@ -201,7 +208,7 @@ public class MazeViewWidget extends Canvas {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
 				if(CharactersButtons[1].getSelection()==true){
-					SelectPic SP= new SelectPic("Select a picture",350,250, getDisplay(),MazeDisplayer.getCharOp());
+					SelectPic SP= new SelectPic("Select a picture",300,230, getDisplay(),MazeDisplayer.getCharOp());
 					SP.run();
 					
 					if(SP.getStr()==null){
@@ -243,7 +250,7 @@ public class MazeViewWidget extends Canvas {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
 				if(CharactersButtons[2].getSelection()==true){
-					SelectAnim SP= new SelectAnim("Select an animation",350,350, getDisplay(),MazeDisplayer.getCharOp());
+					SelectAnim SP= new SelectAnim("Select an animation",250,200, getDisplay(),MazeDisplayer.getCharOp());
 					SP.run();
 					System.out.println(SP.getStr());
 					System.out.println(SP.getChoise());
@@ -323,54 +330,78 @@ public class MazeViewWidget extends Canvas {
 				if(arg0.keyCode==16777220){		//right
 					int currentX=MazeDisplayer.getCharacter().getRealx();
 					int currentY=MazeDisplayer.getCharacter().getRealy();
-					if(checkMotion(currentX, currentY, currentX+1, currentY))
+					if(checkMotion(currentX, currentY, currentX+1, currentY)){
 						MazeDisplayer.CharMoved(1);
+						steps++;
+						checkwin(currentX+1,currentY);
+					}
 				}			
 				if(arg0.keyCode==16777219){			//left
 					int currentX=MazeDisplayer.getCharacter().getRealx();
 					int currentY=MazeDisplayer.getCharacter().getRealy();
-					if(checkMotion(currentX, currentY, currentX-1, currentY))
+					if(checkMotion(currentX, currentY, currentX-1, currentY)){
 						MazeDisplayer.CharMoved(3);
+						steps++;
+						checkwin(currentX-1,currentY);
+					}
 				}
 				if(arg0.keyCode==16777217){		//up
 					int currentX=MazeDisplayer.getCharacter().getRealx();
 					int currentY=MazeDisplayer.getCharacter().getRealy();
-					if(checkMotion(currentX, currentY, currentX, currentY-1))
+					if(checkMotion(currentX, currentY, currentX, currentY-1)){
 						MazeDisplayer.CharMoved(2);
+						steps++;
+						checkwin(currentX,currentY-1);
+					}
 				}
 				if(arg0.keyCode==16777218){			//down
 					int currentX=MazeDisplayer.getCharacter().getRealx();
 					int currentY=MazeDisplayer.getCharacter().getRealy();
-					if(checkMotion(currentX, currentY, currentX, currentY+1))
+					if(checkMotion(currentX, currentY, currentX, currentY+1)){
 						MazeDisplayer.CharMoved(4);
+						steps++;
+						checkwin(currentX,currentY+1);
+					}
 				}
 				//diag
 				if(arg0.character=='1'){			//down-left		
 					int currentX=MazeDisplayer.getCharacter().getRealx();
 					int currentY=MazeDisplayer.getCharacter().getRealy();
-					if(checkMotion(currentX, currentY, currentX-1, currentY+1))
+					if(checkMotion(currentX, currentY, currentX-1, currentY+1)){
 						MazeDisplayer.CharMoved(5);
+						steps++;
+						checkwin(currentX-1,currentY+1);
+					}
 				}
 					
 				if(arg0.character=='2'){ 			//down-right
 					int currentX=MazeDisplayer.getCharacter().getRealx();
 					int currentY=MazeDisplayer.getCharacter().getRealy();
-					if(checkMotion(currentX, currentY, currentX+1, currentY+1))
+					if(checkMotion(currentX, currentY, currentX+1, currentY+1)){
 						MazeDisplayer.CharMoved(6);
+						steps++;
+						checkwin(currentX+1,currentY+1);
+					}
 				}
 				if(arg0.character=='4'){ 			//up-left
 					int currentX=MazeDisplayer.getCharacter().getRealx();
 					int currentY=MazeDisplayer.getCharacter().getRealy();
-					if(checkMotion(currentX, currentY, currentX-1, currentY-1))
+					if(checkMotion(currentX, currentY, currentX-1, currentY-1)){
 						MazeDisplayer.CharMoved(7);
+						steps++;
+						checkwin(currentX-1,currentY-1);
+					}
 				}
 				if(arg0.character=='5'){ 			//up-right
 					int currentX=MazeDisplayer.getCharacter().getRealx();
 					int currentY=MazeDisplayer.getCharacter().getRealy();
-					if(checkMotion(currentX, currentY, currentX+1, currentY-1))
+					if(checkMotion(currentX, currentY, currentX+1, currentY-1)){
 						MazeDisplayer.CharMoved(8);
+						steps++;
+						checkwin(currentX+1,currentY-1);
+					}
 				}
-				
+				load();
 			}
 		});
 
@@ -388,13 +419,14 @@ public class MazeViewWidget extends Canvas {
 	  						fd.setText("open");
 	  						fd.setFilterPath("");
 	  					  String[] names = {
-	  					      "Microsoft Excel Spreadsheet Files (*.xls)", "All Files (*.*)"};
-	  						String[] filterExt = { "*.xml", "*.*"};
+	  					      "Extensible Markup Language (*.xml)"};
+	  						String[] filterExt = { "*.xml"};
 	  						fd.setFilterNames(names);
 	  						fd.setFilterExtensions(filterExt);
-	  						if(fd.open()==null)
+	  						fd.open();
+	  						if(fd.getFileName()=="")
 	  							return;
-	  						setProperties(fd.open());
+	  						setProperties(fd.getFilterPath()+"/"+fd.getFileName());
 	  						MazeDisplayer.setFocus();
 	  					}
 	  				});
@@ -408,7 +440,7 @@ public class MazeViewWidget extends Canvas {
 	}
 	public void load(){
 		LBmazeName.setText("Maze name: "+mazeName);
-		LBsteps.setText("Number of steps: "+steps);;
+		LBsteps.setText("Number of steps: "+String.valueOf(steps));
 	}
 	
 	public void generateMaze(String name,int rows,int cols){
@@ -434,26 +466,26 @@ public class MazeViewWidget extends Canvas {
 		String last[] = Sol.toString().split("->");
 		//System.out.println(good);
 		//Next step(clue) is:
-		if(x!=maze.getCols()-1 || y!=maze.getCols()-1)
+		if(x!=maze.getCols()-1 || y!=maze.getRows()-1)
 			good=true;
 		if(good){		//if good=false we have finished, next iteration will be error without this if.
 			boolean inflag=true;
 			//System.out.println(last[0]);
-			if(x==maze.getCols()-1 && y==maze.getCols()-1 || x==maze.getCols()-2 && y==maze.getCols()-1 || x==maze.getCols()-1 && y==maze.getCols()-2)
+			if(x==maze.getCols()-1 && y==maze.getRows()-1 || x==maze.getCols()-2 && y==maze.getRows()-1 || x==maze.getCols()-1 && y==maze.getRows()-2)
 				inflag=false;
 			if(inflag){
 				int Cluex=Character.getNumericValue(last[1].charAt(0));
 				int Cluey=Character.getNumericValue(last[1].charAt(2));
 				//System.out.println(maze.getCols());
-				if(Cluex==maze.getCols()-1 && Cluey==maze.getCols()-1)
+				if(Cluex==maze.getCols()-1 && Cluey==maze.getRows()-1)
 					good=false;
-				if(Cluex!=maze.getCols() && Cluex!=maze.getCols())
+				if(Cluex!=maze.getCols() && Cluey!=maze.getRows())
 					MazeDisplayer.mark(Cluey, Cluex);		//Swap because in the solver it set as col,row and here its x,y
 				//System.out.println(good);
 				//System.out.println(last[0]);
 				//System.out.println("next x is: "+Cluex+" next y is: "+Cluey);
 			}else
-				MazeDisplayer.mark(maze.getCols()-1, maze.getCols()-1);
+				MazeDisplayer.mark(maze.getRows()-1, maze.getCols()-1);
 		}
 	}
 	
@@ -462,33 +494,38 @@ public class MazeViewWidget extends Canvas {
 		MazeDisplayer.showMaze(m,false);
 	}
 	
-	public void displaySolution(Solution s) {
+	/*public void displaySolution(Solution s) {
 		//System.out.println("print sol on MazeDisplayer canvas");
 		int cols=maze.getCols();
+		int rows=maze.getRows();
 		int x=MazeDisplayer.character.getRealx();
 		int y=MazeDisplayer.character.getRealy();
-		while(x!=cols-1 && y!=cols-1){
-			synchronized(MazeDisplayer.character){
+		while(x!=cols-1 && y!=rows-1){
+			//synchronized(MazeDisplayer.character){
 				try {
+					System.out.println("Sfdbv");
 					clue(maze);
-
-					MazeDisplayer.character.wait(500);
+					Thread.sleep(500);
+					//MazeDisplayer.character.wait(500);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
-			}
+			//}
 			x=MazeDisplayer.character.getRealx();
 			y=MazeDisplayer.character.getRealy();
 		}
-		if(x!=cols-1 || y!=cols-1){
+		if(x!=cols-1 || y!=rows-1){
 			MazeDisplayer.mark(cols-1, cols-1);
 		}
 			
 			
+	}*/
+	public void displaySolution(Solution s) {
+		MazeDisplayer.showSolution(s);
 	}
-
 	
 	public void displayString(String msg) {
+		
 		MessageBox messageBox = new MessageBox(this.getShell(),  SWT.OK);
 		messageBox.setMessage(msg);
 		messageBox.setText("MESSEGE");
@@ -514,13 +551,15 @@ public class MazeViewWidget extends Canvas {
 	public void start() {
 		ViewGUI.start();
 	}
-	public boolean checkMotion(int CurrentX,int CurrentY,int nextX,int nextY){
+	/*public boolean checkMotion(int CurrentX,int CurrentY,int nextX,int nextY){
 		boolean flag=true;
 		//System.out.println();
 		if(nextX<0 || nextY<0)
 			return false;
 		//for Diagonals
 		if(CurrentX!= nextX && CurrentY!=nextY){
+			if(nextX>maze.getCols()-1 ||nextY>maze.getRows()-1)
+				return false;
 			int i=0;
 			if(CurrentX+1==nextX)
 				if(maze.getCell(CurrentY, CurrentX).getRightWall().isExist())
@@ -535,7 +574,6 @@ public class MazeViewWidget extends Canvas {
 			if(CurrentY-1==nextY){maze.getCell(nextY, CurrentX).printRowCol();
 				if(maze.getCell(nextY, CurrentX).getBottomWall().isExist())
 					i++;}
-			System.out.println(i);
 			if(i==2)
 				return false;
 			return true;
@@ -549,7 +587,119 @@ public class MazeViewWidget extends Canvas {
 		if(CurrentY-1==nextY)
 			flag=flag&&(!maze.getCell(nextY, nextX).getBottomWall().isExist());
 		return flag;
-	}
+	}*/
 	
+	
+	/*The way with model(better)
+	public boolean checkMotion(int CurrentX,int CurrentY,int nextX,int nextY){
+		ViewGUI.checkMotion(mazeName, CurrentY, CurrentX, nextY, nextX);
+		try {
+			checkMotionFlag.wait();
+			return checkMotionFlag;
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+	*/
+	public boolean CheckMotion(int CurrentX,int CurrentY,int nextX,int nextY){
+		boolean flag=true;
+		//System.out.println();
+		if(nextX<0 || nextY<0)
+			return false;
+		if(!(nextX!=CurrentX &&CurrentY!=nextY)){
+			if(CurrentX+1==nextX)
+				flag=flag&&(!maze.getCell(CurrentY, CurrentX).getRightWall().isExist());
+			if(CurrentX-1==nextX)
+				flag=flag&&(!maze.getCell(nextY, nextX).getRightWall().isExist());
+			if(CurrentY+1==nextY)
+				flag=flag&&(!maze.getCell(CurrentY, CurrentX).getBottomWall().isExist());
+			if(CurrentY-1==nextY)
+				flag=flag&&(!maze.getCell(nextY, nextX).getBottomWall().isExist());
+			return flag;
+		}else{
+			if (Diagonals==true){
+				int col=CurrentX;
+				int row=CurrentY;
+				//right-up
+				if(!(col+1==maze.getCols() || row-1==-1)){ //Test surfing									  	
+					if(maze.getCell(row-1, col).getRightWall().isExist() &&      // |_	
+							maze.getCell(row-1, col+1).getBottomWall().isExist())//.
+						flag=false;
+					if(maze.getCell(row, col).getRightWall().isExist()&&			//  |
+							maze.getCell(row-1, col).getRightWall().isExist())		// .|
+						flag=false;
+					if(maze.getCell(row-1, col).getBottomWall().isExist()&&			//_ _
+							maze.getCell(row-1, col+1).getBottomWall().isExist())   //.
+						flag=false;
+					if(maze.getCell(row-1, col).getBottomWall().isExist()&&   ///corner like ._|
+							maze.getCell(row, col).getRightWall().isExist())
+						flag=false;
+					if(flag)
+						list.add(CellToState(maze.getCell(row-1, col+1)));
+				}
+				//right-down
+				if(!(col+1==maze.getCols() || row+1==maze.getRows())){ //Test surfing
+					boolean flag=true;										  	
+					if(maze.getCell(row+1, col).getRightWall().isExist() &&    //.
+							maze.getCell(row, col+1).getBottomWall().isExist())// |-
+						flag=false;
+					if(maze.getCell(row, col).getRightWall().isExist()&&			// . |
+							maze.getCell(row+1, col).getRightWall().isExist())		//   |
+						flag=false;
+					if(maze.getCell(row, col).getBottomWall().isExist()&&			//.
+							maze.getCell(row, col+1).getBottomWall().isExist())   //--
+						flag=false;
+					if(maze.getCell(row, col).getBottomWall().isExist()&&   ///corner like ._|
+							maze.getCell(row, col).getRightWall().isExist())
+						flag=false;
+					if(flag)
+						list.add(CellToState(maze.getCell(row+1, col+1)));
+				}
+				//left-down
+				if(!(col-1==-1 || row+1==maze.getRows())){ //Test surfing
+					boolean flag=true;										  	
+					if(maze.getCell(row+1, col-1).getRightWall().isExist() &&    //   .
+							maze.getCell(row, col-1).getBottomWall().isExist())  // -|
+						flag=false;
+					if(maze.getCell(row, col-1).getRightWall().isExist()&&			//   |.
+							maze.getCell(row+1, col-1).getRightWall().isExist())	//   |
+						flag=false;
+					if(maze.getCell(row, col).getBottomWall().isExist()&&			// .
+							maze.getCell(row, col-1).getBottomWall().isExist())     //--
+						flag=false;
+					if(maze.getCell(row, col).getBottomWall().isExist()&&   ///corner like ._|
+							maze.getCell(row, col-1).getRightWall().isExist())
+						flag=false;
+					if(flag)
+						list.add(CellToState(maze.getCell(row+1, col-1)));
+				}
+				//left-up
+				if(!(col-1==-1 || row-1==-1)){ //Test surfing
+					boolean flag=true;										  	
+					if(maze.getCell(row-1, col-1).getRightWall().isExist() &&      // _|	
+							maze.getCell(row-1, col-1).getBottomWall().isExist())  //   .
+						flag=false;
+					if(maze.getCell(row, col-1).getRightWall().isExist()&&				//  |
+							maze.getCell(row-1, col-1).getRightWall().isExist())		//  |.
+						flag=false;
+					if(maze.getCell(row-1, col).getBottomWall().isExist()&&			//_ _
+							maze.getCell(row-1, col-1).getBottomWall().isExist())   //  .
+						flag=false;
+					if(maze.getCell(row-1, col).getBottomWall().isExist()&&   ///corner like ._|
+							maze.getCell(row, col-1).getRightWall().isExist())
+						flag=false;
+					if(flag)
+						list.add(CellToState(maze.getCell(row-1, col-1)));
+				}
+			}else
+				return false;
+		}
+
+	}
+	public void checkwin(int x,int y){
+		if(x==maze.getCols()-1 && y==maze.getRows()-1)
+			new winnerPage("winner", 270, 250, getDisplay(), steps).run();
+	}
 
 }

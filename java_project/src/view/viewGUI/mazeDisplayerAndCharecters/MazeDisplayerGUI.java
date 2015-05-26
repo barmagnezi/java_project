@@ -1,6 +1,7 @@
-package view.viewGUI;
+package view.viewGUI.mazeDisplayerAndCharecters;
 
 
+import java.util.Stack;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -15,6 +16,8 @@ import org.eclipse.swt.widgets.Composite;
 
 import algorithms.mazeGenerators.Cell;
 import algorithms.mazeGenerators.Maze;
+import algorithms.search.Solution;
+import algorithms.search.State;
 
 public class MazeDisplayerGUI extends Canvas {
 	String scrBackground;
@@ -22,12 +25,15 @@ public class MazeDisplayerGUI extends Canvas {
 	int charOp;
 	Maze maze;
 	GC lastPaint=null;
-	CommonCharacter character;
+	public CommonCharacter character;
 	int wallWidth = 0, wallHeight = 0;
+	
+	boolean printsol=false; //for paint sol
+	Solution sol=null;
 	
 	int Oldx=0,Oldy=0;	//For saving data when changing the Character
 	
-	boolean solveFlag=false;
+	boolean solveFlag=false; 
 	
 	RGB Color;	//For changing the character
 	String path;
@@ -93,6 +99,10 @@ public class MazeDisplayerGUI extends Canvas {
 				}
 				else
 					character.paint(arg0, wallWidth*4, wallHeight*4);
+				if(printsol==true){
+					paintsolution(arg0, wallWidth*4, wallHeight*4);
+					printsol=false;
+				}
 			}
 		});
 		
@@ -146,14 +156,14 @@ public class MazeDisplayerGUI extends Canvas {
 			startAnimation(character.getLoader().data[frame].delayTime);
 	}
 	}
-	protected void mark(int x,int y){
+	public void mark(int x,int y){
 		character.setRealx(x);
 		character.setRealy(y);
 		solveFlag=true;
-		synchronized(character){
+		//synchronized(character){
 			redraw();
-			character.notify();
-		}
+		//	character.notify();
+		//}
 
 	}
 	
@@ -217,7 +227,10 @@ public class MazeDisplayerGUI extends Canvas {
 			this.Color=nColor;
 		if(path!=null)
 			this.path=path;
-		setCharacter(this.character.getRealx(), this.character.getRealy());
+		if(this.character==null)
+			setCharacter(0,0);
+		else
+			setCharacter(this.character.getRealx(), this.character.getRealy());
 		if(maze!=null || character!=null)
 			showMaze(maze, true);
 	}
@@ -279,11 +292,35 @@ public class MazeDisplayerGUI extends Canvas {
 		});
 	}
 				
-	
-	public void showSolution(){
-		
+	//paint solution!!!!
+	public void showSolution(Solution s){
+		this.sol=s;
+		this.printsol=true;
+		redraw();
 	}
 
+	private void paintsolution(PaintEvent arg0, int Width,int Height) {
+		Stack<State> stack = new Stack<State>();
+		stack.addAll(sol.getSol());
+		System.out.println(stack.size());
+		long time;
+		if(stack.size()*200<7000)
+			 time=200;
+		else
+			time=7000/stack.size();
+		while(!stack.isEmpty()){
+			try {
+				Thread.sleep(time);
+			} catch (InterruptedException e) {
+				System.out.println("error by Threads");
+			}
+			String[] rowCol=stack.pop().getState().split("x");
+			int row=Integer.parseInt(rowCol[0]);
+			int col=Integer.parseInt(rowCol[1]);	
+			arg0.gc.fillRectangle((col*5+1)*Width/4, (row*5+1)*Height/4, Width, Height);
+		}
+	}
+	//!!!!!!!!!!!
 	public CommonCharacter getCharacter() {
 		return character;
 	}

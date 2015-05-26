@@ -5,6 +5,7 @@ import org.eclipse.swt.events.ControlAdapter;
 import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -14,7 +15,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Text;
 
-import view.viewGUI.MazeViewWidget;
+import view.viewGUI.mazeViewWidjet.MazeViewWidget;
 
 public class OpenMaze extends BasicWindow{
 	int hight,witdh;
@@ -28,9 +29,10 @@ public class OpenMaze extends BasicWindow{
 	}
 
 	@Override
-	void initWidgets() {
+	protected void initWidgets() {
 		shell.setLayout(new GridLayout(2,false));
-		
+		shell.setBackgroundImage(new Image(null, "resources/images/background.png"));
+		shell.setBackgroundMode(SWT.INHERIT_FORCE);
 		Label LBEMazeName = new Label(shell, SWT.NONE);
 		LBEMazeName.setText("Enter the mazes name:");
 		LBEMazeName.setLayoutData(new GridData(SWT.LEFT, SWT.TOP, false, false, 1, 1));

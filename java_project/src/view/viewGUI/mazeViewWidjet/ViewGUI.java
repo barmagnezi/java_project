@@ -1,4 +1,4 @@
-package view.viewGUI;
+package view.viewGUI.mazeViewWidjet;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -64,15 +64,20 @@ public class ViewGUI extends Observable implements View{
 		
 	}
 	public void setproperties(String path) {
-		commandsList.add(commands.get("setProperties"));
+		commandsList.add(commands.get("setNewProperties"));
+		System.out.println(commandsList.size());
 		this.setChanged();
 		this.notifyObservers(path);
-		
 	}
 	public void exit(){
 		commandsList.add(commands.get("exit"));
 		this.setChanged();
 		this.notifyObservers("");
+	}
+	public void checkMotion(String Mazename,int CurrentRow,int CurrentCol,int nextRow,int nextCol){
+		commandsList.add(commands.get("checkMotion"));
+		this.setChanged();
+		this.notifyObservers(Mazename+" "+CurrentRow+" "+CurrentCol+" "+nextRow+" "+nextCol);
 	}
 	//view @Override
 	@Override
@@ -99,6 +104,15 @@ public class ViewGUI extends Observable implements View{
 			Widget.showClue(msg.substring(5));
 		Widget.displayString(msg);
 	}
+
+	@Override
+	public void getData(Object Data, String details) {
+		if(details.equals("checkMotion"))
+			Widget.checkMotionFlag=(Boolean) Data;
+		Widget.checkMotionFlag.notify();
+	}
+
+
 	
 
 }

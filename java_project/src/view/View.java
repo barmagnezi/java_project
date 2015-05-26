@@ -40,4 +40,8 @@ public interface View {
 	 * Displays a string to our outputStream.
 	 */
 	void displayString(String msg);
+	/**
+	 * This method allows us to transfer objects to view
+	 */
+	void getData(Object Data,String details);
 }

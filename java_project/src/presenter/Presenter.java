@@ -97,6 +97,7 @@ public class Presenter implements Observer{
 		commands.put("exit", new exitCommand());
 		commands.put("help", new helpCommand());
 		commands.put("setNewProperties", new setPropertiesCommand());
+		commands.put("checkMotion", new checkMotionCommand());
 	}
 	//commands
 	
@@ -188,6 +189,17 @@ public class Presenter implements Observer{
 		@Override
 		public void doCommand(String arg, PrintStream out) {
 			setNewProperties(arg);
+		}
+		
+	}
+	public class checkMotionCommand implements Command{
+
+		@Override
+		public void doCommand(String arg, PrintStream out) {
+			String[] data=arg.split(" ");
+			boolean flag = model.checkMotion(data[0], Integer.parseInt(data[1]), Integer.parseInt(data[2]), Integer.parseInt(data[3]), Integer.parseInt(data[4]));
+			System.out.println(flag);
+			view.getData(flag, "checkMotion");
 		}
 		
 	}

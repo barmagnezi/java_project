@@ -1,10 +1,11 @@
-package view.viewGUI.GameWidget;
+package view.viewGUI.mazeViewWidjet;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ControlAdapter;
 import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -15,16 +16,17 @@ import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.MessageBox;
-import view.viewGUI.MazeViewWidget;
 
-public class SelectAnim extends BasicWindow{
+import view.viewGUI.GameWidget.BasicWindow;
+
+public class SelectPic extends BasicWindow{
 	int hight,witdh;
 	int choise;
 	int Old;
 	String str;
 
 	MazeViewWidget mazeView;
-	public SelectAnim(String title, int width, int height, Display disp,int CurChoise) {
+	public SelectPic(String title, int width, int height, Display disp,int CurChoise) {
 		super(title, width, height, disp);
 		this.witdh=width;
 		this.hight=height;
@@ -33,20 +35,26 @@ public class SelectAnim extends BasicWindow{
 	}
 
 	@Override
-	void initWidgets() {
+	protected void initWidgets() {
 		shell.setLayout(new GridLayout(3,false));
+		shell.setBackgroundImage(new Image(null, "resources/images/background.png"));
+		shell.setBackgroundMode(SWT.INHERIT_FORCE);
 		Label LBUseDef = new Label(shell, SWT.NONE);
 		LBUseDef.setText("Use deults:");
 		LBUseDef.setLayoutData(new GridData(SWT.LEFT, SWT.TOP, false, false, 3, 1));
 		Button Option1 = new Button(shell , SWT.RADIO);
 		Option1.setText("Super Mario");
 		Button Option2 = new Button(shell , SWT.RADIO);
-		Option2.setText("Dog");
+		Option2.setText("Senia Kalma");
+		Button Option3 = new Button(shell , SWT.RADIO);
+		Option3.setText("Bar Magnezi");
 		
-		if(choise==3)
+		if(choise==2)
 			Option1.setSelection(true);
-		if(choise==4)
+		if(choise==989)
 			Option2.setSelection(true);
+		if(choise==999)
+			Option3.setSelection(true);
 		
 		//Line place holder
 		Label place = new Label(shell, SWT.NONE);
@@ -55,12 +63,12 @@ public class SelectAnim extends BasicWindow{
 		//Line place holder
 		
 		Button OrPic = new Button(shell , SWT.CHECK);
-		OrPic.setText("Select an animation:");
-		OrPic.setLayoutData(new GridData(SWT.LEFT, SWT.TOP, false, false, 3, 1));
+		OrPic.setText("Select a picture:");
+		OrPic.setLayoutData(new GridData(SWT.LEFT, SWT.DOWN, false, false, 3, 2));
 
 		
 		Label LBPicPath = new Label(shell, SWT.NONE);
-		LBPicPath.setText("Enter the animation path:");
+		LBPicPath.setText("Enter the pictures path:");
 		LBPicPath.setLayoutData(new GridData(SWT.LEFT, SWT.TOP, false, false, 3, 1));
 		LBPicPath.setEnabled(false);
 		
@@ -78,11 +86,11 @@ public class SelectAnim extends BasicWindow{
   						FileDialog fd=new FileDialog(shell,SWT.OPEN);
   						fd.setText("Open");
   						fd.setFilterPath("");
-  						String[] FILTER_NAMES = {
-  						      "GIF (*.gif) ",
-  						      "All Files (*.*)"};
-  						String[] filterExt = {"*.gif", "*.*"};
-  						fd.setFilterNames(FILTER_NAMES);
+  						String[] names= {
+  						      "JPG (*.jpg)",
+  						      "PNG (*.png)"};
+  						String[] filterExt = { "*.jpg", "*.png"};
+  						fd.setFilterNames(names);
   						fd.setFilterExtensions(filterExt);
   						str=fd.open();
   					}
@@ -103,11 +111,11 @@ public class SelectAnim extends BasicWindow{
   					@Override
   					public void run() {
   						if(Option1.getSelection()==true)
-  							choise=3;
+  							choise=2;
   						if(Option2.getSelection()==true)
-  							choise=4;
-  						if(OrPic.getSelection()==true)
-  							choise=1002;
+  							choise=989;
+  						if(Option3.getSelection()==true)
+  							choise=999;
   						shell.dispose();
   					}
   				});
@@ -130,6 +138,7 @@ public class SelectAnim extends BasicWindow{
 							LBUseDef.setEnabled(false);
 							Option1.setEnabled(false);
 							Option2.setEnabled(false);
+							Option3.setEnabled(false);
 							//Enabling relevnt
 							BLoad.setEnabled(true);
 							LBPicPath.setEnabled(true);
@@ -138,6 +147,7 @@ public class SelectAnim extends BasicWindow{
 							LBUseDef.setEnabled(true);
 							Option1.setEnabled(true);
 							Option2.setEnabled(true);
+							Option3.setEnabled(true);
 							//Enabling relevnt
 							BLoad.setEnabled(false);
 							LBPicPath.setEnabled(false);
@@ -161,7 +171,6 @@ public class SelectAnim extends BasicWindow{
 			}
 		});
 		
-		
 		//Safe Exit:
 		shell.addListener(SWT.Close, new Listener() {
 			@Override
@@ -173,16 +182,17 @@ public class SelectAnim extends BasicWindow{
 	            if(messageBox.open() == SWT.YES){
 	            	arg.doit = true;
 						if(Option1.getSelection()==true)
-  							choise=3;
+  							choise=2;
   						if(Option2.getSelection()==true)
-  							choise=4;
-  						if(OrPic.getSelection()==true)
-  							choise=1002;
+  							choise=989;
+  						if(Option3.getSelection()==true)
+  							choise=999;
 	            }else{
 	            	arg.doit = true;
 	            	if(Old!=choise){
 		            	Option1.setSelection(false);
 		            	Option2.setSelection(false);
+		            	Option3.setSelection(false);
 		            	choise=0;
 	            	}
 	            	str=null;

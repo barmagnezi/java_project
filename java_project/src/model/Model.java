@@ -47,4 +47,6 @@ public interface Model {
 	 * Setting the current properties with an inputed PropertiesModel Object.
 	 */
 	public void setProperties(PropertiesModel mproperties);
+	
+	public boolean checkMotion(String Mazename,int CurrentRow,int CurrentCol,int nextRow,int nextCol);
 }

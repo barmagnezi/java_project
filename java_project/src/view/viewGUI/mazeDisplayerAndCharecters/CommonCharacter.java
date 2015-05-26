@@ -1,4 +1,4 @@
-package view.viewGUI;
+package view.viewGUI.mazeDisplayerAndCharecters;
 
 import java.util.Random;
 

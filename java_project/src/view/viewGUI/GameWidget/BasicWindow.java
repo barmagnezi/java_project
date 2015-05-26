@@ -11,8 +11,8 @@ import org.eclipse.swt.widgets.Text;
 
 public abstract class BasicWindow extends Observable implements Runnable{
 
-	Display display;
-	Shell shell;
+	protected Display display;
+	protected Shell shell;
 	
 	public BasicWindow(String title, int width, int height) {
 		this.display=new Display();
@@ -28,7 +28,7 @@ public abstract class BasicWindow extends Observable implements Runnable{
 		shell.setSize(width,height);
 	}
 	
-	abstract void initWidgets();
+	protected  abstract void initWidgets();
 	
 	@Override
 	public void run() {

@@ -177,4 +177,14 @@ public class MyView extends Observable implements View {
 		}
 	}
 
+
+	@Override
+	public void getData(Object Data, String details) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+
 }
