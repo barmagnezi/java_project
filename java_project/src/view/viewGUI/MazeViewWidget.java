@@ -203,6 +203,7 @@ public class MazeViewWidget extends Canvas {
 				if(CharactersButtons[1].getSelection()==true){
 					SelectPic SP= new SelectPic("Select a picture",350,250, getDisplay(),MazeDisplayer.getCharOp());
 					SP.run();
+					
 					if(SP.getStr()==null){
 						MazeDisplayer.changeCharacter(SP.getChoise(), null, null);
 					}else
@@ -244,8 +245,8 @@ public class MazeViewWidget extends Canvas {
 				if(CharactersButtons[2].getSelection()==true){
 					SelectAnim SP= new SelectAnim("Select an animation",350,350, getDisplay(),MazeDisplayer.getCharOp());
 					SP.run();
-					//System.out.println(SP.getStr());
-					//System.out.println(SP.getChoise());
+					System.out.println(SP.getStr());
+					System.out.println(SP.getChoise());
 					if(SP.getStr()==null){
 						MazeDisplayer.changeCharacter(SP.getChoise(), null, null);
 					}else

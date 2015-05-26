@@ -106,6 +106,8 @@ public class SelectAnim extends BasicWindow{
   							choise=3;
   						if(Option2.getSelection()==true)
   							choise=4;
+  						if(OrPic.getSelection()==true)
+  							choise=1002;
   						shell.dispose();
   					}
   				});
@@ -174,6 +176,8 @@ public class SelectAnim extends BasicWindow{
   							choise=3;
   						if(Option2.getSelection()==true)
   							choise=4;
+  						if(OrPic.getSelection()==true)
+  							choise=1002;
 	            }else{
 	            	arg.doit = true;
 	            	if(Old!=choise){

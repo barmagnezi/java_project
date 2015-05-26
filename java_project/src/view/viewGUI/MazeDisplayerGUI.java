@@ -137,7 +137,7 @@ public class MazeDisplayerGUI extends Canvas {
 		if(charOp==1002){	//1002 is a code in SelectAnim for an Animation selected by user
 			character=new AnimCharacter(x, y);
 			character.setAnimation(true);
-			character.setLoader("resources/images/marioAnimation.gif");
+			character.setLoader(path);
 		}
 	if(character.isAnimation() && myTask==null){
 		if(character.getLoader().data[frame].delayTime<300)	//if delay too small to see normally
@@ -217,6 +217,7 @@ public class MazeDisplayerGUI extends Canvas {
 			this.Color=nColor;
 		if(path!=null)
 			this.path=path;
+		setCharacter(this.character.getRealx(), this.character.getRealy());
 		if(maze!=null || character!=null)
 			showMaze(maze, true);
 	}
