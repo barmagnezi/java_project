@@ -41,7 +41,7 @@ public class MazeViewWidget extends Canvas {
 	Maze maze=null;
 	int steps=0;
 	ViewGUI ViewGUI=new ViewGUI(this);
-	boolean Diagonals =false; //!!!!!need to know by the presenter
+	boolean Diagonals =true; //!!!!!need to know by the presenter
 	
 	public Boolean checkMotionFlag=new Boolean(false); //for check motion function 
 	boolean good=true;
@@ -330,7 +330,7 @@ public class MazeViewWidget extends Canvas {
 				if(arg0.keyCode==16777220){		//right
 					int currentX=MazeDisplayer.getCharacter().getRealx();
 					int currentY=MazeDisplayer.getCharacter().getRealy();
-					if(checkMotion(currentX, currentY, currentX+1, currentY)){
+					if(CheckMotion(currentX, currentY, currentX+1, currentY)){
 						MazeDisplayer.CharMoved(1);
 						steps++;
 						checkwin(currentX+1,currentY);
@@ -339,7 +339,7 @@ public class MazeViewWidget extends Canvas {
 				if(arg0.keyCode==16777219){			//left
 					int currentX=MazeDisplayer.getCharacter().getRealx();
 					int currentY=MazeDisplayer.getCharacter().getRealy();
-					if(checkMotion(currentX, currentY, currentX-1, currentY)){
+					if(CheckMotion(currentX, currentY, currentX-1, currentY)){
 						MazeDisplayer.CharMoved(3);
 						steps++;
 						checkwin(currentX-1,currentY);
@@ -348,7 +348,7 @@ public class MazeViewWidget extends Canvas {
 				if(arg0.keyCode==16777217){		//up
 					int currentX=MazeDisplayer.getCharacter().getRealx();
 					int currentY=MazeDisplayer.getCharacter().getRealy();
-					if(checkMotion(currentX, currentY, currentX, currentY-1)){
+					if(CheckMotion(currentX, currentY, currentX, currentY-1)){
 						MazeDisplayer.CharMoved(2);
 						steps++;
 						checkwin(currentX,currentY-1);
@@ -357,7 +357,7 @@ public class MazeViewWidget extends Canvas {
 				if(arg0.keyCode==16777218){			//down
 					int currentX=MazeDisplayer.getCharacter().getRealx();
 					int currentY=MazeDisplayer.getCharacter().getRealy();
-					if(checkMotion(currentX, currentY, currentX, currentY+1)){
+					if(CheckMotion(currentX, currentY, currentX, currentY+1)){
 						MazeDisplayer.CharMoved(4);
 						steps++;
 						checkwin(currentX,currentY+1);
@@ -367,7 +367,7 @@ public class MazeViewWidget extends Canvas {
 				if(arg0.character=='1'){			//down-left		
 					int currentX=MazeDisplayer.getCharacter().getRealx();
 					int currentY=MazeDisplayer.getCharacter().getRealy();
-					if(checkMotion(currentX, currentY, currentX-1, currentY+1)){
+					if(CheckMotion(currentX, currentY, currentX-1, currentY+1)){
 						MazeDisplayer.CharMoved(5);
 						steps++;
 						checkwin(currentX-1,currentY+1);
@@ -377,7 +377,7 @@ public class MazeViewWidget extends Canvas {
 				if(arg0.character=='2'){ 			//down-right
 					int currentX=MazeDisplayer.getCharacter().getRealx();
 					int currentY=MazeDisplayer.getCharacter().getRealy();
-					if(checkMotion(currentX, currentY, currentX+1, currentY+1)){
+					if(CheckMotion(currentX, currentY, currentX+1, currentY+1)){
 						MazeDisplayer.CharMoved(6);
 						steps++;
 						checkwin(currentX+1,currentY+1);
@@ -386,7 +386,7 @@ public class MazeViewWidget extends Canvas {
 				if(arg0.character=='4'){ 			//up-left
 					int currentX=MazeDisplayer.getCharacter().getRealx();
 					int currentY=MazeDisplayer.getCharacter().getRealy();
-					if(checkMotion(currentX, currentY, currentX-1, currentY-1)){
+					if(CheckMotion(currentX, currentY, currentX-1, currentY-1)){
 						MazeDisplayer.CharMoved(7);
 						steps++;
 						checkwin(currentX-1,currentY-1);
@@ -395,7 +395,7 @@ public class MazeViewWidget extends Canvas {
 				if(arg0.character=='5'){ 			//up-right
 					int currentX=MazeDisplayer.getCharacter().getRealx();
 					int currentY=MazeDisplayer.getCharacter().getRealy();
-					if(checkMotion(currentX, currentY, currentX+1, currentY-1)){
+					if(CheckMotion(currentX, currentY, currentX+1, currentY-1)){
 						MazeDisplayer.CharMoved(8);
 						steps++;
 						checkwin(currentX+1,currentY-1);
@@ -605,7 +605,7 @@ public class MazeViewWidget extends Canvas {
 	public boolean CheckMotion(int CurrentX,int CurrentY,int nextX,int nextY){
 		boolean flag=true;
 		//System.out.println();
-		if(nextX<0 || nextY<0)
+		if(nextX<0 || nextY<0 || nextX==maze.getCols() || nextY==maze.getRows())
 			return false;
 		if(!(nextX!=CurrentX &&CurrentY!=nextY)){
 			if(CurrentX+1==nextX)
@@ -622,7 +622,7 @@ public class MazeViewWidget extends Canvas {
 				int col=CurrentX;
 				int row=CurrentY;
 				//right-up
-				if(!(col+1==maze.getCols() || row-1==-1)){ //Test surfing									  	
+				if(CurrentX+1==nextX && CurrentY-1==nextY){								  	
 					if(maze.getCell(row-1, col).getRightWall().isExist() &&      // |_	
 							maze.getCell(row-1, col+1).getBottomWall().isExist())//.
 						flag=false;
@@ -635,12 +635,10 @@ public class MazeViewWidget extends Canvas {
 					if(maze.getCell(row-1, col).getBottomWall().isExist()&&   ///corner like ._|
 							maze.getCell(row, col).getRightWall().isExist())
 						flag=false;
-					if(flag)
-						list.add(CellToState(maze.getCell(row-1, col+1)));
+					return flag;
 				}
 				//right-down
-				if(!(col+1==maze.getCols() || row+1==maze.getRows())){ //Test surfing
-					boolean flag=true;										  	
+				if(CurrentX+1==nextX && CurrentY+1==nextY){								  	
 					if(maze.getCell(row+1, col).getRightWall().isExist() &&    //.
 							maze.getCell(row, col+1).getBottomWall().isExist())// |-
 						flag=false;
@@ -653,12 +651,10 @@ public class MazeViewWidget extends Canvas {
 					if(maze.getCell(row, col).getBottomWall().isExist()&&   ///corner like ._|
 							maze.getCell(row, col).getRightWall().isExist())
 						flag=false;
-					if(flag)
-						list.add(CellToState(maze.getCell(row+1, col+1)));
+					return flag;
 				}
 				//left-down
-				if(!(col-1==-1 || row+1==maze.getRows())){ //Test surfing
-					boolean flag=true;										  	
+				if(CurrentX-1==nextX && CurrentY+1==nextY){ 									  	
 					if(maze.getCell(row+1, col-1).getRightWall().isExist() &&    //   .
 							maze.getCell(row, col-1).getBottomWall().isExist())  // -|
 						flag=false;
@@ -671,12 +667,10 @@ public class MazeViewWidget extends Canvas {
 					if(maze.getCell(row, col).getBottomWall().isExist()&&   ///corner like ._|
 							maze.getCell(row, col-1).getRightWall().isExist())
 						flag=false;
-					if(flag)
-						list.add(CellToState(maze.getCell(row+1, col-1)));
+					return flag;
 				}
 				//left-up
-				if(!(col-1==-1 || row-1==-1)){ //Test surfing
-					boolean flag=true;										  	
+				if(CurrentX-1==nextX && CurrentY-1==nextY){								  	
 					if(maze.getCell(row-1, col-1).getRightWall().isExist() &&      // _|	
 							maze.getCell(row-1, col-1).getBottomWall().isExist())  //   .
 						flag=false;
@@ -689,14 +683,15 @@ public class MazeViewWidget extends Canvas {
 					if(maze.getCell(row-1, col).getBottomWall().isExist()&&   ///corner like ._|
 							maze.getCell(row, col-1).getRightWall().isExist())
 						flag=false;
-					if(flag)
-						list.add(CellToState(maze.getCell(row-1, col-1)));
+					return flag;
 				}
 			}else
 				return false;
 		}
+		return false;
 
 	}
+	
 	public void checkwin(int x,int y){
 		if(x==maze.getCols()-1 && y==maze.getRows()-1)
 			new winnerPage("winner", 270, 250, getDisplay(), steps).run();
