@@ -16,7 +16,6 @@ import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.MessageBox;
-
 import view.viewGUI.GameWidget.BasicWindow;
 
 public class SelectPic extends BasicWindow{
@@ -35,10 +34,9 @@ public class SelectPic extends BasicWindow{
 	}
 
 	@Override
-	protected void initWidgets() {
+	protected
+	void initWidgets() {
 		shell.setLayout(new GridLayout(3,false));
-		shell.setBackgroundImage(new Image(null, "resources/images/background.png"));
-		shell.setBackgroundMode(SWT.INHERIT_FORCE);
 		Label LBUseDef = new Label(shell, SWT.NONE);
 		LBUseDef.setText("Use deults:");
 		LBUseDef.setLayoutData(new GridData(SWT.LEFT, SWT.TOP, false, false, 3, 1));
@@ -80,22 +78,23 @@ public class SelectPic extends BasicWindow{
   		BLoad.addSelectionListener(new SelectionListener() {
   			@Override
   			public void widgetSelected(SelectionEvent arg0) {
-  					getDisplay().syncExec(new Runnable() {
-  					@Override
-  					public void run() {
+  					//getDisplay().syncExec(new Runnable() {
+  					//@Override
+  					//public void run() {
   						FileDialog fd=new FileDialog(shell,SWT.OPEN);
   						fd.setText("Open");
   						fd.setFilterPath("");
   						String[] names= {
   						      "JPG (*.jpg)",
-  						      "PNG (*.png)"};
-  						String[] filterExt = { "*.jpg", "*.png"};
+  						      "PNG (*.png)",
+  						      "All Files (*.*)"};
+  						String[] filterExt = { "*.jpg", "*.png", "*.*"};
   						fd.setFilterNames(names);
   						fd.setFilterExtensions(filterExt);
   						str=fd.open();
   					}
-  				});
-  			}
+  				//});
+  			//}
   			
   			@Override
   			public void widgetDefaultSelected(SelectionEvent arg0) {}
@@ -107,9 +106,9 @@ public class SelectPic extends BasicWindow{
   		Bfin.addSelectionListener(new SelectionListener() {
   			@Override
   			public void widgetSelected(SelectionEvent arg0) {
-  					getDisplay().syncExec(new Runnable() {
-  					@Override
-  					public void run() {
+  					//getDisplay().syncExec(new Runnable() {
+  					//@Override
+  					//public void run() {
   						if(Option1.getSelection()==true)
   							choise=2;
   						if(Option2.getSelection()==true)
@@ -118,8 +117,8 @@ public class SelectPic extends BasicWindow{
   							choise=999;
   						shell.dispose();
   					}
-  				});
-  			}
+  				//});
+  			//}
   			
   			
   			@Override
@@ -130,9 +129,9 @@ public class SelectPic extends BasicWindow{
 			
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-					getDisplay().syncExec(new Runnable() {
-					@Override
-					public void run() {
+					//getDisplay().syncExec(new Runnable() {
+					//@Override
+					//public void run() {
 						if(OrPic.getSelection()==true){
 							//Disabling ireleavent
 							LBUseDef.setEnabled(false);
@@ -153,8 +152,8 @@ public class SelectPic extends BasicWindow{
 							LBPicPath.setEnabled(false);
 						}
 
-					}
-				});
+					//}
+				//});
 				
 			}
 			@Override
@@ -197,6 +196,7 @@ public class SelectPic extends BasicWindow{
 	            	}
 	            	str=null;
 	            }
+	            getDisplay().dispose();
 			}
 		});
 	}

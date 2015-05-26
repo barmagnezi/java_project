@@ -40,11 +40,11 @@ public class MazeViewWidget extends Canvas {
 	String mazeName="Not loaded maze";
 	Maze maze=null;
 	int steps=0;
+	int clue=0;
 	ViewGUI ViewGUI=new ViewGUI(this);
 	boolean Diagonals =true; //!!!!!need to know by the presenter
 	
 	public Boolean checkMotionFlag=new Boolean(false); //for check motion function 
-	boolean good=true;
 	Label LBmazeName;
 	Label LHelp;
 	Label LBsteps;
@@ -92,6 +92,7 @@ public class MazeViewWidget extends Canvas {
 						System.out.println("MazeDisplayer.showMaze(maze,true);");
 						MazeDisplayer.Startover(maze);
 						steps=0;
+						clue=0;
 						load();
 						MazeDisplayer.setFocus();
 					}
@@ -208,9 +209,8 @@ public class MazeViewWidget extends Canvas {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
 				if(CharactersButtons[1].getSelection()==true){
-					SelectPic SP= new SelectPic("Select a picture",300,230, getDisplay(),MazeDisplayer.getCharOp());
+					SelectPic SP= new SelectPic("Select a picture",300,230, getDisplay(), MazeDisplayer.getCharOp());
 					SP.run();
-					
 					if(SP.getStr()==null){
 						MazeDisplayer.changeCharacter(SP.getChoise(), null, null);
 					}else
@@ -440,7 +440,8 @@ public class MazeViewWidget extends Canvas {
 	}
 	public void load(){
 		LBmazeName.setText("Maze name: "+mazeName);
-		LBsteps.setText("Number of steps: "+String.valueOf(steps));
+		LBsteps.setText("Number of steps: "+String.valueOf(steps)+"\tNumber of clues: "+String.valueOf(clue));
+		
 	}
 	
 	public void generateMaze(String name,int rows,int cols){
@@ -460,33 +461,21 @@ public class MazeViewWidget extends Canvas {
 		int x=MazeDisplayer.character.getRealx();
 		int y=MazeDisplayer.character.getRealy();
 		MazeSearchable MS = new MazeSearchable(maze, maze.getCell(y, x), maze.getCell(maze.getRows()-1, maze.getCols()-1), Diagonals, 10, 15); //new MazeSearchable(maze, false);	
-		CommonSearcher se=new AstarSearcher(new MazeAirDistance());
+		CommonSearcher se=new AstarSearcher(new MazeAirDistance());			//   CELL(ROW,COL)
 		Solution Sol=se.search(MS);
-
-		String last[] = Sol.toString().split("->");
-		//System.out.println(good);
-		//Next step(clue) is:
-		if(x!=maze.getCols()-1 || y!=maze.getRows()-1)
-			good=true;
-		if(good){		//if good=false we have finished, next iteration will be error without this if.
-			boolean inflag=true;
-			//System.out.println(last[0]);
-			if(x==maze.getCols()-1 && y==maze.getRows()-1 || x==maze.getCols()-2 && y==maze.getRows()-1 || x==maze.getCols()-1 && y==maze.getRows()-2)
-				inflag=false;
-			if(inflag){
-				int Cluex=Character.getNumericValue(last[1].charAt(0));
-				int Cluey=Character.getNumericValue(last[1].charAt(2));
-				//System.out.println(maze.getCols());
-				if(Cluex==maze.getCols()-1 && Cluey==maze.getRows()-1)
-					good=false;
-				if(Cluex!=maze.getCols() && Cluey!=maze.getRows())
-					MazeDisplayer.mark(Cluey, Cluex);		//Swap because in the solver it set as col,row and here its x,y
-				//System.out.println(good);
-				//System.out.println(last[0]);
-				//System.out.println("next x is: "+Cluex+" next y is: "+Cluey);
-			}else
-				MazeDisplayer.mark(maze.getRows()-1, maze.getCols()-1);
+		String last[] = Sol.toString().split("->");	//COL,ROW-->COL,ROW
+		if(last.length>1){
+			clue++;
+			int Cluex=Character.getNumericValue(last[1].charAt(0));
+			int Cluey=Character.getNumericValue(last[1].charAt(2));
+			MazeDisplayer.mark(Cluey, Cluex);
+			load();
+			checkwin(Cluey , Cluex);
 		}
+		else{
+			checkwin(maze.getCols()-1 , maze.getRows()-1);
+		}
+			
 	}
 	
 	public void displayMaze(algorithms.mazeGenerators.Maze m) {
@@ -694,7 +683,7 @@ public class MazeViewWidget extends Canvas {
 	
 	public void checkwin(int x,int y){
 		if(x==maze.getCols()-1 && y==maze.getRows()-1)
-			new winnerPage("winner", 270, 250, getDisplay(), steps).run();
+			new winnerPage("winner", 270, 240, getDisplay(), steps, clue).run();
 	}
 
 }
