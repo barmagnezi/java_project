@@ -1,13 +1,8 @@
 package view.viewGUI.mazeViewWidjet;
 
-import java.awt.Color;
 import java.util.Observer;
 
-import model.MazeSearchableFixed;
-
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.FocusEvent;
-import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.SelectionEvent;
@@ -29,7 +24,6 @@ import algorithms.demo.MazeSearchable;
 import algorithms.mazeGenerators.Maze;
 import algorithms.search.CommonSearcher;
 import algorithms.search.Solution;
-import algorithms.search.State;
 import algorithms.search.aStar.AstarSearcher;
 import algorithms.search.aStar.MazeAirDistance;
 import view.View;
@@ -450,6 +444,10 @@ public class MazeViewWidget extends Canvas {
 	
 	public void loadMaze(String name){
 		ViewGUI.displaymaze(name);	
+		if(MazeDisplayer.character!=null){								// Is this Ok ????????????????????????????????????????????????????????????????
+			MazeDisplayer.character.setRealx(0);
+			MazeDisplayer.character.setRealy(0);
+		}
 	}
 	
 	public void solve(String name){

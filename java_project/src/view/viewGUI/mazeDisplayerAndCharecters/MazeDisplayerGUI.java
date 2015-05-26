@@ -160,18 +160,10 @@ public class MazeDisplayerGUI extends Canvas {
 		character.setRealx(x);
 		character.setRealy(y);
 		solveFlag=true;
-		//synchronized(character){
-			redraw();
-		//	character.notify();
-		//}
+		redraw();
 
 	}
 	
-	/*private void RestorePos(){	//Restoring old position
-		character.setRealx(Oldx);
-		character.setRealy(Oldy);
-		Oldx=Oldy=0;
-	}*/
 	public void startAnimation(long delay){
 		myTask = new TimerTask() {
 			@Override

@@ -33,7 +33,6 @@ import algorithms.search.Solution;
 
 //For temp fix:
 import algorithms.search.BFSSearcher;
-import algorithms.search.State;
 import algorithms.search.aStar.AstarSearcher;
 
 /**

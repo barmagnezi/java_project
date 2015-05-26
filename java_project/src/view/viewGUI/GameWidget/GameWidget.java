@@ -100,8 +100,8 @@ public class GameWidget extends BasicWindow {
 			@Override
 			public void helpRequested(HelpEvent arg0) {
 				MessageBox messageBox = new MessageBox(shell,  SWT.OK);
-				messageBox.setMessage("help.........");
-				messageBox.setText("help");
+				messageBox.setMessage("Senia Kalma - 321969941\nBar Magnezi - 209043827 \n\t\t\t\tEnjoy.");
+				messageBox.setText("Help");
 				messageBox.open();
 			}
 		});

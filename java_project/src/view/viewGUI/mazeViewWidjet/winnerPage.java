@@ -14,17 +14,12 @@ import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Rectangle;
-import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
-import org.eclipse.swt.widgets.MessageBox;
-import org.eclipse.swt.widgets.Shell;
-
 import view.viewGUI.GameWidget.BasicWindow;
 
 
@@ -36,7 +31,6 @@ public class winnerPage extends BasicWindow {
 	File file = new File("resources/music/champions.wav");
 	AudioInputStream stream;
 	Clip clip;
-	int counter=0;
 	
 	public winnerPage(String title, int width, int height,Display display,int steps,int clues) {
 		super(title,width,height,display);
@@ -63,20 +57,13 @@ public class winnerPage extends BasicWindow {
 		LBUseDef.setFont(font);
 		LBUseDef.setForeground(display.getSystemColor(SWT.COLOR_BLUE));
 		LBUseDef.setLayoutData(new GridData(SWT.CENTER, SWT.TOP, false, false, 1, 1));
+		clip.start();
 		shell.addMouseListener(new MouseListener() {
-			
 			@Override
 			public void mouseUp(MouseEvent arg0) {
-				if(counter==0){
-				    clip.start();
-					counter++;
-				}else{
-					if(clip.isActive())
-						clip.close();
-					shell.dispose();
-				}
-					
-				
+				if(clip.isActive())
+					clip.close();
+				shell.dispose();
 			}
 			
 			@Override
@@ -90,10 +77,8 @@ public class winnerPage extends BasicWindow {
 			@Override
 			public void handleEvent(Event arg) {
 	            	arg.doit = true;
-					if(clip.isActive())
-						clip.close();
-					else
-						clip.start();
+	            	if(clip.isActive())
+	            		clip.close();
 			}
 		});
 		shell.addControlListener(new ControlAdapter() {
