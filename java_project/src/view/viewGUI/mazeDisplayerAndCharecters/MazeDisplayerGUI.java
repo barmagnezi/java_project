@@ -72,7 +72,8 @@ public class MazeDisplayerGUI extends Canvas {
 				if(character==null){
 					setCharacter(0,0);
 				}
-				//The Frame
+				//if(Moved==false){
+					//The Frame
 					//Two rows
 					arg0.gc.fillRectangle(0,0,wallWidth*width,wallHeight);
 					arg0.gc.fillRectangle(0,wallHeight*height,getSize().x,getSize().y);	
@@ -92,6 +93,8 @@ public class MazeDisplayerGUI extends Canvas {
 						if(c.getRightWall().isExist())
 							arg0.gc.fillRectangle( (((j+1)*5)) *wallWidth, (i+(1+i*4)) *wallHeight,wallWidth,wallHeight*4);
 					}
+				//}
+
 				
 				/*if(solveFlag==true){
 					character.solveStep(arg0, wallWidth*4, wallHeight*4);
@@ -247,6 +250,7 @@ public class MazeDisplayerGUI extends Canvas {
 			Oldy=this.character.getRealy();
 		}
 		if(resetChar==false){	//If Background changed
+			Moved=false;
 			if(m!=maze){
 				maze=m;
 			}
