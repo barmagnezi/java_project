@@ -176,8 +176,15 @@ public class MazeDisplayerGUI extends Canvas {
 			    			if(!character.isAnimation()){
 			    				//myTask.cancel();
 			    				timer.cancel();
+			    				timer=null;
 			    				frame=0;
 			    				//return;
+			    			}
+			    			else{
+			    				if(timer==null){
+			    					timer = new Timer();
+			    					timer.scheduleAtFixedRate(myTask, 0, delay);
+			    				}
 			    			}
 			    			if(character!=null && charOp!=1 && charOp!=2 && charOp!=989 && charOp!=999 && character.getLoader().data!=null){
 			    				if(frame==character.getLoader().data.length-1)
@@ -301,7 +308,7 @@ public class MazeDisplayerGUI extends Canvas {
 	private void paintsolution(PaintEvent arg0, int Width,int Height) {
 		Stack<State> stack = new Stack<State>();
 		stack.addAll(sol.getSol());
-		System.out.println(stack.size());
+		//System.out.println(stack.size());
 		long time;
 		if(stack.size()*200<7000)
 			 time=200;
