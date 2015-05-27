@@ -40,7 +40,7 @@ public class MazeDisplayerGUI extends Canvas {
 	
 	boolean Moved=false;
 	
-	int frame;		//For animation
+	int frame=0;		//For animation
 	TimerTask myTask;
 	Timer timer;
 	
@@ -66,7 +66,7 @@ public class MazeDisplayerGUI extends Canvas {
 				if(lastPaint!=null)
 					lastPaint.dispose();
 				lastPaint=arg0.gc;
-				arg0.gc.setBackgroundPattern(new Pattern(null, new Image(null, scrWalls)));
+				arg0.gc.setBackgroundPattern(new Pattern(null, new Image(null, System.getProperty("user.dir")+"/"+scrWalls)));
 				wallWidth=getSize().x/width;
 				wallHeight=getSize().y/height;
 				if(character==null){
@@ -93,11 +93,11 @@ public class MazeDisplayerGUI extends Canvas {
 							arg0.gc.fillRectangle( (((j+1)*5)) *wallWidth, (i+(1+i*4)) *wallHeight,wallWidth,wallHeight*4);
 					}
 				
-				if(solveFlag==true){
+				/*if(solveFlag==true){
 					character.solveStep(arg0, wallWidth*4, wallHeight*4);
 					solveFlag=false;
 				}
-				else
+				else*/
 					character.paint(arg0, wallWidth*4, wallHeight*4);
 				if(printsol==true){
 					paintsolution(arg0, wallWidth*4, wallHeight*4);
@@ -173,12 +173,18 @@ public class MazeDisplayerGUI extends Canvas {
 
 			    		@Override
 			    		public void run() {
-			    			if(character!=null && charOp!=1 && charOp!=2 && charOp!=989 && charOp!=999 ){
+			    			if(!character.isAnimation()){
+			    				myTask=null;
+			    				frame=0;
+			    				return;
+			    			}
+			    			if(character!=null && charOp!=1 && charOp!=2 && charOp!=989 && charOp!=999 && character.getLoader().data!=null){
 			    				if(frame==character.getLoader().data.length-1)
 			    					frame=0;
 			    				else
 			    					frame++;
-			    			}
+			    			}else
+			    				frame=0;
 			    		   if(myTask!=null)
 			    			   redraw();
 			    		}

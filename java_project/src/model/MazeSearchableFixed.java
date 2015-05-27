@@ -86,7 +86,7 @@ public class MazeSearchableFixed extends MazeSearchable {
 				if(maze.getCell(row+1, col).getRightWall().isExist() &&    //.
 						maze.getCell(row, col+1).getBottomWall().isExist())// |-
 					flag=false;
-				if(maze.getCell(row, col).getRightWall().isExist()&&			// . |
+				if(maze.getCell(row, col).getRightWall().isExist() &&			// . |
 						maze.getCell(row+1, col).getRightWall().isExist())		//   |
 					flag=false;
 				if(maze.getCell(row, col).getBottomWall().isExist()&&			//.

@@ -2,6 +2,8 @@ package view.viewGUI.mazeViewWidjet;
 
 import java.util.Observer;
 
+import model.MazeSearchableFixed;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
@@ -458,7 +460,7 @@ public class MazeViewWidget extends Canvas {
 		//System.out.println("clue");
 		int x=MazeDisplayer.character.getRealx();
 		int y=MazeDisplayer.character.getRealy();
-		MazeSearchable MS = new MazeSearchable(maze, maze.getCell(y, x), maze.getCell(maze.getRows()-1, maze.getCols()-1), Diagonals, 10, 15); //new MazeSearchable(maze, false);	
+		MazeSearchable MS = new MazeSearchableFixed(maze, maze.getCell(y, x), maze.getCell(maze.getRows()-1, maze.getCols()-1), Diagonals, 10, 15); //new MazeSearchable(maze, false);	
 		CommonSearcher se=new AstarSearcher(new MazeAirDistance());			//   CELL(ROW,COL)
 		Solution Sol=se.search(MS);
 		String last[] = Sol.toString().split("->");	//COL,ROW-->COL,ROW
