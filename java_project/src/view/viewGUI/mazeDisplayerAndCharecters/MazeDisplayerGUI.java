@@ -174,9 +174,10 @@ public class MazeDisplayerGUI extends Canvas {
 			    		@Override
 			    		public void run() {
 			    			if(!character.isAnimation()){
-			    				myTask=null;
+			    				//myTask.cancel();
+			    				timer.cancel();
 			    				frame=0;
-			    				return;
+			    				//return;
 			    			}
 			    			if(character!=null && charOp!=1 && charOp!=2 && charOp!=989 && charOp!=999 && character.getLoader().data!=null){
 			    				if(frame==character.getLoader().data.length-1)
