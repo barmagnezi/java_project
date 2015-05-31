@@ -292,7 +292,7 @@ public class MyModel extends Observable implements Model {
 	public void readHashmapsFromFile()
 	{
 		try {
-			System.out.println(properties.FileDataMazes);
+			//System.out.println(properties.FileDataMazes);
 			BufferedReader in=new BufferedReader(new HuffmanReader(new FileInputStream(properties.FileDataMazes)));
 			//BufferedReader in=new BufferedReader(new InputStreamReader(new FileInputStream(properties.FileDataMazes)));
 			String line;
@@ -322,7 +322,7 @@ public class MyModel extends Observable implements Model {
 	}
 	@Override
 	public String getClue(String arg) {
-		System.out.println(arg);
+		//System.out.println(arg);
 		String[] nameIndex=arg.split(" ");
 		Maze maze=nameMaze.get(nameIndex[0]);
 		String[] rowCol = nameIndex[1].split(",");
@@ -335,11 +335,11 @@ public class MyModel extends Observable implements Model {
 			Solver=new AstarSearcher(new MazeAirDistance());
 		Solution Sol = Solver.search(ME);
 		String last[] = Sol.toString().split("->");	//COL,ROW-->COL,ROW
-		Sol.print();
+		//Sol.print();
 		String[] nxt =last[1].split("x");
 		int Cluecol=Integer.parseInt(nxt[0]);
 		int Cluerow=Integer.parseInt(nxt[1]);
-		System.out.println(Cluerow+","+Cluecol);
+		//System.out.println(Cluerow+","+Cluecol);
 		return Cluerow+","+Cluecol;
 	}
 	// ===================================   HIBERNATE   =====================================================

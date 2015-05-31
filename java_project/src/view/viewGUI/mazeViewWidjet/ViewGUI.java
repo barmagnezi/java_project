@@ -23,7 +23,7 @@ public class ViewGUI extends Observable implements View{
 	}
 	
 	public void setCommands(HashMap<String, Command> commands) {
-		System.out.println(commands.size());
+		//System.out.println(commands.size());
 		this.commands=commands;
 	}
 
