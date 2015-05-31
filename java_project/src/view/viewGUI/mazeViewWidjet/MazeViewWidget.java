@@ -4,6 +4,7 @@ import java.util.Observer;
 
 import model.MazeSearchableFixed;
 
+import org.apache.derby.tools.sysinfo;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
@@ -541,8 +542,10 @@ public class MazeViewWidget extends Canvas {
 		String last[] = Sol.toString().split("->");	//COL,ROW-->COL,ROW
 		if(last.length>1){
 			clue++;
-			int Cluex=Character.getNumericValue(last[1].charAt(0));
-			int Cluey=Character.getNumericValue(last[1].charAt(2));
+			String[] nxt =last[1].split("x");
+			int Cluex=Integer.parseInt(nxt[0]);
+			int Cluey=Integer.parseInt(nxt[1]);
+			Sol.print();
 			MazeDisplayer.mark(Cluey, Cluex);
 			load();
 			checkwin(Cluey , Cluex);
