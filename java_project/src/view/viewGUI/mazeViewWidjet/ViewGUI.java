@@ -58,7 +58,7 @@ public class ViewGUI extends Observable implements View{
 	}
 
 	public void getclue(int row,int col){
-		commandsList.add(commands.get("getClue"));
+		commandsList.add(commands.get("GetClue"));
 		this.setChanged();
 		this.notifyObservers(Widget.mazeName+" "+row+","+col);
 		

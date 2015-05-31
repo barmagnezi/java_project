@@ -17,6 +17,7 @@ import java.util.Stack;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.GC;
@@ -57,7 +58,7 @@ public class MazeDisplayerGUI extends Canvas {
 	Timer timer;
 	
 	public MazeDisplayerGUI(Composite parent, int style,String scrBackground,String scrwalls) {
-		super(parent, style);
+		super(parent, style | SWT.DOUBLE_BUFFERED);
 		this.scrBackground=scrBackground;
 		this.scrWalls=scrwalls;
 		setBackgroundImage(new Image(null, "resources/images/mazedisplayerbackground.png"));
