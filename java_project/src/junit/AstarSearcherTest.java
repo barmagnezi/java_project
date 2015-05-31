@@ -1,22 +1,14 @@
 package junit;
 
 import static org.junit.Assert.*;
-
-import java.util.Iterator;
 import java.util.Stack;
-
 import model.MazeSearchableFixed;
-
 import org.junit.Test;
-
-import algorithms.demo.MazeSearchable;
 import algorithms.mazeGenerators.DFSMazeGenerator;
 import algorithms.mazeGenerators.Maze;
 import algorithms.search.Searchable;
-import algorithms.search.Solution;
 import algorithms.search.State;
 import algorithms.search.aStar.MazeAirDistance;
-import algorithms.search.aStar.MazeManhhetenDistance;
 
 public class AstarSearcherTest {
 

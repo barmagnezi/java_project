@@ -2,9 +2,6 @@ package view.viewGUI.mazeViewWidjet;
 
 import java.util.Observer;
 
-import model.MazeSearchableFixed;
-
-import org.apache.derby.tools.sysinfo;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
@@ -15,26 +12,18 @@ import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.RGB;
-import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.ColorDialog;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.MessageBox;
-
-import algorithms.demo.MazeSearchable;
 import algorithms.mazeGenerators.Maze;
-import algorithms.search.CommonSearcher;
 import algorithms.search.Solution;
-import algorithms.search.aStar.AstarSearcher;
-import algorithms.search.aStar.MazeAirDistance;
 import view.View;
 import view.viewGUI.mazeDisplayerAndCharecters.MazeDisplayerGUI;
 
@@ -447,7 +436,6 @@ public class MazeViewWidget extends Canvas {
 		    MazeDisplayer.addMouseListener(new MouseListener() {
 				@Override
 				public void mouseDown(MouseEvent e) {
-					Rectangle rect = parent.getBounds();
 		            Point pt1 = parent.toDisplay(0, 0);
 		            Point pt2 = getShell().toDisplay(e.x, e.y);
 		            offset[0] = new Point(pt2.x - pt1.x, pt2.y - pt1.y);
@@ -619,17 +607,11 @@ public class MazeViewWidget extends Canvas {
 		
 		MessageBox messageBox = new MessageBox(this.getShell(),  SWT.OK);
 		messageBox.setMessage(msg);
-		messageBox.setText("MESSEGE");
+		messageBox.setText("Message");
 		messageBox.open();
 	}
 	public View getView() {
 		return ViewGUI;
-	}
-	public void showClue(String clue) {
-		String[] RowCol=clue.split(",");
-		int row=Integer.parseInt(RowCol[0]);
-		int col=Integer.parseInt(RowCol[1]);
-		///need print the clue on the 
 	}
 	public void setMazeName(String name){
 		mazeName=name;
@@ -642,57 +624,7 @@ public class MazeViewWidget extends Canvas {
 	public void start() {
 		ViewGUI.start();
 	}
-	/*public boolean checkMotion(int CurrentX,int CurrentY,int nextX,int nextY){
-		boolean flag=true;
-		//System.out.println();
-		if(nextX<0 || nextY<0)
-			return false;
-		//for Diagonals
-		if(CurrentX!= nextX && CurrentY!=nextY){
-			if(nextX>maze.getCols()-1 ||nextY>maze.getRows()-1)
-				return false;
-			int i=0;
-			if(CurrentX+1==nextX)
-				if(maze.getCell(CurrentY, CurrentX).getRightWall().isExist())
-					i++;
-			if(CurrentX-1==nextX)
-				if(maze.getCell(CurrentY, nextX).getRightWall().isExist())
-					i++;
-			if(CurrentY+1==nextY)
-				if(maze.getCell(CurrentY, CurrentX).getBottomWall().isExist())
-					i++;
-			System.out.println(CurrentX+","+CurrentY);
-			if(CurrentY-1==nextY){maze.getCell(nextY, CurrentX).printRowCol();
-				if(maze.getCell(nextY, CurrentX).getBottomWall().isExist())
-					i++;}
-			if(i==2)
-				return false;
-			return true;
-		}
-		if(CurrentX+1==nextX)
-			flag=flag&&(!maze.getCell(CurrentY, CurrentX).getRightWall().isExist());
-		if(CurrentX-1==nextX)
-			flag=flag&&(!maze.getCell(nextY, nextX).getRightWall().isExist());
-		if(CurrentY+1==nextY)
-			flag=flag&&(!maze.getCell(CurrentY, CurrentX).getBottomWall().isExist());
-		if(CurrentY-1==nextY)
-			flag=flag&&(!maze.getCell(nextY, nextX).getBottomWall().isExist());
-		return flag;
-	}*/
-	
-	
-	/*The way with model(better)
-	public boolean checkMotion(int CurrentX,int CurrentY,int nextX,int nextY){
-		ViewGUI.checkMotion(mazeName, CurrentY, CurrentX, nextY, nextX);
-		try {
-			checkMotionFlag.wait();
-			return checkMotionFlag;
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-		return false;
-	}
-	*/
+
 	public boolean CheckMotion(int CurrentX,int CurrentY,int nextX,int nextY){
 		boolean flag=true;
 		//System.out.println();

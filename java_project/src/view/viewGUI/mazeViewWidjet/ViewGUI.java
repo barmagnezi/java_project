@@ -100,8 +100,6 @@ public class ViewGUI extends Observable implements View{
 
 	@Override
 	public void displayString(String msg) {
-		if(msg.startsWith("clue:"))
-			Widget.showClue(msg.substring(5));
 		Widget.displayString(msg);
 	}
 

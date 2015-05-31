@@ -2,7 +2,6 @@ package boot;
 
 import algorithms.demo.MazeSearchable;
 import algorithms.mazeGenerators.DFSMazeGenerator;
-import algorithms.mazeGenerators.Maze;
 import algorithms.search.Searchable;
 import algorithms.search.Solution;
 import algorithms.search.aStar.AstarSearcher;
