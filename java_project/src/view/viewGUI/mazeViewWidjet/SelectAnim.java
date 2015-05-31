@@ -18,6 +18,12 @@ import org.eclipse.swt.widgets.MessageBox;
 
 import view.viewGUI.GameWidget.BasicWindow;
 
+/**
+* Small window with input boxes for choosing an animation as the character.
+* @author  Bar Magnezi and Senia Kalma
+* @version 1.0
+* @since 31.5.2015
+*/
 public class SelectAnim extends BasicWindow{
 	int hight,witdh;
 	int choise;
@@ -36,8 +42,6 @@ public class SelectAnim extends BasicWindow{
 	@Override
 	protected void initWidgets() {
 		shell.setLayout(new GridLayout(3,false));
-		//shell.setBackgroundImage(new Image(null, "resources/images/background.png"));
-		//shell.setBackgroundMode(SWT.INHERIT_FORCE);
 		Label LBUseDef = new Label(shell, SWT.NONE);
 		LBUseDef.setText("Use deults:");
 		LBUseDef.setLayoutData(new GridData(SWT.LEFT, SWT.TOP, false, false, 3, 1));
@@ -75,9 +79,6 @@ public class SelectAnim extends BasicWindow{
   		BLoad.addSelectionListener(new SelectionListener() {
   			@Override
   			public void widgetSelected(SelectionEvent arg0) {
-  					//getDisplay().syncExec(new Runnable() {
-  					//@Override
-  					//public void run() {
   						FileDialog fd=new FileDialog(shell,SWT.OPEN);
   						fd.setText("Open");
   						fd.setFilterPath("");
@@ -87,8 +88,6 @@ public class SelectAnim extends BasicWindow{
   						fd.setFilterNames(names);
   						fd.setFilterExtensions(filterExt);
   						str=fd.open();
-  					//}
-  				//});
   			}
   			
   			@Override
@@ -101,17 +100,12 @@ public class SelectAnim extends BasicWindow{
   		Bfin.addSelectionListener(new SelectionListener() {
   			@Override
   			public void widgetSelected(SelectionEvent arg0) {
-  					//getDisplay().syncExec(new Runnable() {
-  					//@Override
-  					//public void run() {
   						if(Option1.getSelection()==true)
   							choise=3;
   						if(Option2.getSelection()==true)
   							choise=4;
   						shell.dispose();
   					}
-  				//});
-  			//}
   			
   			
   			@Override
@@ -122,9 +116,6 @@ public class SelectAnim extends BasicWindow{
 			
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-					//getDisplay().syncExec(new Runnable() {
-					//@Override
-					//public void run() {
 						if(OrPic.getSelection()==true){
 							//Disabling ireleavent
 							LBUseDef.setEnabled(false);
@@ -141,11 +132,7 @@ public class SelectAnim extends BasicWindow{
 							//Disabling irelevnt
 							BLoad.setEnabled(false);
 							LBPicPath.setEnabled(false);
-						}
-
-					//}
-				//});
-				
+						}			
 			}
 			@Override
 			public void widgetDefaultSelected(SelectionEvent arg0) {
@@ -190,6 +177,9 @@ public class SelectAnim extends BasicWindow{
 	
 	@Override
 	public void run() {
+		/**
+		 * Overrides run for not closing all the open windows when clicking exit.
+		 */
 		initWidgets();
 		shell.open();
 		// main event loop
