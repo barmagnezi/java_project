@@ -17,6 +17,12 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.MessageBox;
 import view.viewGUI.GameWidget.BasicWindow;
 
+/**
+* Small window with input boxes for choosing a picture as the character.
+* @author  Bar Magnezi and Senia Kalma
+* @version 1.0
+* @since 31.5.2015
+*/
 public class SelectPic extends BasicWindow{
 	int hight,witdh;
 	int choise;
@@ -201,6 +207,9 @@ public class SelectPic extends BasicWindow{
 	
 	@Override
 	public void run() {
+		/**
+		 * Overrides run for not closing all the open windows when clicking exit.
+		 */
 		initWidgets();
 		shell.open();
 		// main event loop

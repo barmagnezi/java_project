@@ -22,8 +22,12 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import view.viewGUI.GameWidget.BasicWindow;
 
-
-
+/**
+* Small window with the winner information and music.
+* @author  Bar Magnezi and Senia Kalma
+* @version 1.0
+* @since 31.5.2015
+*/
 public class winnerPage extends BasicWindow {
 
 	public int steps;
