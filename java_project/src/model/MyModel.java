@@ -321,8 +321,15 @@ public class MyModel extends Observable implements Model {
 	}
 	@Override
 	public String getClue(String arg) {
-		// TODO Auto-generated method stub
-		return null;
+		String[] nameIndex=arg.split(" ");
+		Maze maze=nameMaze.get(nameIndex[0]);
+		String[] rowCol = nameIndex[1].split(",");
+		int row=Integer.parseInt(rowCol[0]);
+		int col=Integer.parseInt(rowCol[1]);
+		Searchable ME=new MazeSearchableFixed(maze, maze.getCell(row, col), maze.getCell(maze.getRows()-1,maze.getCols()-1), properties.isDiag(), 10, 15);
+		Solver.search(ME);
+		this.setChanged();
+		this.notifyObservers(cluex+","+cluey);
 	}
 	// ===================================   HIBERNATE   =====================================================
 	

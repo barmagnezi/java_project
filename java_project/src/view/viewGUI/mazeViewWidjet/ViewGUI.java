@@ -57,10 +57,10 @@ public class ViewGUI extends Observable implements View{
 		this.notifyObservers(name);
 	}
 
-	public void getclue(int x,int y){
+	public void getclue(int row,int col){
 		commandsList.add(commands.get("getClue"));
 		this.setChanged();
-		this.notifyObservers(x+" "+y);
+		this.notifyObservers(Widget.mazeName+" "+row+","+col);
 		
 	}
 	public void setproperties(String path) {
@@ -106,11 +106,17 @@ public class ViewGUI extends Observable implements View{
 	}
 
 	@Override
+	public void displayClue(String clue) {
+		Widget.displayClue(clue);
+	}
+
+	/*not work
+	@Override
 	public void getData(Object Data, String details) {
 		if(details.equals("checkMotion"))
 			Widget.checkMotionFlag=(Boolean) Data;
 		Widget.checkMotionFlag.notify();
-	}
+	}*/
 
 
 	

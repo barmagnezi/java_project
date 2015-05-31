@@ -40,7 +40,7 @@ import view.viewGUI.mazeDisplayerAndCharecters.MazeDisplayerGUI;
 
 public class MazeViewWidget extends Canvas {
 
-	String mazeName="Not loaded maze";
+	public String mazeName="Not loaded maze";
 	Maze maze=null;
 	int steps=0;
 	int clue=0;
@@ -536,8 +536,9 @@ public class MazeViewWidget extends Canvas {
 		//System.out.println("clue");
 		int x=MazeDisplayer.character.getRealx();
 		int y=MazeDisplayer.character.getRealy();
-		MazeSearchable MS = new MazeSearchableFixed(maze, maze.getCell(y, x), maze.getCell(maze.getRows()-1, maze.getCols()-1), Diagonals, 10, 15); //new MazeSearchable(maze, false);	
-		CommonSearcher se=new AstarSearcher(new MazeAirDistance());			//   CELL(ROW,COL)
+		ViewGUI.getclue(y, x);
+		/*MazeSearchable MS = new MazeSearchableFixed(maze, maze.getCell(y, x), maze.getCell(maze.getRows()-1, maze.getCols()-1), Diagonals, 10, 15); //new MazeSearchable(maze, false);	
+		commonSearcher se=new AstarSearcher(new MazeAirDistance());			//   CELL(ROW,COL)
 		Solution Sol=se.search(MS);
 		String last[] = Sol.toString().split("->");	//COL,ROW-->COL,ROW
 		if(last.length>1){
@@ -552,8 +553,16 @@ public class MazeViewWidget extends Canvas {
 		}
 		else{
 			checkwin(maze.getCols()-1 , maze.getRows()-1);
-		}
+		}*/
 			
+	}
+	public void displayClue(String clue){
+		String[] rowCol=clue.split(",");
+		int Cluex=Integer.parseInt(rowCol[1]);
+		int Cluey=Integer.parseInt(rowCol[0]);
+		MazeDisplayer.mark(Cluey, Cluex);
+		load();
+		checkwin(Cluey , Cluex);
 	}
 	
 	public void displayMaze(algorithms.mazeGenerators.Maze m) {
