@@ -58,12 +58,17 @@ public class MyModelStub extends Observable implements Model {
 		System.out.println("start");
 		
 	}
-
+	@Override
+	public String getClue(String arg) {
+		System.out.println("getclue:"+arg);
+		return arg;
+	}
+	/*dont work
 	@Override
 	public boolean checkMotion(String Mazename, int CurrentRow, int CurrentCol,
 			int nextRow, int nextCol) {
 		System.out.println("checkMotion");
 		return false;
-	}
+	}*/
 
 }

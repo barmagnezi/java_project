@@ -319,7 +319,11 @@ public class MyModel extends Observable implements Model {
 			this.notifyObservers("The file :"+properties.FileDataMazes+" that need to save the mazes not found.\nAfter exit will create new file with the mazes that you create.");
 		}
 	}
-	
+	@Override
+	public String getClue(String arg) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	// ===================================   HIBERNATE   =====================================================
 	
 	public void writeHashmapsToHib(){
@@ -358,11 +362,13 @@ public class MyModel extends Observable implements Model {
 		}
 		session.close();
 	}
-	
+	/*not work
 	public boolean checkMotion(String Mazename,int CurrentRow,int CurrentCol,int nextRow,int nextCol){
 		MazeSearchableFixed MS=new MazeSearchableFixed(nameMaze.get(Mazename), properties.diag);
 		return MS.checkMotion(CurrentRow, CurrentCol, nextRow, nextCol);
 	}
+*/
+
 
 	
 }	//Class close
