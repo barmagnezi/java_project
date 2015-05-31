@@ -7,19 +7,25 @@ import model.MazeSearchableFixed;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
+import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.RGB;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.ColorDialog;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.MessageBox;
 
 import algorithms.demo.MazeSearchable;
@@ -430,6 +436,75 @@ public class MazeViewWidget extends Canvas {
 	  			@Override
 	  			public void widgetDefaultSelected(SelectionEvent arg0) {}
 	  		});
+	  		final Point[] offset = new Point[1];
+		    MazeDisplayer.addMouseListener(new MouseListener() {
+				@Override
+				public void mouseDown(MouseEvent e) {
+					Rectangle rect = parent.getBounds();
+		            Point pt1 = parent.toDisplay(0, 0);
+		            Point pt2 = getShell().toDisplay(e.x, e.y);
+		            offset[0] = new Point(pt2.x - pt1.x, pt2.y - pt1.y);
+				}
+				
+				@Override
+				public void mouseUp(MouseEvent e) {
+		            Point pt1 = parent.toDisplay(0, 0);
+		            Point pt2 = getShell().toDisplay(e.x, e.y);
+		            int Newx=(pt2.x - pt1.x);
+		            int Newy=(pt2.y - pt1.y);
+		            //System.out.println("x: "+Newx + " y: "+Newy+" OLD: "+" x: "+offset[0].x + "y: "+offset[0].y);
+		            int currentX = 0, currentY=0;
+					/*//If char != null		==On character click check - not working prop cuz Click res not in sync with pixel res
+					//e.gc.fillOval((realx*5+1)*Width/4, (realy*5+1)*Hight/4, Width, Hight);
+					System.out.println(offset[0].x);
+					System.out.println((MazeDisplayer.character.getRealx()*5+1)*MazeDisplayer.wallWidth/4);
+					if((MazeDisplayer.character.getRealx()*5+1)*MazeDisplayer.wallWidth/4<offset[0].x ){
+						System.out.println("bigger then char x start");
+					}*/
+		            if(MazeDisplayer.character!=null){
+						currentX=MazeDisplayer.getCharacter().getRealx();
+						currentY=MazeDisplayer.getCharacter().getRealy();
+						
+			            if(Newx-offset[0].x!=0 || Newy-offset[0].y!=0){
+				            if(Math.abs(Newx-offset[0].x) > Math.abs(Newy-offset[0].y)){
+				            	if((Newx-offset[0].x)>0){	//Moved right
+									if(CheckMotion(currentX, currentY, currentX+1, currentY)){
+										MazeDisplayer.CharMoved(1);
+										steps++;
+										checkwin(currentX+1,currentY);
+									}
+				            	}else{	//Moved left
+				            		if(CheckMotion(currentX, currentY, currentX-1, currentY)){
+										MazeDisplayer.CharMoved(3);
+										steps++;
+										checkwin(currentX-1,currentY);
+									}
+				            	}
+				            }else{
+				            	if((Newy-offset[0].y)>0){	//Moved down
+									if(CheckMotion(currentX, currentY, currentX, currentY+1)){
+										MazeDisplayer.CharMoved(4);
+										steps++;
+										checkwin(currentX,currentY+1);
+									}
+				            	}else{	//Moved up
+									if(CheckMotion(currentX, currentY, currentX, currentY-1)){
+										MazeDisplayer.CharMoved(2);
+										steps++;
+										checkwin(currentX,currentY-1);
+									}
+				            	}
+				            }
+			            }
+					}
+		            //offset[0] = new Point(pt2.x - pt1.x, pt2.y - pt1.y);
+				}
+				
+				@Override
+				public void mouseDoubleClick(MouseEvent arg0) {
+				}
+			});
+	  		
 		this.setBackgroundImage(new Image(null, "resources/images/background.png"));
 		load();
 
@@ -446,7 +521,7 @@ public class MazeViewWidget extends Canvas {
 	
 	public void loadMaze(String name){
 		ViewGUI.displaymaze(name);	
-		if(MazeDisplayer.character!=null){								// Is this Ok ????????????????????????????????????????????????????????????????
+		if(MazeDisplayer.character!=null){
 			MazeDisplayer.character.setRealx(0);
 			MazeDisplayer.character.setRealy(0);
 		}
@@ -535,7 +610,7 @@ public class MazeViewWidget extends Canvas {
 	}
 	public void exit(){
 		ViewGUI.exit();
-		MazeDisplayer.stop();/// BAR ================================================= This stops the therad for the animaton, this line ok?
+		MazeDisplayer.stop();
 	}
 	public void start() {
 		ViewGUI.start();

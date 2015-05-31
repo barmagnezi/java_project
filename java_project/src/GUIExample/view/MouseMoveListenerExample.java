@@ -20,7 +20,7 @@ public class MouseMoveListenerExample {
     s = new Shell(d);
 
     s.setSize(250, 200);
-    
+    System.out.println("SENIASE");
     s.setText("A MouseListener Example");
     final Button b = new Button(s, SWT.PUSH);
     b.setText("Push Me");

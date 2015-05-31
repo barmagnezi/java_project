@@ -26,7 +26,7 @@ public class MazeDisplayerGUI extends Canvas {
 	Maze maze;
 	GC lastPaint=null;
 	public CommonCharacter character;
-	int wallWidth = 0, wallHeight = 0;
+	public int wallWidth = 0, wallHeight = 0;
 	
 	boolean printsol=false; //for paint sol
 	Solution sol=null;
@@ -94,8 +94,6 @@ public class MazeDisplayerGUI extends Canvas {
 							arg0.gc.fillRectangle( (((j+1)*5)) *wallWidth, (i+(1+i*4)) *wallHeight,wallWidth,wallHeight*4);
 					}
 				//}
-
-				
 				/*if(solveFlag==true){
 					character.solveStep(arg0, wallWidth*4, wallHeight*4);
 					solveFlag=false;

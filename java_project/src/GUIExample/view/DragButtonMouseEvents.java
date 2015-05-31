@@ -28,6 +28,7 @@ public class DragButtonMouseEvents {
         case SWT.MouseDown:
           Rectangle rect = composite.getBounds();
           if (rect.contains(event.x, event.y)) {
+        	System.out.println("MOUSE DOWN");
             Point pt1 = composite.toDisplay(0, 0);
             Point pt2 = shell.toDisplay(event.x, event.y);
             offset[0] = new Point(pt2.x - pt1.x, pt2.y - pt1.y);
@@ -36,11 +37,13 @@ public class DragButtonMouseEvents {
         case SWT.MouseMove:
           if (offset[0] != null) {
             Point pt = offset[0];
+            System.out.println("MOUSE MOVE");
             composite.setLocation(event.x - pt.x, event.y - pt.y);
           }
           break;
         case SWT.MouseUp:
           offset[0] = null;
+          System.out.println("MOUSE UP");
           break;
         }
       }
