@@ -4,7 +4,7 @@ import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 
 /**
-* The MazeViewWidget Interface(extends Canvas).
+* The MazeViewWidget Interface(extends Canvas) - STUBS.
 * @author  Bar Magnezi and Senia Kalma
 * @version 1.0
 * @since 31.5.2015

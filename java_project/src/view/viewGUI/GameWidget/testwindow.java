@@ -25,7 +25,7 @@ public class testwindow extends BasicWindow {
 			@Override
 			public void helpRequested(HelpEvent arg0) {
 				MessageBox messageBox = new MessageBox(shell,  SWT.OK);
-				messageBox.setMessage("help.........");
+				messageBox.setMessage("Senia Kalma 321969941\nBar Magnezi 209043827");
 				messageBox.setText("help");
 				messageBox.open();
 			}

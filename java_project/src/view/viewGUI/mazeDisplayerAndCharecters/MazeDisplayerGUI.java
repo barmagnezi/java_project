@@ -69,11 +69,6 @@ public class MazeDisplayerGUI extends Canvas {
 			synchronized public void paintControl(PaintEvent arg0) {
 				if(maze==null)
 					return;
-				/*if(character!=null && character.isMoved()){
-					System.out.println("dsv");
-					character.paint(arg0, wallWidth*4, wallHeight*4);
-					return;
-				}*/
 				int width=(maze.getCols()*4+maze.getCols()+1);
 				int height=(maze.getRows()*4+maze.getRows()+1);
 				if(lastPaint!=null)
@@ -331,7 +326,6 @@ public class MazeDisplayerGUI extends Canvas {
 	private void paintsolution(PaintEvent arg0, int Width,int Height) {
 		Stack<State> stack = new Stack<State>();
 		stack.addAll(sol.getSol());
-		//System.out.println(stack.size());
 		long time;
 		if(stack.size()*200<7000)
 			 time=200;
