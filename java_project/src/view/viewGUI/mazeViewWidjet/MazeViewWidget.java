@@ -563,6 +563,7 @@ public class MazeViewWidget extends Canvas {
 		MazeDisplayer.mark(Cluey, Cluex);
 		load();
 		checkwin(Cluey , Cluex);
+		this.clue++;
 	}
 	
 	public void displayMaze(algorithms.mazeGenerators.Maze m) {
