@@ -4,6 +4,13 @@ import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
 
+/**
+* Picture character class, extending CommonCharacter and overrides the default painter for the a picture painter,
+* while scaling the recievd image.
+* @author  Bar Magnezi and Senia Kalma
+* @version 1.0
+* @since 31.5.2015
+*/
 public class PicCharacter extends CommonCharacter{
 	
 	 public PicCharacter(int realx, int realy) {

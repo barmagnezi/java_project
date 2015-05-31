@@ -17,6 +17,12 @@ import org.eclipse.swt.widgets.Text;
 
 import view.viewGUI.mazeViewWidjet.MazeViewWidget;
 
+/**
+* Small window with input boxes for setting a new maze.
+* @author  Bar Magnezi and Senia Kalma
+* @version 1.0
+* @since 31.5.2015
+*/
 public class CreateNMaze extends BasicWindow{
 	int hight, witdh;
 

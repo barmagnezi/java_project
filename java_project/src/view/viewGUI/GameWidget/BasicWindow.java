@@ -9,6 +9,12 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
+/**
+* BasicWindow abstract class extending Observable and implements Runnable, setting the default window parameters.
+* @author  Bar Magnezi and Senia Kalma
+* @version 1.0
+* @since 31.5.2015
+*/
 public abstract class BasicWindow extends Observable implements Runnable{
 
 	protected Display display;

@@ -7,7 +7,12 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.ImageLoader;
 import org.eclipse.swt.graphics.RGB;
 
-
+/**
+* CommonCharacter abstract class, containing all the function and all the variables needed for most of the characters.
+* @author  Bar Magnezi and Senia Kalma
+* @version 1.0
+* @since 31.5.2015
+*/
 public abstract class CommonCharacter {
 	
 	public CommonCharacter(int realx, int realy) {
