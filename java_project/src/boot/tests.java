@@ -1,8 +1,19 @@
 package boot;
 
+import algorithms.demo.MazeSearchable;
+import algorithms.mazeGenerators.DFSMazeGenerator;
+import algorithms.mazeGenerators.Maze;
+import algorithms.search.Searchable;
+import algorithms.search.Solution;
+import algorithms.search.aStar.AstarSearcher;
+import algorithms.search.aStar.MazeAirDistance;
+
 public class tests {
 
 	public static void main(String[] args) {
+		test2();
+	}
+	public void test1(){
 		/*
 		HashMap<String, Maze> nameMaze=new HashMap<>();
 		HashMap<Maze, Solution> MazeSol=new HashMap<>();
@@ -35,5 +46,12 @@ public class tests {
 		System.out.println(strsol);
 		StringSolution.StringToSolution(strsol).print();*/
 	}
+	public static void test2(){
+		AstarSearcher se=new AstarSearcher(new MazeAirDistance());
+		Searchable maze=new MazeSearchable(new DFSMazeGenerator().generateMaze(10, 10), true);
+		Solution sol = se.search(maze);
+		sol.print();
+	}
+	
 
 }

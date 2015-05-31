@@ -97,7 +97,8 @@ public class Presenter implements Observer{
 		commands.put("exit", new exitCommand());
 		commands.put("help", new helpCommand());
 		commands.put("setNewProperties", new setPropertiesCommand());
-		commands.put("checkMotion", new checkMotionCommand());
+		commands.put("clue", new clueCommand());
+		//commands.put("checkMotion", new checkMotionCommand());
 	}
 	//commands
 	
@@ -192,6 +193,17 @@ public class Presenter implements Observer{
 		}
 		
 	}
+	
+	public class clueCommand implements Command{
+
+		@Override
+		public void doCommand(String arg, PrintStream out) {
+			model.getClue(arg);
+			
+		}
+		
+	}
+	/*checkMotion not work
 	public class checkMotionCommand implements Command{
 
 		@Override
@@ -202,7 +214,7 @@ public class Presenter implements Observer{
 			view.getData(flag, "checkMotion");
 		}
 		
-	}
+	}*/
 
 		
 }
