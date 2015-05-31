@@ -179,7 +179,7 @@ public class MyView extends Observable implements View {
 
 
 	@Override
-	public void getData(Object Data, String details) {
+	public void displayClue(String clue) {
 		// TODO Auto-generated method stub
 		
 	}

@@ -41,7 +41,7 @@ public interface View {
 	 */
 	void displayString(String msg);
 	/**
-	 * This method allows us to transfer objects to view
+	 * Displays the clue
 	 */
-	void getData(Object Data,String details);
+	void displayClue(String clue);
 }

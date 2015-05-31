@@ -49,9 +49,9 @@ public interface Model {
 	public void setProperties(PropertiesModel mproperties);
 	/**
 	 * this method get cell and return the next step from the cell
-	 * @param arg The x,y of the cell in this syntax: x,y
+	 * @param arg The x,y of the cell in this syntax: nameMaze x,y
+	 * @return The next cell in this syntax: x,y
 	 */
 	public String getClue(String arg);
-	
 	//public boolean checkMotion(String Mazename,int CurrentRow,int CurrentCol,int nextRow,int nextCol); not work
 }
