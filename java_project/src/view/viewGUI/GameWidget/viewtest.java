@@ -21,17 +21,3 @@ public class viewtest {
 		//new MyViewGUI("Game",500,500).run();
 	}
 }
-
-
-/**
-* The actual class(extends Canvas) that displayes the maze, and the character.
-* @author  Bar Magnezi and Senia Kalma
-* @version 1.0
-* @since 31.5.2015
-*/
-/**
-* Setting all the main features of our current gameView - as MazeDispalyer(GUI).
-* @author  Bar Magnezi and Senia Kalma
-* @version 1.0
-* @since 31.5.2015
-*/

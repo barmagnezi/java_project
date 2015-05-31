@@ -2,13 +2,7 @@ package view.viewGUI.mazeDisplayerAndCharecters;
 
 
 /**
-* The actual class(extends Canvas) that displayes the maze, and the character.
-* @author  Bar Magnezi and Senia Kalma
-* @version 1.0
-* @since 31.5.2015
-*/
-/**
-* Setting all the main features of our current gameView - as MazeDispalyer(GUI).
+* The actual class(extends Canvas) that displayes the maze, and the character. (INSIDE WINDOW)
 * @author  Bar Magnezi and Senia Kalma
 * @version 1.0
 * @since 31.5.2015
@@ -229,6 +223,11 @@ public class MazeDisplayerGUI extends Canvas {
 		}
 	}
 	
+	/**
+	 * Function for changing the background design, used by the MazeViewWidget.
+	 * @param scrBackground path for the background.
+	 * @param scrWalls path for the walls.
+	 */
 	public void changeBackDesign(String scrBackground,String scrWalls){
 		this.scrBackground=scrBackground;
 		this.scrWalls=scrWalls;
@@ -244,6 +243,12 @@ public class MazeDisplayerGUI extends Canvas {
 		redraw();
 	}
 	
+	/**
+	 * Function for changing the character design, used by the MazeViewWidget.
+	 * @param charOption as the charOp integer containing the number representing the wanted char.
+	 * @param nColor as the color if a Ball Character selected.
+	 * @param path as the path for a picture/animation if one of them selected.
+	 */
 	public void changeCharacter(int charOption, RGB nColor, String path){
 		this.charOp=charOption;
 		if(nColor!=null)
@@ -258,6 +263,11 @@ public class MazeDisplayerGUI extends Canvas {
 			showMaze(maze, true);
 	}
 	
+	/**
+	 * Updates the mazes show.
+	 * @param m The maze we want to display.
+	 * @param resetChar Used for resating the character when setting a new one.
+	 */
 	public void showMaze(Maze m,boolean resetChar){
 		if(Moved==true){
 			Oldx=this.character.getRealx();
@@ -322,7 +332,12 @@ public class MazeDisplayerGUI extends Canvas {
 		this.printsol=true;
 		redraw();
 	}
-
+	/**
+	 * Paints a solution.
+	 * @param arg0 as the PaintEvent.
+	 * @param Width
+	 * @param Height
+	 */
 	private void paintsolution(PaintEvent arg0, int Width,int Height) {
 		Stack<State> stack = new Stack<State>();
 		stack.addAll(sol.getSol());

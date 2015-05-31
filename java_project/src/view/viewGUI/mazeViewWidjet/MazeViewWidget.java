@@ -38,6 +38,12 @@ import algorithms.search.aStar.MazeAirDistance;
 import view.View;
 import view.viewGUI.mazeDisplayerAndCharecters.MazeDisplayerGUI;
 
+/**
+* Setting all the main features of our current gameView - as MazeDispalyer(GUI). (OUTSIDE BIG WINDOW)
+* @author  Bar Magnezi and Senia Kalma
+* @version 1.0
+* @since 31.5.2015
+*/
 public class MazeViewWidget extends Canvas {
 
 	public String mazeName="Not loaded maze";
