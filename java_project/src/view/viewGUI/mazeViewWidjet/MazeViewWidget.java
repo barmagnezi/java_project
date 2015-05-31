@@ -526,6 +526,9 @@ public class MazeViewWidget extends Canvas {
 			MazeDisplayer.character.setRealx(0);
 			MazeDisplayer.character.setRealy(0);
 		}
+		clue=0;
+		steps=0;
+		load();
 	}
 	
 	public void solve(String name){
@@ -534,8 +537,11 @@ public class MazeViewWidget extends Canvas {
 	
 	public void clue(Maze maze){
 		//System.out.println("clue");
+		
 		int x=MazeDisplayer.character.getRealx();
 		int y=MazeDisplayer.character.getRealy();
+		if(MazeDisplayer.character.getRealx()==maze.getCols()-1&&MazeDisplayer.character.getRealy()==maze.getRows()-1)
+			return;
 		ViewGUI.getclue(y, x);
 		/*MazeSearchable MS = new MazeSearchableFixed(maze, maze.getCell(y, x), maze.getCell(maze.getRows()-1, maze.getCols()-1), Diagonals, 10, 15); //new MazeSearchable(maze, false);	
 		commonSearcher se=new AstarSearcher(new MazeAirDistance());			//   CELL(ROW,COL)
@@ -568,6 +574,8 @@ public class MazeViewWidget extends Canvas {
 	
 	public void displayMaze(algorithms.mazeGenerators.Maze m) {
 		maze=m;
+		clue=0;
+		steps=0;
 		MazeDisplayer.showMaze(m,false);
 	}
 	
