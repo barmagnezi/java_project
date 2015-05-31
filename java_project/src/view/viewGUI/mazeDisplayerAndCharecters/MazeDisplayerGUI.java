@@ -1,6 +1,18 @@
 package view.viewGUI.mazeDisplayerAndCharecters;
 
 
+/**
+* The actual class(extends Canvas) that displayes the maze, and the character.
+* @author  Bar Magnezi and Senia Kalma
+* @version 1.0
+* @since 31.5.2015
+*/
+/**
+* Setting all the main features of our current gameView - as MazeDispalyer(GUI).
+* @author  Bar Magnezi and Senia Kalma
+* @version 1.0
+* @since 31.5.2015
+*/
 import java.util.Stack;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -109,6 +121,14 @@ public class MazeDisplayerGUI extends Canvas {
 		
 	}
 	private void setCharacter(int x,int y){
+		/**
+		 * Setting the character of the maze by the charOp(int):
+		 * 1-Ball Character
+		 * 2-Picutre Character as Mario(MarioChar.png)
+		 * 989-Picture Character as Senia Kalma(Senia.png)
+		 * 999-Picture Character as Bar Magnezi(Bar.png)
+		 * 1001-Picture character as set in the path
+		 */
 		if(charOp==1){
 			character=new BallCharacter(x, y);
 			if(Color!=null)

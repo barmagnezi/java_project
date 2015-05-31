@@ -4,6 +4,13 @@ import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
 
+/**
+* Animation character class, extending CommonCharacter and setting the setAnimation flag as true and overrides 
+* the default painter for the animation painter.
+* @author  Bar Magnezi and Senia Kalma
+* @version 1.0
+* @since 31.5.2015
+*/
 public class AnimCharacter extends CommonCharacter{
 	
 	int frame=0;
@@ -24,8 +31,6 @@ public class AnimCharacter extends CommonCharacter{
 	    else
 	    	frame++;
 	    e.gc.drawImage(image, (realx*5+1)*Width/4, (realy*5+1)*Hight/4);
-
-
 		updated=false;
 	}
 }

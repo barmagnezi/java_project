@@ -18,6 +18,12 @@ import org.eclipse.swt.widgets.MessageBox;
 import view.View;
 import view.viewGUI.mazeViewWidjet.MazeViewWidget;
 
+/**
+* Main window interface, setting the default buttons and the main gameView widget.
+* @author  Bar Magnezi and Senia Kalma
+* @version 1.0
+* @since 31.5.2015
+*/
 public class GameWidget extends BasicWindow {
 	MazeViewWidget gameView;
 	String filepath;
