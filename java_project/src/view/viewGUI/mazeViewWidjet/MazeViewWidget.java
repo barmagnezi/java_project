@@ -443,6 +443,8 @@ public class MazeViewWidget extends Canvas {
 				
 				@Override
 				public void mouseUp(MouseEvent e) {
+					if(offset[0]==null)
+						return;
 		            Point pt1 = parent.toDisplay(0, 0);
 		            Point pt2 = getShell().toDisplay(e.x, e.y);
 		            int Newx=(pt2.x - pt1.x);
