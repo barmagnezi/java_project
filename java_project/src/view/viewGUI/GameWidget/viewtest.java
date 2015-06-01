@@ -18,6 +18,5 @@ public class viewtest {
 		m.addObserver(p);
 		v.start();
 		v.exit();
-		//new MyViewGUI("Game",500,500).run();
 	}
 }

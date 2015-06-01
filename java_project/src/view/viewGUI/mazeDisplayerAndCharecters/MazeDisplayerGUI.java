@@ -161,8 +161,8 @@ public class MazeDisplayerGUI extends Canvas {
 			character.setLoader(path);
 		}
 	if(character.isAnimation() && myTask==null){
-		if(character.getLoader().data[frame].delayTime<300)	//if delay too small to see normally
-			startAnimation(300);
+		if(character.getLoader().data[frame].delayTime<100)	//if delay too small to see normally
+			startAnimation(100);
 		else
 			startAnimation(character.getLoader().data[frame].delayTime);
 	}
