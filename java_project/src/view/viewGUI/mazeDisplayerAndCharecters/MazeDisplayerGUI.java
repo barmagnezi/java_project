@@ -63,12 +63,15 @@ public class MazeDisplayerGUI extends Canvas {
 			synchronized public void paintControl(PaintEvent arg0) {
 				if(maze==null)
 					return;
+				//maze.print();
 				int width=(maze.getCols()*4+maze.getCols()+1);
 				int height=(maze.getRows()*4+maze.getRows()+1);
 				if(lastPaint!=null)
 					lastPaint.dispose();
 				lastPaint=arg0.gc;
 				arg0.gc.setBackgroundPattern(new Pattern(null, new Image(null, System.getProperty("user.dir")+"/"+scrWalls)));
+				wallWidth=(int) Math.floor((double)getSize().x/width);
+				wallHeight=(int) Math.floor(((double)getSize().y)/(double)height);
 				wallWidth=getSize().x/width;
 				wallHeight=getSize().y/height;
 				if(character==null){
@@ -77,7 +80,7 @@ public class MazeDisplayerGUI extends Canvas {
 				//if(Moved==false){
 					//The Frame
 					//Two rows
-					arg0.gc.fillRectangle(0,0,wallWidth*width,wallHeight);
+					arg0.gc.fillRectangle(0,0,getSize().x,wallHeight);
 					arg0.gc.fillRectangle(0,wallHeight*height,getSize().x,getSize().y);	
 					//Two Columns
 					arg0.gc.fillRectangle(wallWidth*width,0,getSize().x,getSize().y);
@@ -104,7 +107,7 @@ public class MazeDisplayerGUI extends Canvas {
 					character.paint(arg0, wallWidth*4, wallHeight*4);
 				if(printsol==true){
 					paintsolution(arg0, wallWidth*4, wallHeight*4);
-					printsol=false;
+					//printsol=false;
 				}
 			}
 		});
@@ -239,6 +242,7 @@ public class MazeDisplayerGUI extends Canvas {
 			this.character.setRealx(0);
 			this.character.setRealy(0);
 		}
+		printsol=false;
 		setBackgroundImage(new Image(null, scrBackground));
 		redraw();
 	}
@@ -341,17 +345,19 @@ public class MazeDisplayerGUI extends Canvas {
 	private void paintsolution(PaintEvent arg0, int Width,int Height) {
 		Stack<State> stack = new Stack<State>();
 		stack.addAll(sol.getSol());
-		long time;
+		/*long time;
 		if(stack.size()*200<7000)
 			 time=200;
 		else
 			time=7000/stack.size();
+			*/
 		while(!stack.isEmpty()){
-			try {
+			/*try {
 				Thread.sleep(time);
 			} catch (InterruptedException e) {
 				System.out.println("error by Threads");
-			}
+			}*/
+			
 			String[] rowCol=stack.pop().getState().split("x");
 			int row=Integer.parseInt(rowCol[0]);
 			int col=Integer.parseInt(rowCol[1]);	

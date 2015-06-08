@@ -461,38 +461,51 @@ public class MazeViewWidget extends Canvas {
 		            if(MazeDisplayer.character!=null){
 						currentX=MazeDisplayer.getCharacter().getRealx();
 						currentY=MazeDisplayer.getCharacter().getRealy();
-						
-			            if(Newx-offset[0].x!=0 || Newy-offset[0].y!=0){
-				            if(Math.abs(Newx-offset[0].x) > Math.abs(Newy-offset[0].y)){
-				            	if((Newx-offset[0].x)>0){	//Moved right
-									if(CheckMotion(currentX, currentY, currentX+1, currentY)){
-										MazeDisplayer.CharMoved(1);
-										steps++;
-										checkwin(currentX+1,currentY);
-									}
-				            	}else{	//Moved left
-				            		if(CheckMotion(currentX, currentY, currentX-1, currentY)){
-										MazeDisplayer.CharMoved(3);
-										steps++;
-										checkwin(currentX-1,currentY);
-									}
-				            	}
-				            }else{
-				            	if((Newy-offset[0].y)>0){	//Moved down
-									if(CheckMotion(currentX, currentY, currentX, currentY+1)){
-										MazeDisplayer.CharMoved(4);
-										steps++;
-										checkwin(currentX,currentY+1);
-									}
-				            	}else{	//Moved up
-									if(CheckMotion(currentX, currentY, currentX, currentY-1)){
-										MazeDisplayer.CharMoved(2);
-										steps++;
-										checkwin(currentX,currentY-1);
-									}
-				            	}
-				            }
-			            }
+						/*System.out.println("=========================================");
+						System.out.println("mouse start. x: "+pt1.x+" y: "+pt1.y);
+						System.out.println("mouse end. x: "+pt2.x+" y: "+pt2.y);
+						System.out.println("Change, x: "+(Newx)+" y: "+(Newy));*/
+						//System.out.println((MazeDisplayer.getCharacter().getRealx()*5+1)*MazeDisplayer.wallWidth);
+						//System.out.println((MazeDisplayer.getCharacter().getRealy()*5+1)*MazeDisplayer.wallHeight);
+					    int CharStartx=((MazeDisplayer.getCharacter().getRealx()*5+1)*MazeDisplayer.wallWidth);
+					    int CharStarty=((MazeDisplayer.getCharacter().getRealy()*5+1)*MazeDisplayer.wallHeight);
+					    //System.out.println("Char start,x: "+CharStartx+",y: "+CharStarty);
+					    if(CharStartx<Newx && CharStarty<Newy){
+					    	//if(CharStartx+(MazeDisplayer.wallWidth*4)>Newx && CharStarty+(MazeDisplayer.wallHeight*4)>Newy){
+					    		//System.out.println("GODA");
+								if(Newx-offset[0].x!=0 || Newy-offset[0].y!=0){
+						            if(Math.abs(Newx-offset[0].x) > Math.abs(Newy-offset[0].y)){
+						            	if((Newx-offset[0].x)>0){	//Moved right
+											if(CheckMotion(currentX, currentY, currentX+1, currentY)){
+												MazeDisplayer.CharMoved(1);
+												steps++;
+												checkwin(currentX+1,currentY);
+											}
+						            	}else{	//Moved left
+						            		if(CheckMotion(currentX, currentY, currentX-1, currentY)){
+												MazeDisplayer.CharMoved(3);
+												steps++;
+												checkwin(currentX-1,currentY);
+											}
+						            	}
+						            }else{
+						            	if((Newy-offset[0].y)>0){	//Moved down
+											if(CheckMotion(currentX, currentY, currentX, currentY+1)){
+												MazeDisplayer.CharMoved(4);
+												steps++;
+												checkwin(currentX,currentY+1);
+											}
+						            	}else{	//Moved up
+											if(CheckMotion(currentX, currentY, currentX, currentY-1)){
+												MazeDisplayer.CharMoved(2);
+												steps++;
+												checkwin(currentX,currentY-1);
+											}
+						            	}
+						            }
+					            }
+					    	//}
+					    }      
 					}
 		            //offset[0] = new Point(pt2.x - pt1.x, pt2.y - pt1.y);
 				}
