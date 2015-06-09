@@ -38,17 +38,6 @@ public class Presenter implements Observer{
 		addAllCommands();
 		view.setCommands(commands);
 		setNewProperties("resources/properties.xml");
-		/*InputStream from = null;
-		PropertiesModel Mproperties;
-		try {
-			from = new FileInputStream("resources/properties.xml");
-			Mproperties = new PropertiesModel(from);
-		} catch (Exception e) {
-			view.displayString("resources/properties.xml not found");
-			File theDir = new File("resources");
-			theDir.mkdirs();
-			Mproperties = new PropertiesModel(null);}		
-		model.setProperties(Mproperties);*/
 	}
 	public void setNewProperties(String path){
 		InputStream from = null;
@@ -62,6 +51,7 @@ public class Presenter implements Observer{
 			theDir.mkdirs();
 			Mproperties = new PropertiesModel(null);}		
 		model.setProperties(Mproperties);
+		view.getDiagsMode(Mproperties.isDiag());
 	}
 	
 	@Override

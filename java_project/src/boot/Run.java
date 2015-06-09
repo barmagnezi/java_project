@@ -1,8 +1,9 @@
 package boot;
 
 import presenter.Presenter;
-import view.viewCLI.MyView;
-import model.MyModel;
+import view.viewCLI.ClI_View;
+import view.viewGUI.GameWidget.GameWidget;
+import model.OffLineModel;
 /**
 * The MyModel class extends Observable and implements Model.
 * It is the part that makes all the calculations, such as creating a maze, and finding a solution for it.
@@ -12,11 +13,23 @@ import model.MyModel;
 */
 public class Run {
 	public static void main(String[] args) {
-		MyModel m = new MyModel();
-		MyView v = new MyView();
+		run_GUI();
+	}
+	public static void run_cli(){
+		OffLineModel m = new OffLineModel();
+		ClI_View v = new ClI_View();
 		Presenter p=new Presenter(v, m);
 		v.addObserver(p);
 		m.addObserver(p);
 		v.start();
+	}
+	public static void run_GUI(){
+		OffLineModel m = new OffLineModel();
+		GameWidget v =  new GameWidget("Game",500,500);
+		Presenter p=new Presenter(v.getView(), m);
+		v.addObserver(p);
+		m.addObserver(p);
+		v.start();
+		v.exit();
 	}
 }

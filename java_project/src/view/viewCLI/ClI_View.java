@@ -15,7 +15,7 @@ import View.Command;
 import algorithms.search.*;
 import algorithms.mazeGenerators.Maze;
 
-public class MyView extends Observable implements View {
+public class ClI_View extends Observable implements View {
 	NewCLI myCLI;
 	BufferedReader in;
 	PrintStream out;
@@ -25,7 +25,7 @@ public class MyView extends Observable implements View {
 	 * @param r The input for the user.
 	 * @param out The output for the user.
 	 */
-	public MyView(BufferedReader r,PrintStream out) {
+	public ClI_View(BufferedReader r,PrintStream out) {
 		super();
 		this.in=r;
 		this.out=out;
@@ -34,7 +34,7 @@ public class MyView extends Observable implements View {
 	/**
 	 * This constructor create view by using the default system output and input
 	 */
-	public MyView() {
+	public ClI_View() {
 		super();
 		this.in=new BufferedReader(new InputStreamReader(System.in));
 		this.out=System.out;
@@ -180,6 +180,11 @@ public class MyView extends Observable implements View {
 
 	@Override
 	public void displayClue(String clue) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void getDiagsMode(boolean diag) {
 		// TODO Auto-generated method stub
 		
 	}

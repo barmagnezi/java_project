@@ -1,6 +1,6 @@
 package view.viewGUI.GameWidget;
 
-import model.MyModel;
+import model.OffLineModel;
 import presenter.Presenter;
 /**
 * The main MazeViewWidget(extends Canvas), containing all the features and buttons used for showing are maze based game.
@@ -11,7 +11,7 @@ import presenter.Presenter;
 public class viewtest {
 	public static void main(String[] args) {
 		
-		MyModel m = new MyModel();
+		OffLineModel m = new OffLineModel();
 		GameWidget v =  new GameWidget("Game",500,500);
 		Presenter p=new Presenter(v.getView(), m);
 		v.addObserver(p);

@@ -18,14 +18,14 @@ import View.Command;
 * @since 5.5.2015
 */
 public class NotifyCLIgetViewWeDontUse extends CLI{
-	private MyView view;
+	private ClI_View view;
 	/**
 	 * This constructor creates CLI that works with the parameters.
 	 * @param in The inputstream(BufferedReader) that contain all the command from the user.
 	 * @param out The OutputStream(PrintStream) that all the commands will write.
 	 * @param commands All the commands that the CLI support.
 	 */
-	public NotifyCLIgetViewWeDontUse(BufferedReader in, PrintStream out,HashMap<String, Command> commands,MyView view){
+	public NotifyCLIgetViewWeDontUse(BufferedReader in, PrintStream out,HashMap<String, Command> commands,ClI_View view){
 		super(in,out,commands);
 		this.view=view;
 	}

@@ -43,7 +43,7 @@ import algorithms.search.aStar.MazeAirDistance;
 * @version 1.0
 * @since 17.5.2015
 */
-public class MyModel extends Observable implements Model {
+public class OffLineModel extends Observable implements Model {
 	private ExecutorService executor;
 	private HashMap<String, Maze> nameMaze=new HashMap<>();
 	private HashMap<Maze, Solution> MazeSol=new HashMap<>();

@@ -34,7 +34,7 @@ public class ViewGUI extends Observable implements View{
 	
 	public void generateMaze(String name,int rows,int cols){
 		if (commands.get("generateMaze")==null)
-			System.out.println("Avdv");
+			System.out.println("error");
 		commandsList.add(commands.get("generateMaze"));
 		this.setChanged();
 		this.notifyObservers(name+" "+rows+","+cols);
@@ -65,7 +65,6 @@ public class ViewGUI extends Observable implements View{
 	}
 	public void setproperties(String path) {
 		commandsList.add(commands.get("setNewProperties"));
-		System.out.println(commandsList.size());
 		this.setChanged();
 		this.notifyObservers(path);
 	}
@@ -106,6 +105,12 @@ public class ViewGUI extends Observable implements View{
 	@Override
 	public void displayClue(String clue) {
 		Widget.displayClue(clue);
+	}
+
+	@Override
+	public void getDiagsMode(boolean diag) {
+		Widget.Diagonals=diag;
+		
 	}
 
 	/*not work

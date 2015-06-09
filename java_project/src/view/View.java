@@ -44,4 +44,9 @@ public interface View {
 	 * Displays the clue
 	 */
 	void displayClue(String clue);
+	/**
+	 * set in the view the diags Mode
+	 * @param diag
+	 */
+	void getDiagsMode(boolean diag);
 }
