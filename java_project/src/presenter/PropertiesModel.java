@@ -24,6 +24,8 @@ public class PropertiesModel implements Serializable {
 	public Boolean diag;
 	public String FileDataMazes;
 	public Boolean hib;
+	//For Server side model:
+	public Boolean online;
 	
 	
 	public PropertiesModel() {
