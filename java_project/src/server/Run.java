@@ -14,7 +14,7 @@ public class Run {
 		Scanner in = new Scanner(System.in);
 	    s = in.nextLine();
 	    String[] ServerProp = s.split(" ");
-		MyServer serv=new MyServer(Integer.parseInt(ServerProp[1]),50000, Integer.parseInt(ServerProp[2]));
+		MyServer serv=new MyServer(Integer.parseInt(ServerProp[0]),5000000, Integer.parseInt(ServerProp[1]));
 		ClientHandlerStub CH = new ClientHandlerStub();
 		try {
 			serv.Start(CH);

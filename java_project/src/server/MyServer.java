@@ -29,9 +29,11 @@ public class MyServer {
 
 	public void Start(ClientHandler ch) throws Exception {
 		this.CH=ch;
-		System.out.println("SERVER side");
+		System.out.println("<---SERVER side--->");
+		System.out.println("Enter port:");
 		myServer = new ServerSocket(port);
 		myServer.setSoTimeout(dely);
+		System.out.println("Enter number of clients");
 		ExecutorService executor = Executors.newFixedThreadPool(Allowed);
 		while(run){
 			Socket someClient=this.accept();
