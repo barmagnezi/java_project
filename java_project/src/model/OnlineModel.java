@@ -52,20 +52,46 @@ public class OnlineModel extends Observable implements Model {
 	public Solution sol;
 	public String clue;
 	
-	public Object waiter;
+	public Object solWaiter;
+	public Object getWaiter;
+	public Object clueWaiter;
+	
 	private PropertiesModel properties;
 	
 	public void recive(){
-		String com;
+		String com = null;
+		String helper=null;
 		while(run){
 			try {
 				com=(String) reader.readObject();
 			} catch (ClassNotFoundException | IOException e) {
 				e.printStackTrace();
 			}
-			if(com=="sentMaze")
+			if(com=="sentMaze"){
+				try {
+					helper = (String) reader.readObject();	//helper= <MazeName>
+				} catch (ClassNotFoundException | IOException e) {
+					e.printStackTrace();
+				}
+				try {
+					m=(Maze) reader.readObject();
+				} catch (ClassNotFoundException | IOException e) {
+					e.printStackTrace();
+				}
 				
-			
+			}
+			if(com=="sentSolution"){
+				
+			}
+			if(com=="sentString"){
+				
+			}
+			if(com=="sentString"){
+				
+			}
+			if(com=="sentDiagsMode"){
+				
+			}
 		}
 	}
 	
@@ -102,7 +128,7 @@ public class OnlineModel extends Observable implements Model {
 	public Maze getMaze(String name) {
 		send("displayMaze "+name);
 		try {
-			waiter.wait();
+			getWaiter.wait();
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
@@ -127,7 +153,7 @@ public class OnlineModel extends Observable implements Model {
 	public Solution getSolution(String name) {
 		send("solveMaze "+name);
 		try {
-			waiter.wait();
+			solWaiter.wait();
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
@@ -190,7 +216,7 @@ public class OnlineModel extends Observable implements Model {
 		send("GetClue "+arg);
 		
 		try {
-			waiter.wait();
+			clueWaiter.wait();
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
