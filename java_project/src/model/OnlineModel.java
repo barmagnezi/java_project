@@ -68,29 +68,48 @@ public class OnlineModel extends Observable implements Model {
 				e.printStackTrace();
 			}
 			if(com=="sentMaze"){
-				try {
-					helper = (String) reader.readObject();	//helper= <MazeName>
-				} catch (ClassNotFoundException | IOException e) {
-					e.printStackTrace();
-				}
-				try {
-					m=(Maze) reader.readObject();
-				} catch (ClassNotFoundException | IOException e) {
-					e.printStackTrace();
-				}
-				
+					try {
+						helper = (String) reader.readObject();	//helper= <MazeName>
+					} catch (ClassNotFoundException | IOException e) {
+						e.printStackTrace();
+					}
+					try {
+						m=(Maze) reader.readObject();
+					} catch (ClassNotFoundException | IOException e) {
+						e.printStackTrace();
+					}
+					
+					getWaiter.notify();
 			}
 			if(com=="sentSolution"){
-				
+					try {
+						sol=(Solution) reader.readObject();
+					} catch (ClassNotFoundException | IOException e) {
+						e.printStackTrace();
+					}
+					solWaiter.notify();
+			}
+			if(com=="sentClue"){
+					try {
+						clue=(String) reader.readObject();
+					} catch (ClassNotFoundException | IOException e) {
+						e.printStackTrace();
+					}
+					clueWaiter.notify();
 			}
 			if(com=="sentString"){
-				
-			}
-			if(com=="sentString"){
-				
+					try {
+						helper=(String) reader.readObject();
+					} catch (ClassNotFoundException | IOException e) {
+						e.printStackTrace();
+					}
 			}
 			if(com=="sentDiagsMode"){
-				
+					try {
+						properties.setDiag((boolean) reader.readObject());
+					} catch (ClassNotFoundException | IOException e) {
+						e.printStackTrace();
+					}
 			}
 		}
 	}
@@ -140,8 +159,8 @@ public class OnlineModel extends Observable implements Model {
 	 * @param m The maze we want to solve.
 	 */
 	@Override
-	public void solveMaze(Maze m) {
-		send("solveMaze "+m);
+	public void solveMaze(String name) {
+		send("solveMaze "+name);
 	}
 	
 	/**
