@@ -135,7 +135,7 @@ public class Presenter implements Observer{
 	public class solvemazeCommand  implements Command {
 		@Override
 		public void doCommand(String arg,PrintStream out) {
-			model.solveMaze(model.getMaze(arg));
+			model.solveMaze(arg);
 		}
 	}
 	

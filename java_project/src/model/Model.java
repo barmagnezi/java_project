@@ -28,7 +28,7 @@ public interface Model {
 	 * After it finishes it sent a notification with as "solution "+name+" is ready.".
 	 * @param m The maze we want to solve.
 	 */
-	public void solveMaze(Maze m);
+	public void solveMaze(String name);
 	/**
 	 * gets the name of an inputed maze name.
 	 * @param name	the name of the solution we want to find it's name.
