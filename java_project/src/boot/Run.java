@@ -7,6 +7,7 @@ import presenter.Presenter;
 import view.viewCLI.ClI_View;
 import view.viewGUI.GameWidget.GameWidget;
 import model.OffLineModel;
+import model.OnlineModel;
 /**
 * The MyModel class extends Observable and implements Model.
 * It is the part that makes all the calculations, such as creating a maze, and finding a solution for it.
@@ -17,7 +18,8 @@ import model.OffLineModel;
 public class Run {
 	public static void main(String[] args) {
 		//run_GUI();
-		run_GUI_2users();
+		//run_GUI_2users();
+		run_GUI_online();
 	}
 	public static void run_cli(){
 		OffLineModel m = new OffLineModel();
@@ -29,6 +31,15 @@ public class Run {
 	}
 	public static void run_GUI(){
 		OffLineModel m = new OffLineModel();
+		GameWidget v =  new GameWidget("Game",500,500);
+		Presenter p=new Presenter(v.getView(), m);
+		v.addObserver(p);
+		m.addObserver(p);
+		v.start();
+		v.exit();
+	}
+	public static void run_GUI_online(){
+		OnlineModel m = new OnlineModel();
 		GameWidget v =  new GameWidget("Game",500,500);
 		Presenter p=new Presenter(v.getView(), m);
 		v.addObserver(p);

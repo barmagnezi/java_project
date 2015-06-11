@@ -40,6 +40,11 @@ import algorithms.search.aStar.AstarSearcher;
 import algorithms.search.aStar.MazeAirDistance;
 
 public class OnlineModel extends Observable implements Model {
+	public OnlineModel() {
+		super();
+		
+	}
+
 	//For Client:
 	public Socket myServer;
 	public PrintStream writer;
@@ -116,13 +121,7 @@ public class OnlineModel extends Observable implements Model {
 	
 	public void MyClient(int port, String ip) {
 		//super();
-		try {
-			myServer=new Socket(ip, port);
-			writer=new PrintStream(myServer.getOutputStream());
-			reader=(new ObjectInputStream(myServer.getInputStream()));
-		} catch (IOException e) {
-			System.out.println("can't connected to ip: "+ip+" port: "+port);
-		}
+		
 	}
 	public void send(String text){
 		writer.println(text);
@@ -190,7 +189,13 @@ public class OnlineModel extends Observable implements Model {
 	 */
 	public void start(){
 		run=true;
-		new MyClient(properties.getPort(), properties.getIp());
+		try {
+			myServer=new Socket(properties.getIp(), properties.getPort());
+			writer=new PrintStream(myServer.getOutputStream());
+			reader=(new ObjectInputStream(myServer.getInputStream()));
+		} catch (IOException e) {
+			System.out.println("can't connected to ip: "+properties.getIp()+" port: "+properties.getPort());
+		}
 	}
 	
 	/**
