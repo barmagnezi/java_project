@@ -51,7 +51,7 @@ public class OnlineModel extends Observable implements Model {
 	public ObjectInputStream reader;
 
 	public String res;
-	Boolean run;
+	protected Boolean run;
 	
 	public Maze m;
 	public Solution sol;
@@ -124,8 +124,10 @@ public class OnlineModel extends Observable implements Model {
 		
 	}
 	public void send(String text){
-		writer.println(text);
-		writer.flush();
+		if(writer!=null){
+			writer.println(text);
+			writer.flush();
+		}
 	}
 
 	/**
@@ -206,7 +208,8 @@ public class OnlineModel extends Observable implements Model {
 		run=false;
 		send("exit");
 		try {
-			myServer.close();
+			if(myServer!=null)
+				myServer.close();
 		} catch (IOException e2) {
 			this.setChanged();
 			this.notifyObservers("error while closing the connection.");
