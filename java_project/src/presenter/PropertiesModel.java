@@ -26,7 +26,8 @@ public class PropertiesModel implements Serializable {
 	public Boolean hib;
 	//For Server side model:
 	public Boolean online;
-	
+	public String ip;	// "localhost"
+	public int port;	// 5400
 	
 	public PropertiesModel() {
 	}
@@ -42,6 +43,9 @@ public class PropertiesModel implements Serializable {
 		this.nameSolver=prop.getNameSolver();
 		this.FileDataMazes=prop.getFileDataMazes();
 		this.hib=prop.isHib();
+		this.online=prop.isOnline();
+		this.ip=prop.getIp();
+		this.port=prop.getPort();
 	}
 	/**
 	 * Sets the properties model from an inputStream.
@@ -64,6 +68,9 @@ public class PropertiesModel implements Serializable {
 			this.setFileDataMazes("resources/data.bin");
 			this.setAllowedThreads(5);
 			this.setHib(false);
+			this.setOnline(false);
+			this.setIp("localhost");
+			this.setPort(5400);
 		}finally{
 			
 		}	
@@ -148,6 +155,14 @@ public class PropertiesModel implements Serializable {
 			str+=" 1";
 		else
 			str+=" 0";
+		if(this.isOnline()==true)
+			str+=" on";
+		else
+			str+=" off";
+		if(this.getIp()=="localhost")
+			str+=" NoIp NoPort";
+		else
+			str+=" "+this.getIp()+" "+this.getPort();
 		return str;
 	}
 
@@ -219,5 +234,29 @@ public class PropertiesModel implements Serializable {
 
 	public void setHib(boolean hib) {
 		this.hib = hib;
+	}
+
+	public Boolean isOnline() {
+		return online;
+	}
+
+	public void setOnline(Boolean online) {
+		this.online = online;
+	}
+
+	public String getIp() {
+		return ip;
+	}
+
+	public void setIp(String ip) {
+		this.ip = ip;
+	}
+
+	public int getPort() {
+		return port;
+	}
+
+	public void setPort(int port) {
+		this.port = port;
 	}
 }

@@ -18,19 +18,16 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
-
 import algorithms.compression.HuffmanReader;
 import algorithms.compression.HuffmanWriter;
 import algorithms.mazeGenerators.Maze;
 import algorithms.search.*;
 import presenter.PropertiesModel;
 import algorithms.search.Solution;
-
 //For temp fix:
 import algorithms.search.BFSSearcher;
 import algorithms.search.aStar.AstarSearcher;
@@ -54,7 +51,6 @@ public class OffLineModel extends Observable implements Model {
 	private Searcher Solver;
 	private SessionFactory factory;
 	
-	@Override
 	/**
 	 * This method generates a maze using threads with an inputed data.
 	 * After it finishes it sent a notification with as "maze "+name+" is ready.".
@@ -62,6 +58,7 @@ public class OffLineModel extends Observable implements Model {
 	 * @param col The number of columns our maze will have (>2)
 	 * @param row The number of rows our maze will have (>2)
 	 */
+	@Override
 	public void generateMaze(String name, int col,int row) {
 		Future<Maze> f = executor.submit(new MazeCallable(properties.getMGenerator(),col,row));
 		Maze maze = null;
