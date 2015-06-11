@@ -8,8 +8,10 @@ import java.util.HashMap;
 import java.util.Observable;
 import java.util.Observer;
 
-import View.Command;
+
+
 import view.View;
+import View.Command;
 import model.Model;
 
 /**

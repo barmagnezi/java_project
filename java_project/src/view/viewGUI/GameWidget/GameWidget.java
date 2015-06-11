@@ -11,6 +11,7 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.MessageBox;
@@ -30,6 +31,11 @@ public class GameWidget extends BasicWindow {
 	
 	public GameWidget(String title, int width, int height) {
 		super(title, width, height);
+		gameView=new MazeViewWidget(shell, SWT.BORDER);	
+		
+	}
+	public GameWidget(String title, int width, int height,Display d) {
+		super(title, width, height,d);
 		gameView=new MazeViewWidget(shell, SWT.BORDER);	
 		
 	}

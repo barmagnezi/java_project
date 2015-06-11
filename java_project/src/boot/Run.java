@@ -13,7 +13,8 @@ import model.OffLineModel;
 */
 public class Run {
 	public static void main(String[] args) {
-		run_GUI();
+		//run_GUI();
+		run_GUI_2users();
 	}
 	public static void run_cli(){
 		OffLineModel m = new OffLineModel();
@@ -32,4 +33,25 @@ public class Run {
 		v.start();
 		v.exit();
 	}
+	public static void run_GUI_2users(){
+		OffLineModel m = new OffLineModel();
+		GameWidget v =  new GameWidget("Game",500,500);
+		GameWidget v2 =  new GameWidget("Game",500,500,v.getDisplay());
+		Presenter p=new Presenter(v.getView(), m);
+		Presenter p2=new Presenter(v2.getView(), m);
+		v.addObserver(p);
+		v2.addObserver(p);
+		m.addObserver(p);
+		m.addObserver(p2);
+		new Thread(new Runnable() {
+			
+			@Override
+			public void run() {
+				v.start();
+				
+			}
+		}).start();
+		v2.start();
+		v.exit();
+	} 
 }
