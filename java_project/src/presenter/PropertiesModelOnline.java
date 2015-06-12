@@ -8,7 +8,6 @@ import java.io.Serializable;
 public class PropertiesModelOnline implements Serializable,PropertiesModel {
 
 	private static final long serialVersionUID = 1L;
-	public Boolean Diags;
 	public String ip;	// "localhost"
 	public Integer port;	// 5400
 	
@@ -20,13 +19,10 @@ public class PropertiesModelOnline implements Serializable,PropertiesModel {
 	 * Default copy constructor.
 	 */
 	private void copyConstructor(PropertiesModelOnline prop) {
-		Diags=prop.Diags;
 		ip=prop.ip;
 		port=prop.port;
 	}
-	public String toString(){
-		return "Bar";
-	}
+
 	/**
 	 * Sets the properties model from an inputStream.
 	 * @param from inputStream containing the XML file.
@@ -40,7 +36,6 @@ public class PropertiesModelOnline implements Serializable,PropertiesModel {
 		}catch(Exception e ){
 			System.out.println("no found properties//run default values\n"
 					+ "after exit command the properties save in resources/properties.xml");
-			this.setDiag(false);
 			this.setIp("localhost");
 			this.setPort(5400);
 		}finally{
@@ -49,15 +44,7 @@ public class PropertiesModelOnline implements Serializable,PropertiesModel {
 	}
 
 	//setters getters
-	@Override
-	public boolean isDiag() {
-		return Diags;
-	}
 
-	@Override
-	public void setDiag(boolean diags) {
-		Diags=diags;
-	}
 
 	public String getIp() {
 		return ip;
@@ -74,5 +61,7 @@ public class PropertiesModelOnline implements Serializable,PropertiesModel {
 	public void setPort(int port) {
 		this.port = port;
 	}
+
+
 
 }

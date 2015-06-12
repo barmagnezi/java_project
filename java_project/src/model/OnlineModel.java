@@ -2,13 +2,19 @@ package model;
 
 
 import java.beans.XMLEncoder;
+import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.PrintStream;
+import java.io.Reader;
 import java.net.Socket;
 import java.util.Observable;
+
+
+
 
 
 import presenter.PropertiesModel;
@@ -20,13 +26,12 @@ import algorithms.search.Solution;
 public class OnlineModel extends Observable implements Model {
 	public OnlineModel() {
 		super();
-		
 	}
 
 	//For Client:
 	public Socket myServer;
 	public PrintStream writer;
-	public ObjectInputStream reader;
+	public BufferedReader reader;
 
 	public String res;
 	protected Boolean run;
@@ -46,19 +51,19 @@ public class OnlineModel extends Observable implements Model {
 		String helper=null;
 		while(run){
 			try {
-				com=(String) reader.readObject();
-			} catch (ClassNotFoundException | IOException e) {
+				com= reader.readLine();
+			} catch (IOException e) {
 				e.printStackTrace();
 			}
 			if(com=="sentMaze"){
 					try {
-						helper = (String) reader.readObject();	//helper= <MazeName>
-					} catch (ClassNotFoundException | IOException e) {
+						helper = reader.readLine();	//helper= <MazeName>
+					} catch (IOException e) {
 						e.printStackTrace();
 					}
 					try {
-						m=(Maze) reader.readObject();
-					} catch (ClassNotFoundException | IOException e) {
+						m=StringMaze.StringToMaze(reader.readLine());
+					} catch (IOException e) {
 						e.printStackTrace();
 					}
 					
@@ -66,41 +71,39 @@ public class OnlineModel extends Observable implements Model {
 			}
 			if(com=="sentSolution"){
 					try {
-						sol=(Solution) reader.readObject();
-					} catch (ClassNotFoundException | IOException e) {
+						sol=StringSolution.StringToSolution(reader.readLine());
+					} catch (IOException e) {
 						e.printStackTrace();
 					}
 					solWaiter.notify();
 			}
 			if(com=="sentClue"){
 					try {
-						clue=(String) reader.readObject();
-					} catch (ClassNotFoundException | IOException e) {
+						clue=reader.readLine();
+					} catch (IOException e) {
 						e.printStackTrace();
 					}
 					clueWaiter.notify();
 			}
 			if(com=="sentString"){
 					try {
-						helper=(String) reader.readObject();
-					} catch (ClassNotFoundException | IOException e) {
+						helper=reader.readLine();
+					} catch ( IOException e) {
 						e.printStackTrace();
 					}
 			}
 			if(com=="sentDiagsMode"){
 					try {
-						properties.setDiag((boolean) reader.readObject());
-					} catch (ClassNotFoundException | IOException e) {
+						this.setChanged();
+						this.notifyObservers("DiagsMode:"+reader.readLine());
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 			}
 		}
 	}
 	
-	public void MyClient(int port, String ip) {
-		//super();
-		
-	}
 	public void send(String text){
 		if(writer!=null){
 			writer.println(text);
@@ -176,7 +179,7 @@ public class OnlineModel extends Observable implements Model {
 		try {
 			myServer=new Socket(properties.getIp(), properties.getPort());
 			writer=new PrintStream(myServer.getOutputStream());
-			reader=(new ObjectInputStream(myServer.getInputStream()));
+			reader=new BufferedReader(new InputStreamReader(myServer.getInputStream()));
 		} catch (IOException e) {
 			System.out.println("can't connected to ip: "+properties.getIp()+" port: "+properties.getPort());
 		}
@@ -214,7 +217,14 @@ public class OnlineModel extends Observable implements Model {
 	 */
 	public void setProperties(PropertiesModel prop){
 		properties=(PropertiesModelOnline) prop;
-		MyClient(((PropertiesModelOnline)prop).getPort(), ((PropertiesModelOnline)prop).getIp());
+		try {
+			myServer.close();
+			myServer=new Socket(properties.getIp(), properties.getPort());
+			writer=new PrintStream(myServer.getOutputStream());
+			reader=new BufferedReader(new InputStreamReader(myServer.getInputStream()));
+		} catch (IOException e) {
+			System.out.println("can't connected to ip: "+properties.getIp()+" port: "+properties.getPort());
+		}
 	}
 	
 	/**

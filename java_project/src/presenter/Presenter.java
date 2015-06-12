@@ -63,7 +63,8 @@ public class Presenter implements Observer{
 				Mproperties = new PropertiesModelOffline(null);
 		}		
 		model.setProperties(Mproperties);
-		view.getDiagsMode(Mproperties.isDiag());
+		if(!model.isonline())
+			view.getDiagsMode(	((PropertiesModelOffline)Mproperties).isDiag()	);
 	}
 	
 	@Override
@@ -82,6 +83,12 @@ public class Presenter implements Observer{
 			if(o==model){
 				if(arg==null)
 					return;
+				if(  ( (String)arg ).startsWith("DiagsMode:")){
+					if(		( (String)arg ).split(":")[1].equals("true")	)
+							view.getDiagsMode(true);
+					else
+						view.getDiagsMode(false);
+				}
 				else{
 					view.displayString((String)arg);
 				}					
@@ -100,6 +107,7 @@ public class Presenter implements Observer{
 		commands.put("help", new helpCommand());
 		commands.put("setNewProperties", new setPropertiesCommand());
 		commands.put("GetClue", new clueCommand());
+		commands.put("newDiagMode", new diagsModeCommand());
 		//commands.put("checkMotion", new checkMotionCommand());
 	}
 	//commands
@@ -136,6 +144,16 @@ public class Presenter implements Observer{
 		public void doCommand(String arg,PrintStream out) {
 			if(model.getMaze(arg)!=null)
 				view.displayMaze(model.getMaze(arg),arg);
+		}
+	}
+	
+	public class diagsModeCommand implements Command {
+		@Override
+		public void doCommand(String arg,PrintStream out) {
+			if(arg.equals("true"))
+				view.getDiagsMode(true);
+			else
+				view.getDiagsMode(false);
 		}
 	}
 	
