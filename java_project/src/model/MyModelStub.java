@@ -71,4 +71,10 @@ public class MyModelStub extends Observable implements Model {
 		return false;
 	}*/
 
+	@Override
+	public boolean isonline() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }

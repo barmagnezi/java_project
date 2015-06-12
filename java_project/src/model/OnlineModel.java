@@ -29,15 +29,10 @@ import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
 
 import presenter.PropertiesModel;
-import algorithms.compression.HuffmanReader;
-import algorithms.compression.HuffmanWriter;
+import presenter.PropertiesModelOnline;
 import algorithms.mazeGenerators.Maze;
-import algorithms.search.BFSSearcher;
-import algorithms.search.Searchable;
-import algorithms.search.Searcher;
 import algorithms.search.Solution;
-import algorithms.search.aStar.AstarSearcher;
-import algorithms.search.aStar.MazeAirDistance;
+
 
 public class OnlineModel extends Observable implements Model {
 	public OnlineModel() {
@@ -61,7 +56,7 @@ public class OnlineModel extends Observable implements Model {
 	public Object getWaiter;
 	public Object clueWaiter;
 	
-	private PropertiesModel properties;
+	private PropertiesModelOnline properties;
 	
 	public void recive(){
 		String com = null;
@@ -217,22 +212,22 @@ public class OnlineModel extends Observable implements Model {
 		
 		XMLEncoder e = null;
 		try {
-			e = new XMLEncoder(new FileOutputStream("resources/properties.xml"));
+			e = new XMLEncoder(new FileOutputStream("resources/propertiesOnline.xml"));
+			e.writeObject(this.properties);
+			e.flush();
+			e.close();
 		} catch (FileNotFoundException e1) {
 			this.setChanged();
 			this.notifyObservers("error while saving the properties.");
 		}
-		e.writeObject(this.properties);
-		e.flush();
-		e.close();
 	}
 	
 	/**
 	 * Setting the current properties with an inputed PropertiesModel Object.
 	 */
 	public void setProperties(PropertiesModel prop){
-		properties=prop;
-		MyClient(prop.getPort(), prop.getIp());
+		properties=(PropertiesModelOnline) prop;
+		MyClient(((PropertiesModelOnline)prop).getPort(), ((PropertiesModelOnline)prop).getIp());
 	}
 	
 	/**
@@ -248,5 +243,10 @@ public class OnlineModel extends Observable implements Model {
 			e.printStackTrace();
 		}
 		return clue;
+	}
+
+	@Override
+	public boolean isonline() {
+		return true;
 	}
 }	//Class close

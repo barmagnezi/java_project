@@ -54,4 +54,5 @@ public interface Model {
 	 */
 	public String getClue(String arg);
 	//public boolean checkMotion(String Mazename,int CurrentRow,int CurrentCol,int nextRow,int nextCol); not work
+	public boolean isonline();
 }

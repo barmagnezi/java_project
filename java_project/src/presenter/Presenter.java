@@ -39,19 +39,29 @@ public class Presenter implements Observer{
 		commands=new HashMap<String, Command>();
 		addAllCommands();
 		view.setCommands(commands);
-		setNewProperties("resources/properties.xml");
+		if(model.isonline())
+			setNewProperties("resources/propertiesOnline.xml");
+		else
+			setNewProperties("resources/properties.xml");
 	}
 	public void setNewProperties(String path){
 		InputStream from = null;
 		PropertiesModel Mproperties;
 		try {
 			from = new FileInputStream(path);
-			Mproperties = new PropertiesModel(from);
+			if(model.isonline())
+				Mproperties=new PropertiesModelOnline(from);
+			else
+				Mproperties = new PropertiesModelOffline(from);
 		} catch (Exception e) {
 			view.displayString(path+" not found");
 			File theDir = new File("resources");
 			theDir.mkdirs();
-			Mproperties = new PropertiesModel(null);}		
+			if(model.isonline())
+				Mproperties=new PropertiesModelOnline(null);
+			else
+				Mproperties = new PropertiesModelOffline(null);
+		}		
 		model.setProperties(Mproperties);
 		view.getDiagsMode(Mproperties.isDiag());
 	}

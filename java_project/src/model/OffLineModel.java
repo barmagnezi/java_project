@@ -29,6 +29,7 @@ import algorithms.compression.HuffmanWriter;
 import algorithms.mazeGenerators.Maze;
 import algorithms.search.*;
 import presenter.PropertiesModel;
+import presenter.PropertiesModelOffline;
 import algorithms.search.Solution;
 //For temp fix:
 import algorithms.search.BFSSearcher;
@@ -46,7 +47,7 @@ public class OffLineModel extends Observable implements Model {
 	private ExecutorService executor;
 	private HashMap<String, Maze> nameMaze=new HashMap<>();
 	private HashMap<Maze, Solution> MazeSol=new HashMap<>();
-	private PropertiesModel properties;
+	private PropertiesModelOffline properties;
 	private boolean executorFlag;
 	private boolean updateDataFlag=false;
 	private Object fin;
@@ -250,7 +251,7 @@ public class OffLineModel extends Observable implements Model {
 	 */
 	public void setProperties(PropertiesModel prop){
 		executorFlag=false;
-		properties=prop;
+		properties=(PropertiesModelOffline) prop;
 		if(properties.getNameSolver().equals("BFS"))
 			this.Solver=new BFSSearcher();
 		else
@@ -386,6 +387,13 @@ public class OffLineModel extends Observable implements Model {
 		return MS.checkMotion(CurrentRow, CurrentCol, nextRow, nextCol);
 	}
 */
+
+	@Override
+	public boolean isonline() {
+		return false;
+	}
+
+	
 
 
 	
