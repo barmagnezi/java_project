@@ -1,32 +1,15 @@
 package model;
 
-import hibernate.HibernateClass;
 
 import java.beans.XMLEncoder;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.PrintStream;
-import java.io.PrintWriter;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Observable;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.cfg.AnnotationConfiguration;
-import org.hibernate.tool.hbm2ddl.SchemaExport;
 
 import presenter.PropertiesModel;
 import presenter.PropertiesModelOnline;
@@ -52,11 +35,11 @@ public class OnlineModel extends Observable implements Model {
 	public Solution sol;
 	public String clue;
 	
-	public Object solWaiter;
-	public Object getWaiter;
-	public Object clueWaiter;
+	public Object solWaiter=new Object();
+	public Object getWaiter=new Object();
+	public Object clueWaiter=new Object();
 	
-	private PropertiesModelOnline properties;
+	public PropertiesModelOnline properties;
 	
 	public void recive(){
 		String com = null;
@@ -143,7 +126,9 @@ public class OnlineModel extends Observable implements Model {
 	public Maze getMaze(String name) {
 		send("displayMaze "+name);
 		try {
-			getWaiter.wait();
+			synchronized (getWaiter) {
+				getWaiter.wait();
+			}	
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
@@ -168,7 +153,9 @@ public class OnlineModel extends Observable implements Model {
 	public Solution getSolution(String name) {
 		send("solveMaze "+name);
 		try {
-			solWaiter.wait();
+			synchronized (solWaiter){
+				solWaiter.wait();
+			}
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
@@ -238,7 +225,9 @@ public class OnlineModel extends Observable implements Model {
 		send("GetClue "+arg);
 		
 		try {
-			clueWaiter.wait();
+			synchronized(clueWaiter){
+				clueWaiter.wait();
+			}
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}

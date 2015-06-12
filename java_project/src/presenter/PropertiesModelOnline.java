@@ -7,16 +7,13 @@ import java.io.Serializable;
 
 public class PropertiesModelOnline implements Serializable,PropertiesModel {
 
-	
-
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	public Boolean Diags;
 	public String ip;	// "localhost"
 	public Integer port;	// 5400
 	
+	public PropertiesModelOnline() {
+	}
 	
 	
 	/**
