@@ -218,7 +218,8 @@ public class OnlineModel extends Observable implements Model {
 	public void setProperties(PropertiesModel prop){
 		properties=(PropertiesModelOnline) prop;
 		try {
-			myServer.close();
+			if(myServer!=null)
+				myServer.close();
 			myServer=new Socket(properties.getIp(), properties.getPort());
 			writer=new PrintStream(myServer.getOutputStream());
 			reader=new BufferedReader(new InputStreamReader(myServer.getInputStream()));

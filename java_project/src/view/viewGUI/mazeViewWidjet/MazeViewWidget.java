@@ -619,11 +619,14 @@ public class MazeViewWidget extends Canvas {
 	}
 	
 	public void displayString(String msg) {
-		
-		MessageBox messageBox = new MessageBox(this.getShell(),  SWT.OK);
-		messageBox.setMessage(msg);
-		messageBox.setText("Message");
-		messageBox.open();
+		getDisplay().getDefault().asyncExec(new Runnable() {
+		    public void run() {
+		    	MessageBox messageBox = new MessageBox(getShell(),  SWT.OK);
+				messageBox.setMessage(msg);
+				messageBox.setText("Message");
+				messageBox.open();
+		    }
+		});
 	}
 	public View getView() {
 		return ViewGUI;
