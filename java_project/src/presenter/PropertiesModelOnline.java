@@ -35,9 +35,9 @@ public class PropertiesModelOnline implements Serializable,PropertiesModel {
 			XML.close();
 		}catch(Exception e ){
 			System.out.println("no found properties//run default values\n"
-					+ "after exit command the properties save in resources/properties.xml");
+					+ "after exit command the properties save in resources/propertiesOnline.xml");
 			this.setIp("localhost");
-			this.setPort(5400);
+			this.setPort(5401);
 		}finally{
 			
 		}	

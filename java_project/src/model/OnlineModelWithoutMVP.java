@@ -1,6 +1,9 @@
 package model;
 
+import java.beans.XMLEncoder;
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
@@ -74,6 +77,18 @@ public class OnlineModelWithoutMVP extends Observable implements Model{
 		}
 		writer=null;
 		reader=null;
+		
+		//save properties
+		XMLEncoder e = null;
+		try {
+			e = new XMLEncoder(new FileOutputStream("resources/properties.xml"));
+		} catch (FileNotFoundException e1) {
+			this.setChanged();
+			this.notifyObservers("error while saving the properties.");
+		}
+		e.writeObject(this.properties);
+		e.flush();
+		e.close();
 	}
 	
 	public void send(String text){
