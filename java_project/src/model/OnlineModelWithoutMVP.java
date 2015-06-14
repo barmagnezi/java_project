@@ -29,9 +29,9 @@ public class OnlineModelWithoutMVP extends Observable implements Model {
 	// first is setprop and second because of presenter
 	private Thread listen;
 
-	private Object getMazeWaiter = new Object();
-	private Object solWaiter = new Object();
-	private Object clueWaiter = new Object();
+	public Integer getMazeWaiter = new Integer(1);
+	public Integer solWaiter = new Integer(1);
+	public Integer clueWaiter = new Integer(1);
 	private String clue;
 
 	@Override
@@ -81,7 +81,7 @@ public class OnlineModelWithoutMVP extends Observable implements Model {
 			if (myServer != null)
 				myServer.close();
 		} catch (IOException e) {
-			this.notifyObservers("can't can unconnect from the server");
+			this.notifyObservers("can't unconnect from the server");
 		}
 		writer = null;
 		reader = null;
@@ -117,6 +117,7 @@ public class OnlineModelWithoutMVP extends Observable implements Model {
 		try {
 			synchronized (getMazeWaiter) {
 				getMazeWaiter.wait();
+				System.out.println("Dsvd");
 			}
 		} catch (InterruptedException e) {
 			e.printStackTrace();
