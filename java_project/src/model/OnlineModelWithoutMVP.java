@@ -29,7 +29,7 @@ public class OnlineModelWithoutMVP extends Observable implements Model {
 	// first is setprop and second because of presenter
 	private Thread listen;
 
-	private Object getWaiter = new Object();
+	private Object getMazeWaiter = new Object();
 	private Object solWaiter = new Object();
 	private Object clueWaiter = new Object();
 	private String clue;
@@ -115,11 +115,16 @@ public class OnlineModelWithoutMVP extends Observable implements Model {
 	public Maze getMaze(String name) {
 		send("getMaze " + name);
 		try {
-			synchronized (getWaiter) {
-				getWaiter.wait();
+			synchronized (getMazeWaiter) {
+				getMazeWaiter.wait();
 			}
 		} catch (InterruptedException e) {
 			e.printStackTrace();
+		}
+		System.out.println("Dsvd");
+		if(correctMaze==null){
+			this.setChanged();
+			this.notifyObservers("maze " + name + " not found.");
 		}
 		return correctMaze;
 	}
@@ -177,47 +182,54 @@ public class OnlineModelWithoutMVP extends Observable implements Model {
 		while (true) {
 			try {
 				command = reader.readLine();
+				System.out.println(command);
+				if (command == "sentMaze") {
+					/*
+					 * try { helper = reader.readLine(); //helper= <MazeName> }
+					 * catch (IOException e) { e.printStackTrace(); }
+					 */
+					try {
+						String h=reader.readLine();
+						if(h.equals("mazeNotFound"))
+							correctMaze=null;
+						else
+							correctMaze = StringMaze.StringToMaze(h);
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+					synchronized (getMazeWaiter) {
+						getMazeWaiter.notify();						
+					}
+				}
+				if (command.equals("sentSolution")) {
+					try {
+						correctSolution = StringSolution.StringToSolution(reader
+								.readLine());
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+					solWaiter.notify();
+				}
+				if (command.equals("sentClue")) {
+					try {
+						clue = reader.readLine();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+					clueWaiter.notify();
+				}
+				if (command.equals("sentDiagsMode")) {
+					try {
+						System.out.println("sentDiagsMode in if");
+						this.setChanged();
+						this.notifyObservers("DiagsMode:" + reader.readLine());
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
 			} catch (IOException e) {
 				e.printStackTrace();
-			}
-			if (command == "sentMaze") {
-				/*
-				 * try { helper = reader.readLine(); //helper= <MazeName> }
-				 * catch (IOException e) { e.printStackTrace(); }
-				 */
-				try {
-					correctMaze = StringMaze.StringToMaze(reader.readLine());
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-
-				getWaiter.notify();
-			}
-			if (command == "sentSolution") {
-				try {
-					correctSolution = StringSolution.StringToSolution(reader
-							.readLine());
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-				solWaiter.notify();
-			}
-			if (command == "sentClue") {
-				try {
-					clue = reader.readLine();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-				clueWaiter.notify();
-			}
-			if (command == "sentDiagsMode") {
-				try {
-					this.setChanged();
-					this.notifyObservers("DiagsMode:" + reader.readLine());
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
 			}
 		}
 	}
