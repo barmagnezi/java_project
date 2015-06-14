@@ -37,12 +37,16 @@ public class OnlineModelWithoutMVP extends Observable implements Model {
 	@Override
 	public void start() {
 		try {
-			if (myServer != null
-					&& myServer.getInetAddress().getHostAddress()
-							.equals(properties.ip)
-					&& myServer.getPort() == properties.getPort()
-					&& myServer.isConnected())
-				return;
+			if (myServer != null)
+			System.out.println(myServer.getInetAddress().getHostAddress()+"=?"+properties.ip);
+			if (myServer != null&&
+					myServer.getPort() == properties.getPort()&&
+					 myServer.isConnected())
+				if(myServer.getInetAddress().getHostAddress().equals("127.0.0.1")&&
+						properties.ip.equals("localhost")||
+						 myServer.getInetAddress().getHostAddress()
+							.equals(properties.ip))
+					return;
 			System.out.println("try connect to " + properties.getIp() + "   "
 					+ properties.getPort());
 			myServer = new Socket(properties.getIp(), properties.getPort());
