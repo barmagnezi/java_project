@@ -17,15 +17,17 @@ public class testwindow extends BasicWindow {
 
 	@Override
 	protected void initWidgets() {
-		shell.setLayout(new GridLayout(1,false));		
-		MazeViewWidget barcanvas=new MazeViewWidget(shell, SWT.BORDER);	
-		barcanvas.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));	
+		shell.setLayout(new GridLayout(1, false));
+		MazeViewWidget barcanvas = new MazeViewWidget(shell, SWT.BORDER);
+		barcanvas.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1,
+				1));
 		barcanvas.addHelpListener(new HelpListener() {
-			
+
 			@Override
 			public void helpRequested(HelpEvent arg0) {
-				MessageBox messageBox = new MessageBox(shell,  SWT.OK);
-				messageBox.setMessage("Senia Kalma 321969941\nBar Magnezi 209043827");
+				MessageBox messageBox = new MessageBox(shell, SWT.OK);
+				messageBox
+						.setMessage("Senia Kalma 321969941\nBar Magnezi 209043827");
 				messageBox.setText("help");
 				messageBox.open();
 			}

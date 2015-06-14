@@ -20,27 +20,32 @@ public class ClI_View extends Observable implements View {
 	BufferedReader in;
 	PrintStream out;
 	Queue<Command> commandsList;
+
 	/**
-	 * This constructor create view by using the arguments for input and output. 
-	 * @param r The input for the user.
-	 * @param out The output for the user.
+	 * This constructor create view by using the arguments for input and output.
+	 * 
+	 * @param r
+	 *            The input for the user.
+	 * @param out
+	 *            The output for the user.
 	 */
-	public ClI_View(BufferedReader r,PrintStream out) {
+	public ClI_View(BufferedReader r, PrintStream out) {
 		super();
-		this.in=r;
-		this.out=out;
-		commandsList=new LinkedList<Command>();
+		this.in = r;
+		this.out = out;
+		commandsList = new LinkedList<Command>();
 	}
+
 	/**
 	 * This constructor create view by using the default system output and input
 	 */
 	public ClI_View() {
 		super();
-		this.in=new BufferedReader(new InputStreamReader(System.in));
-		this.out=System.out;
-		commandsList=new LinkedList<Command>();
+		this.in = new BufferedReader(new InputStreamReader(System.in));
+		this.out = System.out;
+		commandsList = new LinkedList<Command>();
 	}
-	
+
 	/**
 	 * Starts the view with the myCLI.
 	 */
@@ -48,23 +53,25 @@ public class ClI_View extends Observable implements View {
 	public void start() {
 		this.setChanged();
 		this.notifyObservers("start");
-		Thread t=new Thread(new Runnable() {
+		Thread t = new Thread(new Runnable() {
 			public void run() {
 				myCLI.start();
 			}
 		});
 		t.start();
 	}
-	
+
 	/**
 	 * Sets out hashmap commands with the received hashmap.
-	 * @param commands hashmap of string<->command containing out available commands.
+	 * 
+	 * @param commands
+	 *            hashmap of string<->command containing out available commands.
 	 */
 	@Override
 	public void setCommands(HashMap<String, Command> commands) {
-		myCLI=new NewCLI(in, out, commands);
+		myCLI = new NewCLI(in, out, commands);
 	}
-	
+
 	/**
 	 * Takes out a user command from our user command queue.
 	 */
@@ -75,35 +82,40 @@ public class ClI_View extends Observable implements View {
 
 	/**
 	 * Displays the received maze using MyMazeDispleyer.
-	 * @param m Maze.
+	 * 
+	 * @param m
+	 *            Maze.
 	 */
 	@Override
-	public void displayMaze(Maze m,String name) {
+	public void displayMaze(Maze m, String name) {
 		MyMazeDispleyer md = new MyMazeDispleyer();
 		md.DisplayMaze(m, out);
 	}
-	
+
 	/**
 	 * Displays the received solution using MySolutionDispleyer.
-	 * @param s Solution.
+	 * 
+	 * @param s
+	 *            Solution.
 	 */
 	@Override
-	public void displaySolution(Solution s) {	
+	public void displaySolution(Solution s) {
 		MySolutionDispleyer sd = new MySolutionDispleyer();
 		sd.DisplaySolution(s, out);
 	}
-	
-	//only for NotifyCLIgetViewWeDontUseIt we don't use it
+
+	// only for NotifyCLIgetViewWeDontUseIt we don't use it
 	/**
 	 * Notify our observers using the received argument.
-	 * @param arg received argument.
+	 * 
+	 * @param arg
+	 *            received argument.
 	 */
 	public void Notify(String arg) {
 		this.setChanged();
 		this.notifyObservers(arg);
 	}
-	
-	
+
 	/**
 	 * Displays a string to our outputStream.
 	 */
@@ -112,51 +124,56 @@ public class ClI_View extends Observable implements View {
 		out.println(msg);
 	}
 
-
-	//private class for CLI
-	private class NewCLI extends CLI{
+	// private class for CLI
+	private class NewCLI extends CLI {
 		/**
 		 * This constructor creates CLI that works with the parameters.
-		 * @param in The inputstream(BufferedReader) that contain all the command from the user.
-		 * @param out The OutputStream(PrintStream) that all the commands will write.
-		 * @param commands All the commands that the CLI support.
+		 * 
+		 * @param in
+		 *            The inputstream(BufferedReader) that contain all the
+		 *            command from the user.
+		 * @param out
+		 *            The OutputStream(PrintStream) that all the commands will
+		 *            write.
+		 * @param commands
+		 *            All the commands that the CLI support.
 		 */
-		public NewCLI(BufferedReader in, PrintStream out,HashMap<String, Command> commands){
-			super(in,out,commands);
+		public NewCLI(BufferedReader in, PrintStream out,
+				HashMap<String, Command> commands) {
+			super(in, out, commands);
 		}
+
 		/**
-		 * This method start getting commands from the user and add them to commandsList.
+		 * This method start getting commands from the user and add them to
+		 * commandsList.
 		 */
-		public void start()
-		{
+		public void start() {
 			out.flush();
 			out.println("Welcome to the project of Senia&Bar");
 			out.print("Enter command: ");
 
 			try {
 				String line = in.readLine();
-				
-				while (!line.equals("exit"))
-				{
+
+				while (!line.equals("exit")) {
 					String[] sp = line.split(" ", 2);
-									
+
 					String commandName = sp[0];
 					String arg = null;
 					if (sp.length > 1)
 						arg = sp[1];
 					// Invoke the command
 					Command command = Commands.get(commandName);
-					if(command==null)
-						out.println("There is no such command "+commandName);
-					else
-						if(arg==null)
-							out.println("No argument has been entered");
-						else{
-							commandsList.add(command);
-							setChanged();
-							notifyObservers(arg);
-						}
-					
+					if (command == null)
+						out.println("There is no such command " + commandName);
+					else if (arg == null)
+						out.println("No argument has been entered");
+					else {
+						commandsList.add(command);
+						setChanged();
+						notifyObservers(arg);
+					}
+
 					out.print("Enter command: ");
 					line = in.readLine();
 				}
@@ -172,24 +189,21 @@ public class ClI_View extends Observable implements View {
 					out.close();
 				} catch (IOException e) {
 					out.println("can't close from in/out streams");
-				}		
-			}	
+				}
+			}
 		}
 	}
-
 
 	@Override
 	public void displayClue(String clue) {
 		// TODO Auto-generated method stub
-		
+
 	}
+
 	@Override
 	public void getDiagsMode(boolean diag) {
 		// TODO Auto-generated method stub
-		
+
 	}
-
-
-
 
 }

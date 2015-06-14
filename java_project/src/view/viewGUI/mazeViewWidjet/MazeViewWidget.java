@@ -28,21 +28,24 @@ import view.View;
 import view.viewGUI.mazeDisplayerAndCharecters.MazeDisplayerGUI;
 
 /**
-* Setting all the main features of our current gameView - as MazeDispalyer(GUI). (OUTSIDE BIG WINDOW)
-* @author  Bar Magnezi and Senia Kalma
-* @version 1.0
-* @since 31.5.2015
-*/
+ * Setting all the main features of our current gameView - as
+ * MazeDispalyer(GUI). (OUTSIDE BIG WINDOW)
+ * 
+ * @author Bar Magnezi and Senia Kalma
+ * @version 1.0
+ * @since 31.5.2015
+ */
 public class MazeViewWidget extends Canvas {
 
-	public String mazeName="Not loaded maze";
-	Maze maze=null;
-	int steps=0;
-	int clue=0;
-	ViewGUI ViewGUI=new ViewGUI(this);
-	boolean Diagonals =true; //!!!!!need to know by the presenter
-	
-	public Boolean checkMotionFlag=new Boolean(false); //for check motion function 
+	public String mazeName = "Not loaded maze";
+	Maze maze = null;
+	int steps = 0;
+	int clue = 0;
+	ViewGUI ViewGUI = new ViewGUI(this);
+	boolean Diagonals = true; // !!!!!need to know by the presenter
+
+	public Boolean checkMotionFlag = new Boolean(false); // for check motion
+															// function
 	Label LBmazeName;
 	Label LHelp;
 	Label LBsteps;
@@ -54,32 +57,37 @@ public class MazeViewWidget extends Canvas {
 	Button[] CharactersButtons;
 	Group GroupBackgroundMaze;
 	Button[] BackgroundsButtons;
-	
+
 	String path;
 	int Op;
-	
-	public void setProperties(String path){
+
+	public void setProperties(String path) {
 		ViewGUI.setproperties(path);
 	}
-	public void addObserver(Observer presenter){
+
+	public void addObserver(Observer presenter) {
 		ViewGUI.addObserver(presenter);
 	}
+
 	public MazeViewWidget(Composite parent, int style) {
-		super(parent, style);		
-		this.setLayout(new GridLayout(2,false));
+		super(parent, style);
+		this.setLayout(new GridLayout(2, false));
 		getShell().setBackgroundMode(SWT.INHERIT_FORCE);
-		LBmazeName=new Label(this, SWT.NONE);	
-		LBmazeName.setLayoutData(new GridData(SWT.FILL, SWT.None, false, false, 1, 1));
-		
-		LHelp=new Label(this, SWT.PUSH);
-		LHelp.setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, true, false, 1	, 1));	
+		LBmazeName = new Label(this, SWT.NONE);
+		LBmazeName.setLayoutData(new GridData(SWT.FILL, SWT.None, false, false,
+				1, 1));
+
+		LHelp = new Label(this, SWT.PUSH);
+		LHelp.setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, true, false, 1, 1));
 		LHelp.setText("Have a question?press F1 :)");
-		
-		LBsteps=new Label(this, SWT.NONE);	
-		LBsteps.setLayoutData(new GridData(SWT.FILL, SWT.TOP, false, false, 1, 1));
-		
-		Bstartover=new Button(this, SWT.PUSH);
-		Bstartover.setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, false, false, 1, 1));
+
+		LBsteps = new Label(this, SWT.NONE);
+		LBsteps.setLayoutData(new GridData(SWT.FILL, SWT.TOP, false, false, 1,
+				1));
+
+		Bstartover = new Button(this, SWT.PUSH);
+		Bstartover.setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, false, false,
+				1, 1));
 		Bstartover.setText("start over");
 		Bstartover.addSelectionListener(new SelectionListener() {
 			@Override
@@ -87,113 +95,117 @@ public class MazeViewWidget extends Canvas {
 				getParent().getDisplay().syncExec(new Runnable() {
 					@Override
 					public void run() {
-						System.out.println("MazeDisplayer.showMaze(maze,true);");
+						System.out
+								.println("MazeDisplayer.showMaze(maze,true);");
 						MazeDisplayer.Startover(maze);
-						steps=0;
-						clue=0;
+						steps = 0;
+						clue = 0;
 						load();
 						MazeDisplayer.setFocus();
 					}
 				});
 			}
+
 			@Override
-			public void widgetDefaultSelected(SelectionEvent arg0) {}
+			public void widgetDefaultSelected(SelectionEvent arg0) {
+			}
 		});
-		/*Bstartover.addFocusListener(new FocusListener() {
-			@Override
-			public void focusLost(FocusEvent arg0) {
-				MazeDisplayer.setFocus();
-			}
-			
-			@Override
-			public void focusGained(FocusEvent arg0) {
-				MazeDisplayer.setFocus();
-			}
-		});*/
-		
-		BshowSolution=new Button(this, SWT.PUSH);
-		BshowSolution.setLayoutData(new GridData(SWT.LEFT, SWT.TOP, false, false, 2, 1));
+		/*
+		 * Bstartover.addFocusListener(new FocusListener() {
+		 * 
+		 * @Override public void focusLost(FocusEvent arg0) {
+		 * MazeDisplayer.setFocus(); }
+		 * 
+		 * @Override public void focusGained(FocusEvent arg0) {
+		 * MazeDisplayer.setFocus(); } });
+		 */
+
+		BshowSolution = new Button(this, SWT.PUSH);
+		BshowSolution.setLayoutData(new GridData(SWT.LEFT, SWT.TOP, false,
+				false, 2, 1));
 		BshowSolution.setText("show solution");
 		BshowSolution.addSelectionListener(new SelectionListener() {
-			
+
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
 				MazeDisplayer.setFocus();
 				ViewGUI.displaySolution(mazeName);
 			}
-			
+
 			@Override
-			public void widgetDefaultSelected(SelectionEvent arg0) {	
+			public void widgetDefaultSelected(SelectionEvent arg0) {
 			}
 		});
-		/*BshowSolution.addFocusListener(new FocusListener() {
-			@Override
-			public void focusLost(FocusEvent arg0) {
-				MazeDisplayer.setFocus();
-			}
-			
-			@Override
-			public void focusGained(FocusEvent arg0) {
-				MazeDisplayer.setFocus();
-			}
-		});*/
-		
-		BgiveClue=new Button(this, SWT.PUSH);
-		BgiveClue.setLayoutData(new GridData(SWT.LEFT, SWT.TOP, false, false, 1, 1));
+		/*
+		 * BshowSolution.addFocusListener(new FocusListener() {
+		 * 
+		 * @Override public void focusLost(FocusEvent arg0) {
+		 * MazeDisplayer.setFocus(); }
+		 * 
+		 * @Override public void focusGained(FocusEvent arg0) {
+		 * MazeDisplayer.setFocus(); } });
+		 */
+
+		BgiveClue = new Button(this, SWT.PUSH);
+		BgiveClue.setLayoutData(new GridData(SWT.LEFT, SWT.TOP, false, false,
+				1, 1));
 		BgiveClue.setText("give me clue");
 		BgiveClue.addSelectionListener(new SelectionListener() {
-			
+
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				if(maze!=null)
+				if (maze != null)
 					clue(maze);
-				//ViewGUI.getclue(MazeDisplayer.getCharacter().getRealx(), MazeDisplayer.getCharacter().getRealy());
+				// ViewGUI.getclue(MazeDisplayer.getCharacter().getRealx(),
+				// MazeDisplayer.getCharacter().getRealy());
 				MazeDisplayer.setFocus();
 			}
-			
+
 			@Override
-			public void widgetDefaultSelected(SelectionEvent arg0) {	
+			public void widgetDefaultSelected(SelectionEvent arg0) {
 			}
 		});
-		/*BgiveClue.addFocusListener(new FocusListener() {
-			@Override
-			public void focusLost(FocusEvent arg0) {
-				MazeDisplayer.setFocus();
-			}
-			
-			@Override
-			public void focusGained(FocusEvent arg0) {
-				MazeDisplayer.setFocus();
-			}
-		});*/
-		
-		MazeDisplayer=new MazeDisplayerGUI(this, SWT.BORDER_SOLID,"resources/images/grass.png","resources/images/trees.png");
-		MazeDisplayer.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
-		//if() animation set..
+		/*
+		 * BgiveClue.addFocusListener(new FocusListener() {
+		 * 
+		 * @Override public void focusLost(FocusEvent arg0) {
+		 * MazeDisplayer.setFocus(); }
+		 * 
+		 * @Override public void focusGained(FocusEvent arg0) {
+		 * MazeDisplayer.setFocus(); } });
+		 */
+
+		MazeDisplayer = new MazeDisplayerGUI(this, SWT.BORDER_SOLID,
+				"resources/images/grass.png", "resources/images/trees.png");
+		MazeDisplayer.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true,
+				true, 2, 1));
+		// if() animation set..
 		MazeDisplayer.start();
-		//														=== Character Settings ===
-		GroupCharacters=new Group(this, SWT.SHADOW_OUT);
+		// === Character Settings ===
+		GroupCharacters = new Group(this, SWT.SHADOW_OUT);
 		GroupCharacters.setText("Characters");
 		GroupCharacters.setLayout(new GridLayout(3, true));
-		GroupCharacters.setLayoutData(new GridData(SWT.LEFT, SWT.DOWN,  false, false,2,1));
-		GroupCharacters.setBackground(new org.eclipse.swt.graphics.Color(null, new RGB(255, 255, 255)));
-		CharactersButtons=new Button[3];
-		for(int i = 0; i < 3; i++) {
-			CharactersButtons[i]=new Button(GroupCharacters, SWT.RADIO);
+		GroupCharacters.setLayoutData(new GridData(SWT.LEFT, SWT.DOWN, false,
+				false, 2, 1));
+		GroupCharacters.setBackground(new org.eclipse.swt.graphics.Color(null,
+				new RGB(255, 255, 255)));
+		CharactersButtons = new Button[3];
+		for (int i = 0; i < 3; i++) {
+			CharactersButtons[i] = new Button(GroupCharacters, SWT.RADIO);
 			CharactersButtons[i].setText("option " + (i + 1));
 		}
 		CharactersButtons[0].setSelection(true);
-		
+
 		CharactersButtons[0].setText("Circle");
 		CharactersButtons[0].addSelectionListener(new SelectionListener() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				if(CharactersButtons[0].getSelection()==true){
-			        ColorDialog cd = new ColorDialog(getShell());
-			        cd.setText("ColorDialog Demo");
-			        cd.setRGB(new RGB(255, 255, 255));
-			        RGB col = cd.open();
-			        MazeDisplayer.changeCharacter(1, col, null);
+				if (CharactersButtons[0].getSelection() == true) {
+					ColorDialog cd = new ColorDialog(getShell());
+					cd.setText("ColorDialog Demo");
+					cd.setRGB(new RGB(255, 255, 255));
+					RGB col = cd.open();
+					MazeDisplayer.changeCharacter(1, col, null);
 				}
 			}
 
@@ -201,540 +213,596 @@ public class MazeViewWidget extends Canvas {
 			public void widgetDefaultSelected(SelectionEvent arg0) {
 			}
 		});
-		
+
 		CharactersButtons[1].setText("Picture");
 		CharactersButtons[1].addSelectionListener(new SelectionListener() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				if(CharactersButtons[1].getSelection()==true){
-					SelectPic SP= new SelectPic("Select a picture",300,230, getDisplay(), MazeDisplayer.getCharOp());
+				if (CharactersButtons[1].getSelection() == true) {
+					SelectPic SP = new SelectPic("Select a picture", 300, 230,
+							getDisplay(), MazeDisplayer.getCharOp());
 					SP.run();
-					if(SP.getStr()==null){
-						MazeDisplayer.changeCharacter(SP.getChoise(), null, null);
-					}else
+					if (SP.getStr() == null) {
+						MazeDisplayer.changeCharacter(SP.getChoise(), null,
+								null);
+					} else
 						MazeDisplayer.changeCharacter(1001, null, SP.getStr());
 					MazeDisplayer.setFocus();
 				}
 			}
-			
+
 			@Override
 			public void widgetDefaultSelected(SelectionEvent arg0) {
 			}
 		});
-		
+
 		CharactersButtons[2].setText("Animation");
-		/*int before1 = 0;
-		int coi;
-		if(CharactersButtons[0].getSelection()==true)
-			before1=0;
-		if(CharactersButtons[1].getSelection()==true)
-			before1=1;
-		if(CharactersButtons[2].getSelection()==true)
-			before1=2;
-			
-			if Clicked No on save setting ==> SP.getChoise()==-2.		
-		CharactersButtons[0].setSelection(false);
-		CharactersButtons[0].setSelection(false);
-		CharactersButtons[0].setSelection(false);
-		if(before1==0)
-			CharactersButtons[0].setSelection(true);
-		if(before1==1)
-			CharactersButtons[1].setSelection(true);
-		if(before1==1)
-			CharactersButtons[2].setSelection(true);
-		*/
-		
+		/*
+		 * int before1 = 0; int coi;
+		 * if(CharactersButtons[0].getSelection()==true) before1=0;
+		 * if(CharactersButtons[1].getSelection()==true) before1=1;
+		 * if(CharactersButtons[2].getSelection()==true) before1=2;
+		 * 
+		 * if Clicked No on save setting ==> SP.getChoise()==-2.
+		 * CharactersButtons[0].setSelection(false);
+		 * CharactersButtons[0].setSelection(false);
+		 * CharactersButtons[0].setSelection(false); if(before1==0)
+		 * CharactersButtons[0].setSelection(true); if(before1==1)
+		 * CharactersButtons[1].setSelection(true); if(before1==1)
+		 * CharactersButtons[2].setSelection(true);
+		 */
+
 		CharactersButtons[2].addSelectionListener(new SelectionListener() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				if(CharactersButtons[2].getSelection()==true){
-					SelectAnim SP= new SelectAnim("Select an animation",250,200, getDisplay(),MazeDisplayer.getCharOp());
+				if (CharactersButtons[2].getSelection() == true) {
+					SelectAnim SP = new SelectAnim("Select an animation", 250,
+							200, getDisplay(), MazeDisplayer.getCharOp());
 					SP.run();
-					//System.out.println(SP.getStr());
-					//System.out.println(SP.getChoise());
-					if(SP.getStr()==null){
-						MazeDisplayer.changeCharacter(SP.getChoise(), null, null);
-					}else
+					// System.out.println(SP.getStr());
+					// System.out.println(SP.getChoise());
+					if (SP.getStr() == null) {
+						MazeDisplayer.changeCharacter(SP.getChoise(), null,
+								null);
+					} else
 						MazeDisplayer.changeCharacter(1002, null, SP.getStr());
 					MazeDisplayer.setFocus();
 				}
 			}
+
 			@Override
 			public void widgetDefaultSelected(SelectionEvent arg0) {
 			}
 		});
-		
-		//														=== BackGround Settings ===
-		GroupBackgroundMaze=new Group(this, SWT.SHADOW_OUT);
+
+		// === BackGround Settings ===
+		GroupBackgroundMaze = new Group(this, SWT.SHADOW_OUT);
 		GroupBackgroundMaze.setText("background");
 		GroupBackgroundMaze.setLayout(new GridLayout(3, true));
-		GroupBackgroundMaze.setLayoutData(new GridData(SWT.LEFT, SWT.DOWN,  false, false));
-		
-		BackgroundsButtons=new Button[3];
-		for(int i = 0; i < 3; i++) {
-			BackgroundsButtons[i]=new Button(GroupBackgroundMaze, SWT.RADIO);
+		GroupBackgroundMaze.setLayoutData(new GridData(SWT.LEFT, SWT.DOWN,
+				false, false));
+
+		BackgroundsButtons = new Button[3];
+		for (int i = 0; i < 3; i++) {
+			BackgroundsButtons[i] = new Button(GroupBackgroundMaze, SWT.RADIO);
 		}
 		BackgroundsButtons[0].setText("garden");
 		BackgroundsButtons[0].addSelectionListener(new SelectionListener() {
-			
+
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				MazeDisplayer.changeBackDesign("resources/images/grass.png","resources/images/trees.png");
-				GroupBackgroundMaze.setBackgroundImage(new Image(null, "resources/images/grass.png"));
+				MazeDisplayer.changeBackDesign("resources/images/grass.png",
+						"resources/images/trees.png");
+				GroupBackgroundMaze.setBackgroundImage(new Image(null,
+						"resources/images/grass.png"));
 			}
-			
+
 			@Override
 			public void widgetDefaultSelected(SelectionEvent arg0) {
 			}
 		});
 		BackgroundsButtons[1].setText("desert");
 		BackgroundsButtons[1].addSelectionListener(new SelectionListener() {
-			
+
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				MazeDisplayer.changeBackDesign("resources/images/desert.jpg","resources/images/brick_texture.jpg");
-				GroupBackgroundMaze.setBackgroundImage(new Image(null, "resources/images/desert.jpg"));
+				MazeDisplayer.changeBackDesign("resources/images/desert.jpg",
+						"resources/images/brick_texture.jpg");
+				GroupBackgroundMaze.setBackgroundImage(new Image(null,
+						"resources/images/desert.jpg"));
 			}
-			
+
 			@Override
 			public void widgetDefaultSelected(SelectionEvent arg0) {
 			}
 		});
 		BackgroundsButtons[2].setText("Black&White");
 		BackgroundsButtons[2].addSelectionListener(new SelectionListener() {
-			
+
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				MazeDisplayer.changeBackDesign("resources/images/white.png","resources/images/black.png");
-				GroupBackgroundMaze.setBackgroundImage(new Image(null, "resources/images/white.png"));
+				MazeDisplayer.changeBackDesign("resources/images/white.png",
+						"resources/images/black.png");
+				GroupBackgroundMaze.setBackgroundImage(new Image(null,
+						"resources/images/white.png"));
 			}
-			
+
 			@Override
 			public void widgetDefaultSelected(SelectionEvent arg0) {
 			}
 		});
-		
+
 		BackgroundsButtons[0].setSelection(true);
-		GroupBackgroundMaze.setBackgroundImage(new Image(null, "resources/images/grass.png"));
-		
+		GroupBackgroundMaze.setBackgroundImage(new Image(null,
+				"resources/images/grass.png"));
+
 		MazeDisplayer.addKeyListener(new KeyListener() {
-			
+
 			@Override
 			public void keyReleased(KeyEvent arg0) {
 			}
-			
+
 			@Override
 			public void keyPressed(KeyEvent arg0) {
-				if(arg0.keyCode==16777220){		//right
-					int currentX=MazeDisplayer.getCharacter().getRealx();
-					int currentY=MazeDisplayer.getCharacter().getRealy();
-					if(CheckMotion(currentX, currentY, currentX+1, currentY)){
+				if (arg0.keyCode == 16777220) { // right
+					int currentX = MazeDisplayer.getCharacter().getRealx();
+					int currentY = MazeDisplayer.getCharacter().getRealy();
+					if (CheckMotion(currentX, currentY, currentX + 1, currentY)) {
 						MazeDisplayer.CharMoved(1);
 						steps++;
-						checkwin(currentX+1,currentY);
+						checkwin(currentX + 1, currentY);
 					}
-				}			
-				if(arg0.keyCode==16777219){			//left
-					int currentX=MazeDisplayer.getCharacter().getRealx();
-					int currentY=MazeDisplayer.getCharacter().getRealy();
-					if(CheckMotion(currentX, currentY, currentX-1, currentY)){
+				}
+				if (arg0.keyCode == 16777219) { // left
+					int currentX = MazeDisplayer.getCharacter().getRealx();
+					int currentY = MazeDisplayer.getCharacter().getRealy();
+					if (CheckMotion(currentX, currentY, currentX - 1, currentY)) {
 						MazeDisplayer.CharMoved(3);
 						steps++;
-						checkwin(currentX-1,currentY);
+						checkwin(currentX - 1, currentY);
 					}
 				}
-				if(arg0.keyCode==16777217){		//up
-					int currentX=MazeDisplayer.getCharacter().getRealx();
-					int currentY=MazeDisplayer.getCharacter().getRealy();
-					if(CheckMotion(currentX, currentY, currentX, currentY-1)){
+				if (arg0.keyCode == 16777217) { // up
+					int currentX = MazeDisplayer.getCharacter().getRealx();
+					int currentY = MazeDisplayer.getCharacter().getRealy();
+					if (CheckMotion(currentX, currentY, currentX, currentY - 1)) {
 						MazeDisplayer.CharMoved(2);
 						steps++;
-						checkwin(currentX,currentY-1);
+						checkwin(currentX, currentY - 1);
 					}
 				}
-				if(arg0.keyCode==16777218){			//down
-					int currentX=MazeDisplayer.getCharacter().getRealx();
-					int currentY=MazeDisplayer.getCharacter().getRealy();
-					if(CheckMotion(currentX, currentY, currentX, currentY+1)){
+				if (arg0.keyCode == 16777218) { // down
+					int currentX = MazeDisplayer.getCharacter().getRealx();
+					int currentY = MazeDisplayer.getCharacter().getRealy();
+					if (CheckMotion(currentX, currentY, currentX, currentY + 1)) {
 						MazeDisplayer.CharMoved(4);
 						steps++;
-						checkwin(currentX,currentY+1);
+						checkwin(currentX, currentY + 1);
 					}
 				}
-				//diag
-				if(arg0.character=='1'){			//down-left		
-					int currentX=MazeDisplayer.getCharacter().getRealx();
-					int currentY=MazeDisplayer.getCharacter().getRealy();
-					if(CheckMotion(currentX, currentY, currentX-1, currentY+1)){
+				// diag
+				if (arg0.character == '1') { // down-left
+					int currentX = MazeDisplayer.getCharacter().getRealx();
+					int currentY = MazeDisplayer.getCharacter().getRealy();
+					if (CheckMotion(currentX, currentY, currentX - 1,
+							currentY + 1)) {
 						MazeDisplayer.CharMoved(5);
 						steps++;
-						checkwin(currentX-1,currentY+1);
+						checkwin(currentX - 1, currentY + 1);
 					}
 				}
-					
-				if(arg0.character=='2'){ 			//down-right
-					int currentX=MazeDisplayer.getCharacter().getRealx();
-					int currentY=MazeDisplayer.getCharacter().getRealy();
-					if(CheckMotion(currentX, currentY, currentX+1, currentY+1)){
+
+				if (arg0.character == '2') { // down-right
+					int currentX = MazeDisplayer.getCharacter().getRealx();
+					int currentY = MazeDisplayer.getCharacter().getRealy();
+					if (CheckMotion(currentX, currentY, currentX + 1,
+							currentY + 1)) {
 						MazeDisplayer.CharMoved(6);
 						steps++;
-						checkwin(currentX+1,currentY+1);
+						checkwin(currentX + 1, currentY + 1);
 					}
 				}
-				if(arg0.character=='4'){ 			//up-left
-					int currentX=MazeDisplayer.getCharacter().getRealx();
-					int currentY=MazeDisplayer.getCharacter().getRealy();
-					if(CheckMotion(currentX, currentY, currentX-1, currentY-1)){
+				if (arg0.character == '4') { // up-left
+					int currentX = MazeDisplayer.getCharacter().getRealx();
+					int currentY = MazeDisplayer.getCharacter().getRealy();
+					if (CheckMotion(currentX, currentY, currentX - 1,
+							currentY - 1)) {
 						MazeDisplayer.CharMoved(7);
 						steps++;
-						checkwin(currentX-1,currentY-1);
+						checkwin(currentX - 1, currentY - 1);
 					}
 				}
-				if(arg0.character=='5'){ 			//up-right
-					int currentX=MazeDisplayer.getCharacter().getRealx();
-					int currentY=MazeDisplayer.getCharacter().getRealy();
-					if(CheckMotion(currentX, currentY, currentX+1, currentY-1)){
+				if (arg0.character == '5') { // up-right
+					int currentX = MazeDisplayer.getCharacter().getRealx();
+					int currentY = MazeDisplayer.getCharacter().getRealy();
+					if (CheckMotion(currentX, currentY, currentX + 1,
+							currentY - 1)) {
 						MazeDisplayer.CharMoved(8);
 						steps++;
-						checkwin(currentX+1,currentY-1);
+						checkwin(currentX + 1, currentY - 1);
 					}
 				}
 				load();
 			}
 		});
 
-	  //button5 - Load settings
-	  		Button BLoad=new Button(this, SWT.PUSH);
-	  		BLoad.setLayoutData(new GridData(SWT.RIGHT, SWT.DOWN, false, false, 1, 1));		
-	  		BLoad.setText("Load settings");
-	  		BLoad.addSelectionListener(new SelectionListener() {
-	  			@Override
-	  			public void widgetSelected(SelectionEvent arg0) {
-	  				getParent().getDisplay().syncExec(new Runnable() {
-	  					@Override
-	  					public void run() {
-	  						FileDialog fd=new FileDialog(getShell(),SWT.OPEN);
-	  						fd.setText("open");
-	  						fd.setFilterPath("");
-	  					  String[] names = {
-	  					      "Extensible Markup Language (*.xml)"};
-	  						String[] filterExt = { "*.xml"};
-	  						fd.setFilterNames(names);
-	  						fd.setFilterExtensions(filterExt);
-	  						fd.open();
-	  						if(fd.getFileName()=="")
-	  							return;
-	  						setProperties(fd.getFilterPath()+"/"+fd.getFileName());
-	  						MazeDisplayer.setFocus();
-	  					}
-	  				});
-	  			}
-	  			@Override
-	  			public void widgetDefaultSelected(SelectionEvent arg0) {}
-	  		});
-	  		final Point[] offset = new Point[1];
-		    MazeDisplayer.addMouseListener(new MouseListener() {
-				@Override
-				public void mouseDown(MouseEvent e) {
-		            Point pt1 = parent.toDisplay(0, 0);
-		            Point pt2 = getShell().toDisplay(e.x, e.y);
-		            offset[0] = new Point(pt2.x - pt1.x, pt2.y - pt1.y);
-				}
-				
-				@Override
-				public void mouseUp(MouseEvent e) {
-					if(offset[0]==null)
-						return;
-		            Point pt1 = parent.toDisplay(0, 0);
-		            Point pt2 = getShell().toDisplay(e.x, e.y);
-		            int Newx=(pt2.x - pt1.x);
-		            int Newy=(pt2.y - pt1.y);
-		            //System.out.println("x: "+Newx + " y: "+Newy+" OLD: "+" x: "+offset[0].x + "y: "+offset[0].y);
-		            int currentX = 0, currentY=0;
-					/*//If char != null		==On character click check - not working prop cuz Click res not in sync with pixel res
-					//e.gc.fillOval((realx*5+1)*Width/4, (realy*5+1)*Hight/4, Width, Hight);
-					System.out.println(offset[0].x);
-					System.out.println((MazeDisplayer.character.getRealx()*5+1)*MazeDisplayer.wallWidth/4);
-					if((MazeDisplayer.character.getRealx()*5+1)*MazeDisplayer.wallWidth/4<offset[0].x ){
-						System.out.println("bigger then char x start");
-					}*/
-		            if(MazeDisplayer.character!=null){
-						currentX=MazeDisplayer.getCharacter().getRealx();
-						currentY=MazeDisplayer.getCharacter().getRealy();
-						/*System.out.println("=========================================");
-						System.out.println("mouse start. x: "+pt1.x+" y: "+pt1.y);
-						System.out.println("mouse end. x: "+pt2.x+" y: "+pt2.y);
-						System.out.println("Change, x: "+(Newx)+" y: "+(Newy));*/
-						//System.out.println((MazeDisplayer.getCharacter().getRealx()*5+1)*MazeDisplayer.wallWidth);
-						//System.out.println((MazeDisplayer.getCharacter().getRealy()*5+1)*MazeDisplayer.wallHeight);
-					    int CharStartx=((MazeDisplayer.getCharacter().getRealx()*5+1)*MazeDisplayer.wallWidth);
-					    int CharStarty=((MazeDisplayer.getCharacter().getRealy()*5+1)*MazeDisplayer.wallHeight);
-					    //System.out.println("Char start,x: "+CharStartx+",y: "+CharStarty);
-					    if(CharStartx<Newx && CharStarty<Newy){
-					    	//if(CharStartx+(MazeDisplayer.wallWidth*4)>Newx && CharStarty+(MazeDisplayer.wallHeight*4)>Newy){
-					    		//System.out.println("GODA");
-								if(Newx-offset[0].x!=0 || Newy-offset[0].y!=0){
-						            if(Math.abs(Newx-offset[0].x) > Math.abs(Newy-offset[0].y)){
-						            	if((Newx-offset[0].x)>0){	//Moved right
-											if(CheckMotion(currentX, currentY, currentX+1, currentY)){
-												MazeDisplayer.CharMoved(1);
-												steps++;
-												checkwin(currentX+1,currentY);
-											}
-						            	}else{	//Moved left
-						            		if(CheckMotion(currentX, currentY, currentX-1, currentY)){
-												MazeDisplayer.CharMoved(3);
-												steps++;
-												checkwin(currentX-1,currentY);
-											}
-						            	}
-						            }else{
-						            	if((Newy-offset[0].y)>0){	//Moved down
-											if(CheckMotion(currentX, currentY, currentX, currentY+1)){
-												MazeDisplayer.CharMoved(4);
-												steps++;
-												checkwin(currentX,currentY+1);
-											}
-						            	}else{	//Moved up
-											if(CheckMotion(currentX, currentY, currentX, currentY-1)){
-												MazeDisplayer.CharMoved(2);
-												steps++;
-												checkwin(currentX,currentY-1);
-											}
-						            	}
-						            }
-					            }
-					    	//}
-					    }      
+		// button5 - Load settings
+		Button BLoad = new Button(this, SWT.PUSH);
+		BLoad.setLayoutData(new GridData(SWT.RIGHT, SWT.DOWN, false, false, 1,
+				1));
+		BLoad.setText("Load settings");
+		BLoad.addSelectionListener(new SelectionListener() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				getParent().getDisplay().syncExec(new Runnable() {
+					@Override
+					public void run() {
+						FileDialog fd = new FileDialog(getShell(), SWT.OPEN);
+						fd.setText("open");
+						fd.setFilterPath("");
+						String[] names = { "Extensible Markup Language (*.xml)" };
+						String[] filterExt = { "*.xml" };
+						fd.setFilterNames(names);
+						fd.setFilterExtensions(filterExt);
+						fd.open();
+						if (fd.getFileName() == "")
+							return;
+						setProperties(fd.getFilterPath() + "/"
+								+ fd.getFileName());
+						MazeDisplayer.setFocus();
 					}
-		            //offset[0] = new Point(pt2.x - pt1.x, pt2.y - pt1.y);
+				});
+			}
+
+			@Override
+			public void widgetDefaultSelected(SelectionEvent arg0) {
+			}
+		});
+		final Point[] offset = new Point[1];
+		MazeDisplayer.addMouseListener(new MouseListener() {
+			@Override
+			public void mouseDown(MouseEvent e) {
+				Point pt1 = parent.toDisplay(0, 0);
+				Point pt2 = getShell().toDisplay(e.x, e.y);
+				offset[0] = new Point(pt2.x - pt1.x, pt2.y - pt1.y);
+			}
+
+			@Override
+			public void mouseUp(MouseEvent e) {
+				if (offset[0] == null)
+					return;
+				Point pt1 = parent.toDisplay(0, 0);
+				Point pt2 = getShell().toDisplay(e.x, e.y);
+				int Newx = (pt2.x - pt1.x);
+				int Newy = (pt2.y - pt1.y);
+				// System.out.println("x: "+Newx +
+				// " y: "+Newy+" OLD: "+" x: "+offset[0].x + "y: "+offset[0].y);
+				int currentX = 0, currentY = 0;
+				/*
+				 * //If char != null ==On character click check - not working
+				 * prop cuz Click res not in sync with pixel res
+				 * //e.gc.fillOval((realx*5+1)*Width/4, (realy*5+1)*Hight/4,
+				 * Width, Hight); System.out.println(offset[0].x);
+				 * System.out.println
+				 * ((MazeDisplayer.character.getRealx()*5+1)*MazeDisplayer
+				 * .wallWidth/4);
+				 * if((MazeDisplayer.character.getRealx()*5+1)*MazeDisplayer
+				 * .wallWidth/4<offset[0].x ){
+				 * System.out.println("bigger then char x start"); }
+				 */
+				if (MazeDisplayer.character != null) {
+					currentX = MazeDisplayer.getCharacter().getRealx();
+					currentY = MazeDisplayer.getCharacter().getRealy();
+					/*
+					 * System.out.println(
+					 * "=========================================");
+					 * System.out.println
+					 * ("mouse start. x: "+pt1.x+" y: "+pt1.y);
+					 * System.out.println("mouse end. x: "+pt2.x+" y: "+pt2.y);
+					 * System.out.println("Change, x: "+(Newx)+" y: "+(Newy));
+					 */
+					// System.out.println((MazeDisplayer.getCharacter().getRealx()*5+1)*MazeDisplayer.wallWidth);
+					// System.out.println((MazeDisplayer.getCharacter().getRealy()*5+1)*MazeDisplayer.wallHeight);
+					int CharStartx = ((MazeDisplayer.getCharacter().getRealx() * 5 + 1) * MazeDisplayer.wallWidth);
+					int CharStarty = ((MazeDisplayer.getCharacter().getRealy() * 5 + 1) * MazeDisplayer.wallHeight);
+					// System.out.println("Char start,x: "+CharStartx+",y: "+CharStarty);
+					if (CharStartx < Newx && CharStarty < Newy) {
+						// if(CharStartx+(MazeDisplayer.wallWidth*4)>Newx &&
+						// CharStarty+(MazeDisplayer.wallHeight*4)>Newy){
+						// System.out.println("GODA");
+						if (Newx - offset[0].x != 0 || Newy - offset[0].y != 0) {
+							if (Math.abs(Newx - offset[0].x) > Math.abs(Newy
+									- offset[0].y)) {
+								if ((Newx - offset[0].x) > 0) { // Moved right
+									if (CheckMotion(currentX, currentY,
+											currentX + 1, currentY)) {
+										MazeDisplayer.CharMoved(1);
+										steps++;
+										checkwin(currentX + 1, currentY);
+									}
+								} else { // Moved left
+									if (CheckMotion(currentX, currentY,
+											currentX - 1, currentY)) {
+										MazeDisplayer.CharMoved(3);
+										steps++;
+										checkwin(currentX - 1, currentY);
+									}
+								}
+							} else {
+								if ((Newy - offset[0].y) > 0) { // Moved down
+									if (CheckMotion(currentX, currentY,
+											currentX, currentY + 1)) {
+										MazeDisplayer.CharMoved(4);
+										steps++;
+										checkwin(currentX, currentY + 1);
+									}
+								} else { // Moved up
+									if (CheckMotion(currentX, currentY,
+											currentX, currentY - 1)) {
+										MazeDisplayer.CharMoved(2);
+										steps++;
+										checkwin(currentX, currentY - 1);
+									}
+								}
+							}
+						}
+						// }
+					}
 				}
-				
-				@Override
-				public void mouseDoubleClick(MouseEvent arg0) {
-				}
-			});
-	  		
-		this.setBackgroundImage(new Image(null, "resources/images/background.png"));
+				// offset[0] = new Point(pt2.x - pt1.x, pt2.y - pt1.y);
+			}
+
+			@Override
+			public void mouseDoubleClick(MouseEvent arg0) {
+			}
+		});
+
+		this.setBackgroundImage(new Image(null,
+				"resources/images/background.png"));
 		load();
 
 	}
-	public void load(){
-		LBmazeName.setText("Maze name: "+mazeName);
-		LBsteps.setText("Number of steps: "+String.valueOf(steps)+"\tNumber of clues: "+String.valueOf(clue));
-		
+
+	public void load() {
+		LBmazeName.setText("Maze name: " + mazeName);
+		LBsteps.setText("Number of steps: " + String.valueOf(steps)
+				+ "\tNumber of clues: " + String.valueOf(clue));
+
 	}
-	
-	public void generateMaze(String name,int rows,int cols){
-		ViewGUI.generateMaze(name,rows,cols);
+
+	public void generateMaze(String name, int rows, int cols) {
+		ViewGUI.generateMaze(name, rows, cols);
 	}
-	
-	public void loadMaze(String name){
-		ViewGUI.displaymaze(name);	
-		if(MazeDisplayer.character!=null){
+
+	public void loadMaze(String name) {
+		ViewGUI.displaymaze(name);
+		if (MazeDisplayer.character != null) {
 			MazeDisplayer.character.setRealx(0);
 			MazeDisplayer.character.setRealy(0);
 		}
-		clue=0;
-		steps=0;
+		clue = 0;
+		steps = 0;
 		load();
 	}
-	
-	public void solve(String name){
+
+	public void solve(String name) {
 		ViewGUI.solveMaze(name);
 	}
-	
-	public void clue(Maze maze){
-		//System.out.println("clue");
-		
-		int x=MazeDisplayer.character.getRealx();
-		int y=MazeDisplayer.character.getRealy();
-		if(MazeDisplayer.character.getRealx()==maze.getCols()-1&&MazeDisplayer.character.getRealy()==maze.getRows()-1)
+
+	public void clue(Maze maze) {
+		// System.out.println("clue");
+
+		int x = MazeDisplayer.character.getRealx();
+		int y = MazeDisplayer.character.getRealy();
+		if (MazeDisplayer.character.getRealx() == maze.getCols() - 1
+				&& MazeDisplayer.character.getRealy() == maze.getRows() - 1)
 			return;
 		ViewGUI.getclue(y, x);
-		/*MazeSearchable MS = new MazeSearchableFixed(maze, maze.getCell(y, x), maze.getCell(maze.getRows()-1, maze.getCols()-1), Diagonals, 10, 15); //new MazeSearchable(maze, false);	
-		commonSearcher se=new AstarSearcher(new MazeAirDistance());			//   CELL(ROW,COL)
-		Solution Sol=se.search(MS);
-		String last[] = Sol.toString().split("->");	//COL,ROW-->COL,ROW
-		if(last.length>1){
-			clue++;
-			String[] nxt =last[1].split("x");
-			int Cluex=Integer.parseInt(nxt[0]);
-			int Cluey=Integer.parseInt(nxt[1]);
-			Sol.print();
-			MazeDisplayer.mark(Cluey, Cluex);
-			load();
-			checkwin(Cluey , Cluex);
-		}
-		else{
-			checkwin(maze.getCols()-1 , maze.getRows()-1);
-		}*/
-			
+		/*
+		 * MazeSearchable MS = new MazeSearchableFixed(maze, maze.getCell(y, x),
+		 * maze.getCell(maze.getRows()-1, maze.getCols()-1), Diagonals, 10, 15);
+		 * //new MazeSearchable(maze, false); commonSearcher se=new
+		 * AstarSearcher(new MazeAirDistance()); // CELL(ROW,COL) Solution
+		 * Sol=se.search(MS); String last[] = Sol.toString().split("->");
+		 * //COL,ROW-->COL,ROW if(last.length>1){ clue++; String[] nxt
+		 * =last[1].split("x"); int Cluex=Integer.parseInt(nxt[0]); int
+		 * Cluey=Integer.parseInt(nxt[1]); Sol.print();
+		 * MazeDisplayer.mark(Cluey, Cluex); load(); checkwin(Cluey , Cluex); }
+		 * else{ checkwin(maze.getCols()-1 , maze.getRows()-1); }
+		 */
+
 	}
-	public void displayClue(String clue){
-		String[] rowCol=clue.split(",");
-		int Cluex=Integer.parseInt(rowCol[1]);
-		int Cluey=Integer.parseInt(rowCol[0]);
+
+	public void displayClue(String clue) {
+		String[] rowCol = clue.split(",");
+		int Cluex = Integer.parseInt(rowCol[1]);
+		int Cluey = Integer.parseInt(rowCol[0]);
 		MazeDisplayer.mark(Cluey, Cluex);
 		load();
-		checkwin(Cluey , Cluex);
+		checkwin(Cluey, Cluex);
 		this.clue++;
 	}
-	
+
 	public void displayMaze(algorithms.mazeGenerators.Maze m) {
-		maze=m;
-		clue=0;
-		steps=0;
-		MazeDisplayer.showMaze(m,false);
+		maze = m;
+		clue = 0;
+		steps = 0;
+		MazeDisplayer.showMaze(m, false);
 	}
-	
-	/*public void displaySolution(Solution s) {
-		//System.out.println("print sol on MazeDisplayer canvas");
-		int cols=maze.getCols();
-		int rows=maze.getRows();
-		int x=MazeDisplayer.character.getRealx();
-		int y=MazeDisplayer.character.getRealy();
-		while(x!=cols-1 && y!=rows-1){
-			//synchronized(MazeDisplayer.character){
-				try {
-					System.out.println("Sfdbv");
-					clue(maze);
-					Thread.sleep(500);
-					//MazeDisplayer.character.wait(500);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-			//}
-			x=MazeDisplayer.character.getRealx();
-			y=MazeDisplayer.character.getRealy();
-		}
-		if(x!=cols-1 || y!=rows-1){
-			MazeDisplayer.mark(cols-1, cols-1);
-		}
-			
-			
-	}*/
+
+	/*
+	 * public void displaySolution(Solution s) {
+	 * //System.out.println("print sol on MazeDisplayer canvas"); int
+	 * cols=maze.getCols(); int rows=maze.getRows(); int
+	 * x=MazeDisplayer.character.getRealx(); int
+	 * y=MazeDisplayer.character.getRealy(); while(x!=cols-1 && y!=rows-1){
+	 * //synchronized(MazeDisplayer.character){ try {
+	 * System.out.println("Sfdbv"); clue(maze); Thread.sleep(500);
+	 * //MazeDisplayer.character.wait(500); } catch (InterruptedException e) {
+	 * e.printStackTrace(); } //} x=MazeDisplayer.character.getRealx();
+	 * y=MazeDisplayer.character.getRealy(); } if(x!=cols-1 || y!=rows-1){
+	 * MazeDisplayer.mark(cols-1, cols-1); }
+	 * 
+	 * 
+	 * }
+	 */
 	public void displaySolution(Solution s) {
 		MazeDisplayer.showSolution(s);
 	}
-	
+
 	public void displayString(String msg) {
 		getDisplay().getDefault().asyncExec(new Runnable() {
-		    public void run() {
-		    	MessageBox messageBox = new MessageBox(getShell(),  SWT.OK);
+			public void run() {
+				MessageBox messageBox = new MessageBox(getShell(), SWT.OK);
 				messageBox.setMessage(msg);
 				messageBox.setText("Message");
 				messageBox.open();
-		    }
+			}
 		});
 	}
+
 	public View getView() {
 		return ViewGUI;
 	}
-	public void setMazeName(String name){
-		mazeName=name;
+
+	public void setMazeName(String name) {
+		mazeName = name;
 		load();
 	}
-	public void exit(){
+
+	public void exit() {
 		ViewGUI.exit();
 		MazeDisplayer.stop();
 	}
+
 	public void start() {
 		ViewGUI.start();
 	}
 
-	public boolean CheckMotion(int CurrentX,int CurrentY,int nextX,int nextY){
-		boolean flag=true;
-		//System.out.println();
-		if(nextX<0 || nextY<0 || nextX==maze.getCols() || nextY==maze.getRows())
+	public boolean CheckMotion(int CurrentX, int CurrentY, int nextX, int nextY) {
+		boolean flag = true;
+		// System.out.println();
+		if (nextX < 0 || nextY < 0 || nextX == maze.getCols()
+				|| nextY == maze.getRows())
 			return false;
-		if(!(nextX!=CurrentX &&CurrentY!=nextY)){
-			if(CurrentX+1==nextX)
-				flag=flag&&(!maze.getCell(CurrentY, CurrentX).getRightWall().isExist());
-			if(CurrentX-1==nextX)
-				flag=flag&&(!maze.getCell(nextY, nextX).getRightWall().isExist());
-			if(CurrentY+1==nextY)
-				flag=flag&&(!maze.getCell(CurrentY, CurrentX).getBottomWall().isExist());
-			if(CurrentY-1==nextY)
-				flag=flag&&(!maze.getCell(nextY, nextX).getBottomWall().isExist());
+		if (!(nextX != CurrentX && CurrentY != nextY)) {
+			if (CurrentX + 1 == nextX)
+				flag = flag
+						&& (!maze.getCell(CurrentY, CurrentX).getRightWall()
+								.isExist());
+			if (CurrentX - 1 == nextX)
+				flag = flag
+						&& (!maze.getCell(nextY, nextX).getRightWall()
+								.isExist());
+			if (CurrentY + 1 == nextY)
+				flag = flag
+						&& (!maze.getCell(CurrentY, CurrentX).getBottomWall()
+								.isExist());
+			if (CurrentY - 1 == nextY)
+				flag = flag
+						&& (!maze.getCell(nextY, nextX).getBottomWall()
+								.isExist());
 			return flag;
-		}else{
-			if (Diagonals==true){
-				int col=CurrentX;
-				int row=CurrentY;
-				//right-up
-				if(CurrentX+1==nextX && CurrentY-1==nextY){								  	
-					if(maze.getCell(row-1, col).getRightWall().isExist() &&      // |_	
-							maze.getCell(row-1, col+1).getBottomWall().isExist())//.
-						flag=false;
-					if(maze.getCell(row, col).getRightWall().isExist()&&			//  |
-							maze.getCell(row-1, col).getRightWall().isExist())		// .|
-						flag=false;
-					if(maze.getCell(row-1, col).getBottomWall().isExist()&&			//_ _
-							maze.getCell(row-1, col+1).getBottomWall().isExist())   //.
-						flag=false;
-					if(maze.getCell(row-1, col).getBottomWall().isExist()&&   ///corner like ._|
+		} else {
+			if (Diagonals == true) {
+				int col = CurrentX;
+				int row = CurrentY;
+				// right-up
+				if (CurrentX + 1 == nextX && CurrentY - 1 == nextY) {
+					if (maze.getCell(row - 1, col).getRightWall().isExist() && // |_
+							maze.getCell(row - 1, col + 1).getBottomWall()
+									.isExist())// .
+						flag = false;
+					if (maze.getCell(row, col).getRightWall().isExist() && // |
+							maze.getCell(row - 1, col).getRightWall().isExist()) // .|
+						flag = false;
+					if (maze.getCell(row - 1, col).getBottomWall().isExist() && // _
+																				// _
+							maze.getCell(row - 1, col + 1).getBottomWall()
+									.isExist()) // .
+						flag = false;
+					if (maze.getCell(row - 1, col).getBottomWall().isExist() && // /corner
+																				// like
+																				// ._|
 							maze.getCell(row, col).getRightWall().isExist())
-						flag=false;
+						flag = false;
 					return flag;
 				}
-				//right-down
-				if(CurrentX+1==nextX && CurrentY+1==nextY){								  	
-					if(maze.getCell(row+1, col).getRightWall().isExist() &&    //.
-							maze.getCell(row, col+1).getBottomWall().isExist())// |-
-						flag=false;
-					if(maze.getCell(row, col).getRightWall().isExist()&&			// . |
-							maze.getCell(row+1, col).getRightWall().isExist())		//   |
-						flag=false;
-					if(maze.getCell(row, col).getBottomWall().isExist()&&			//.
-							maze.getCell(row, col+1).getBottomWall().isExist())   //--
-						flag=false;
-					if(maze.getCell(row, col).getBottomWall().isExist()&&   ///corner like ._|
+				// right-down
+				if (CurrentX + 1 == nextX && CurrentY + 1 == nextY) {
+					if (maze.getCell(row + 1, col).getRightWall().isExist() && // .
+							maze.getCell(row, col + 1).getBottomWall()
+									.isExist())// |-
+						flag = false;
+					if (maze.getCell(row, col).getRightWall().isExist() && // .
+																			// |
+							maze.getCell(row + 1, col).getRightWall().isExist()) // |
+						flag = false;
+					if (maze.getCell(row, col).getBottomWall().isExist() && // .
+							maze.getCell(row, col + 1).getBottomWall()
+									.isExist()) // --
+						flag = false;
+					if (maze.getCell(row, col).getBottomWall().isExist() && // /corner
+																			// like
+																			// ._|
 							maze.getCell(row, col).getRightWall().isExist())
-						flag=false;
+						flag = false;
 					return flag;
 				}
-				//left-down
-				if(CurrentX-1==nextX && CurrentY+1==nextY){ 									  	
-					if(maze.getCell(row+1, col-1).getRightWall().isExist() &&    //   .
-							maze.getCell(row, col-1).getBottomWall().isExist())  // -|
-						flag=false;
-					if(maze.getCell(row, col-1).getRightWall().isExist()&&			//   |.
-							maze.getCell(row+1, col-1).getRightWall().isExist())	//   |
-						flag=false;
-					if(maze.getCell(row, col).getBottomWall().isExist()&&			// .
-							maze.getCell(row, col-1).getBottomWall().isExist())     //--
-						flag=false;
-					if(maze.getCell(row, col).getBottomWall().isExist()&&   ///corner like ._|
-							maze.getCell(row, col-1).getRightWall().isExist())
-						flag=false;
+				// left-down
+				if (CurrentX - 1 == nextX && CurrentY + 1 == nextY) {
+					if (maze.getCell(row + 1, col - 1).getRightWall().isExist()
+							&& // .
+							maze.getCell(row, col - 1).getBottomWall()
+									.isExist()) // -|
+						flag = false;
+					if (maze.getCell(row, col - 1).getRightWall().isExist() && // |.
+							maze.getCell(row + 1, col - 1).getRightWall()
+									.isExist()) // |
+						flag = false;
+					if (maze.getCell(row, col).getBottomWall().isExist() && // .
+							maze.getCell(row, col - 1).getBottomWall()
+									.isExist()) // --
+						flag = false;
+					if (maze.getCell(row, col).getBottomWall().isExist() && // /corner
+																			// like
+																			// ._|
+							maze.getCell(row, col - 1).getRightWall().isExist())
+						flag = false;
 					return flag;
 				}
-				//left-up
-				if(CurrentX-1==nextX && CurrentY-1==nextY){								  	
-					if(maze.getCell(row-1, col-1).getRightWall().isExist() &&      // _|	
-							maze.getCell(row-1, col-1).getBottomWall().isExist())  //   .
-						flag=false;
-					if(maze.getCell(row, col-1).getRightWall().isExist()&&				//  |
-							maze.getCell(row-1, col-1).getRightWall().isExist())		//  |.
-						flag=false;
-					if(maze.getCell(row-1, col).getBottomWall().isExist()&&			//_ _
-							maze.getCell(row-1, col-1).getBottomWall().isExist())   //  .
-						flag=false;
-					if(maze.getCell(row-1, col).getBottomWall().isExist()&&   ///corner like ._|
-							maze.getCell(row, col-1).getRightWall().isExist())
-						flag=false;
+				// left-up
+				if (CurrentX - 1 == nextX && CurrentY - 1 == nextY) {
+					if (maze.getCell(row - 1, col - 1).getRightWall().isExist()
+							&& // _|
+							maze.getCell(row - 1, col - 1).getBottomWall()
+									.isExist()) // .
+						flag = false;
+					if (maze.getCell(row, col - 1).getRightWall().isExist() && // |
+							maze.getCell(row - 1, col - 1).getRightWall()
+									.isExist()) // |.
+						flag = false;
+					if (maze.getCell(row - 1, col).getBottomWall().isExist() && // _
+																				// _
+							maze.getCell(row - 1, col - 1).getBottomWall()
+									.isExist()) // .
+						flag = false;
+					if (maze.getCell(row - 1, col).getBottomWall().isExist() && // /corner
+																				// like
+																				// ._|
+							maze.getCell(row, col - 1).getRightWall().isExist())
+						flag = false;
 					return flag;
 				}
-			}else
+			} else
 				return false;
 		}
 		return false;
 
 	}
-	
-	public void checkwin(int x,int y){
-		if(x==maze.getCols()-1 && y==maze.getRows()-1)
+
+	public void checkwin(int x, int y) {
+		if (x == maze.getCols() - 1 && y == maze.getRows() - 1)
 			new winnerPage("winner", 270, 240, getDisplay(), steps, clue).run();
 	}
 
