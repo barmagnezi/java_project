@@ -31,22 +31,29 @@ public class OnlineModel extends Observable implements Model {
 
 	@Override
 	public void generateMaze(String name, int rows, int cols) {
-		Socket s=connect();
-		if(s==null)
-			return;
-		send(s,"generateMaze " + name + " " + rows + "," + cols);
-		this.setChanged();
-		this.notifyObservers(read(s));
-		disconnect(s);
+		new Thread(new Runnable() {
+			
+			@Override
+			public void run() {
+				Socket s=connect();
+				if(s==null)
+					return;
+				send(s,"generateMaze " + name + " " + rows + "," + cols);
+				setChanged();
+				notifyObservers(read(s));
+				disconnect(s);
+			}
+		}).start();
+
 	}
 
 	@Override
 	public Maze getMaze(String name) {
 		Socket s = null;
 		s=connect();
+		if(s==null)
+			return null;
 		send(s,"getMaze " + name);
-		
-		
 		String msg=read(s);
 		System.out.println(msg);
 		if(msg==null){
@@ -80,17 +87,28 @@ public class OnlineModel extends Observable implements Model {
 
 	@Override
 	public void solveMaze(String name) {
-		Socket s=connect();
-		send(s, "solveMaze " + name);
-		this.setChanged();
-		this.notifyObservers(read(s));
-		disconnect(s);
+		new Thread(new Runnable() {
+			
+			@Override
+			public void run() {
+				Socket s=connect();
+				if(s==null)
+					return;
+				send(s, "solveMaze " + name);
+				setChanged();
+				notifyObservers(read(s));
+				disconnect(s);
+			}
+		}).start();;
+
 	}
 
 	@Override
 	public Solution getSolution(String name) {
 		Socket s = null;
 		s=connect();
+		if(s==null)
+			return null;
 		send(s,"getSolution " + name);
 		
 		String msg=read(s);
@@ -129,6 +147,8 @@ public class OnlineModel extends Observable implements Model {
 	@Override
 	public String getClue(String arg) {
 		Socket s=connect();
+		if(s==null)
+			return null;
 		send(s,"GetClue " + arg);
 		
 		String msg=read(s);
@@ -185,6 +205,7 @@ public class OnlineModel extends Observable implements Model {
 		try {
 			s=new Socket(properties.ip, properties.port);
 		} catch (IOException e) {
+			this.setChanged();
 			this.notifyObservers("can't to connect to server(ip:"+properties.ip+",port:"+properties.port+")");
 			return null;
 		}
