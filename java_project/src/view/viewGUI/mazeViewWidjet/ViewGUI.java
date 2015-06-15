@@ -113,7 +113,9 @@ public class ViewGUI extends Observable implements View {
 
 	@Override
 	public void displayClue(String clue) {
-		Widget.displayClue(clue);
+		if(clue!=null && clue.length()!=0)
+			Widget.displayClue(clue);
+
 	}
 
 	@Override

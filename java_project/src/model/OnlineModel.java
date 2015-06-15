@@ -106,8 +106,14 @@ public class OnlineModel extends Observable implements Model {
 			Solution sol=null;
 			if(msg.equals("solutionNotFound")){
 				this.setChanged();
-				this.notifyObservers("sol " + name + " not found.");
-			}else{
+				this.notifyObservers("solution " + name + " not found.");
+				return null;
+			}if(msg.length()==0){
+				this.setChanged();
+				this.notifyObservers("The server does not work properly");
+				return null;
+			}
+			else{
 				System.out.print("The sol is111:");
 				System.out.println(msg);
 				sol=StringSolution.StringToSolution(msg);
@@ -120,7 +126,28 @@ public class OnlineModel extends Observable implements Model {
 		}
 	}
 
-
+	@Override
+	public String getClue(String arg) {
+		Socket s=connect();
+		send(s,"GetClue " + arg);
+		
+		String msg=read(s);
+		System.out.println("The server send:(need to be sentclue)->"+msg);
+		if(msg!=null && msg.equals("sentClue")){
+			msg=read(s);
+			System.out.println(msg);
+			if(msg==null){
+				this.setChanged();
+				this.notifyObservers("The server does not work properly");
+				return null;
+			}
+			return msg;
+		}else{
+			this.setChanged();
+			this.notifyObservers("The server does not work properly");
+			return null;
+		}
+	}
 
 	@Override
 	public void stop() {
@@ -143,11 +170,7 @@ public class OnlineModel extends Observable implements Model {
 		properties=(PropertiesModelOnline) mproperties;
 	}
 
-	@Override
-	public String getClue(String arg) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+
 
 	@Override
 	public boolean isonline() {

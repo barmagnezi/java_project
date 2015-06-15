@@ -45,7 +45,7 @@ public abstract class GameDisplayer extends Canvas {
 	 * @param m The Game we want to display.
 	 * @param resetChar Used for resetting the character when setting a new one(true=reset).
 	 */
-	public abstract void showMaze(Game m,boolean resetChar);
+	public abstract void showGame(Game m,boolean resetChar);
 	
 	/**
 	 * Print the solution provided.

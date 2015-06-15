@@ -220,7 +220,7 @@ public class MazeDisplayerGUI extends GameDisplayer {
 		this.scrWalls=scrWalls;
 		if(maze!=null){
 			Game g = new Game(maze);
-			showMaze(g, false);
+			showGame(g, false);
 		}
 	}
 	/**
@@ -254,7 +254,7 @@ public class MazeDisplayerGUI extends GameDisplayer {
 			setCharacter(this.character.getRealx(), this.character.getRealy());
 		if(maze!=null || character!=null){
 			Game g = new Game(maze);
-			showMaze(g, true);
+			showGame(g, true);
 		}
 	}
 	
@@ -263,7 +263,7 @@ public class MazeDisplayerGUI extends GameDisplayer {
 	 * @param m The maze we want to display.
 	 * @param resetChar Used for resetting the character when setting a new one(true=reset).
 	 */
-	public void showMaze(Game m,boolean resetChar){
+	public void showGame(Game m,boolean resetChar){
 		if(Moved==true){
 			Oldx=this.character.getRealx();
 			Oldy=this.character.getRealy();

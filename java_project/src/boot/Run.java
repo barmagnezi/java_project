@@ -22,7 +22,7 @@ import model.OnlineModelWithoutMVP;
  */
 public class Run {
 	public static void main(String[] args) {
-		//run_GUI();
+		//brun_GUI();
 		// run_GUI_2users();
 		run_GUI_online();
 	}

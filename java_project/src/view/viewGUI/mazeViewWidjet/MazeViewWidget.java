@@ -637,7 +637,7 @@ public class MazeViewWidget extends Canvas {
 		clue = 0;
 		steps = 0;
 		Game g = new Game(m);
-		MazeDisplayer.showMaze(g, false);
+		MazeDisplayer.showGame(g, false);
 	}
 
 	/*
