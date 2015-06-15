@@ -8,6 +8,7 @@ import view.viewCLI.ClI_View;
 import view.viewGUI.GameWidget.GameWidget;
 import model.OffLineModel;
 import model.OnlineModel;
+import model.OnlineModelWithMVP;
 import model.OnlineModelWithoutMVP;
 
 /**
@@ -46,7 +47,7 @@ public class Run {
 	}
 
 	public static void run_GUI_online() {
-		OnlineModelWithoutMVP m = new OnlineModelWithoutMVP();
+		OnlineModel m = new OnlineModel();
 		GameWidget v = new GameWidget("Game", 500, 500);
 		Presenter p = new Presenter(v.getView(), m);
 		v.addObserver(p);
@@ -67,7 +68,6 @@ public class Run {
 		m.addObserver(p);
 		m.addObserver(p2);
 		new Thread(new Runnable() {
-
 			@Override
 			public void run() {
 				v.start();

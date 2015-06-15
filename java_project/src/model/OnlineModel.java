@@ -5,12 +5,15 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.ObjectInputStream;
-import java.io.PrintStream;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.io.Reader;
 import java.net.Socket;
 import java.util.Observable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import presenter.PropertiesModel;
 import presenter.PropertiesModelOnline;
@@ -18,244 +21,186 @@ import algorithms.mazeGenerators.Maze;
 import algorithms.search.Solution;
 
 public class OnlineModel extends Observable implements Model {
-	public OnlineModel() {
-		super();
-	}
-
-	// For Client:
-	public Socket myServer;
-	public PrintStream writer;
-	public BufferedReader reader;
-
-	public String res;
-	protected Boolean run;
-
-	public Maze m;
-	public Solution sol;
-	public String clue;
-
-	public Object solWaiter = new Object();
-	public Object getWaiter = new Object();
-	public Object clueWaiter = new Object();
 
 	public PropertiesModelOnline properties;
-
-	public void recive() {
-		String com = null;
-		String helper = null;
-		while (run) {
-			try {
-				com = reader.readLine();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			if (com == "sentMaze") {
-				try {
-					helper = reader.readLine(); // helper= <MazeName>
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-				try {
-					m = StringMaze.StringToMaze(reader.readLine());
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-
-				getWaiter.notify();
-			}
-			if (com == "sentSolution") {
-				try {
-					sol = StringSolution.StringToSolution(reader.readLine());
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-				solWaiter.notify();
-			}
-			if (com == "sentClue") {
-				try {
-					clue = reader.readLine();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-				clueWaiter.notify();
-			}
-			if (com == "sentString") {
-				try {
-					helper = reader.readLine();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-			if (com == "sentDiagsMode") {
-				try {
-					this.setChanged();
-					this.notifyObservers("DiagsMode:" + reader.readLine());
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-		}
-	}
-
-	public void send(String text) {
-		if (writer != null) {
-			writer.println(text);
-			writer.flush();
-		}
-	}
-
-	/**
-	 * This method generates a maze using threads in SERVER with an inputed
-	 * data.
-	 * 
-	 * @param name
-	 *            The name we want to give the maze.
-	 * @param col
-	 *            The number of columns our maze will have (>2)
-	 * @param row
-	 *            The number of rows our maze will have (>2)
-	 */
+	
 	@Override
-	public void generateMaze(String name, int col, int row) {
-		send("generateMaze " + name + " " + row + "," + col);
+	public void start() {
+	}
+	
+
+	@Override
+	public void generateMaze(String name, int rows, int cols) {
+		Socket s=connect();
+		if(s==null)
+			return;
+		send(s,"generateMaze " + name + " " + rows + "," + cols);
+		this.setChanged();
+		this.notifyObservers(read(s));
+		disconnect(s);
 	}
 
-	/**
-	 * Returns a maze by an inputed name(String).
-	 */
 	@Override
 	public Maze getMaze(String name) {
-		send("displayMaze " + name);
-		try {
-			synchronized (getWaiter) {
-				getWaiter.wait();
-			}
-		} catch (InterruptedException e) {
-			e.printStackTrace();
+		Socket s = null;
+		s=connect();
+		send(s,"getMaze " + name);
+		
+		
+		String msg=read(s);
+		System.out.println(msg);
+		if(msg==null){
+			this.setChanged();
+			this.notifyObservers("The server does not work properly");
+			return null;
 		}
-		return m;
+		if(msg.equals("sentMaze")){
+			msg=read(s);
+			System.out.println(msg);
+			if(msg==null){
+				this.setChanged();
+				this.notifyObservers("The server does not work properly");
+				return null;
+			}
+			Maze m=null;
+			if(msg.equals("mazeNotFound")||msg.equals("")){
+				this.setChanged();
+				this.notifyObservers("maze " + name + " not found.");
+			}else{
+				System.out.println("the maze is:"+msg);
+				m=StringMaze.StringToMaze(msg);
+			}
+			return m;
+		}else{
+			this.setChanged();
+			this.notifyObservers("The server does not work properly");
+			return null;
+		}
 	}
 
-	/**
-	 * This method solves a maze using the server.
-	 * 
-	 * @param m
-	 *            The maze we want to solve.
-	 */
 	@Override
 	public void solveMaze(String name) {
-		send("solveMaze " + name);
+		Socket s=connect();
+		send(s, "solveMaze " + name);
+		this.setChanged();
+		this.notifyObservers(read(s));
+		disconnect(s);
 	}
 
-	/**
-	 * gets the name of an inputed maze name.
-	 * 
-	 * @param name
-	 *            the name of the solution we want to find it's name.
-	 * @return the name of the solution(string).
-	 */
 	@Override
 	public Solution getSolution(String name) {
-		send("solveMaze " + name);
-		try {
-			synchronized (solWaiter) {
-				solWaiter.wait();
+		Socket s = null;
+		s=connect();
+		send(s,"getSolution " + name);
+		
+		String msg=read(s);
+		System.out.println("The server send:(need to be sentSolution)->"+msg);
+		if(msg!=null && msg.equals("sentSolution")){
+			msg=read(s);
+			System.out.println(msg);
+			if(msg==null){
+				this.setChanged();
+				this.notifyObservers("The server does not work properly");
+				return null;
 			}
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-		if (sol == null) {
-			this.setChanged();
-			this.notifyObservers("solution " + name + " not found");
-			return null;
-		} else
+			Solution sol=null;
+			if(msg.equals("solutionNotFound")){
+				this.setChanged();
+				this.notifyObservers("sol " + name + " not found.");
+			}else{
+				System.out.print("The sol is111:");
+				System.out.println(msg);
+				sol=StringSolution.StringToSolution(msg);
+			}
 			return sol;
-	}
-
-	/**
-	 * Sets new Client(Connection to server), by the ip and port stored in
-	 * properties.
-	 */
-	public void start() {
-		run = true;
-		try {
-			myServer = new Socket(properties.getIp(), properties.getPort());
-			writer = new PrintStream(myServer.getOutputStream());
-			reader = new BufferedReader(new InputStreamReader(
-					myServer.getInputStream()));
-		} catch (IOException e) {
-			System.out.println("can't connected to ip: " + properties.getIp()
-					+ " port: " + properties.getPort());
+		}else{
+			this.setChanged();
+			this.notifyObservers("The server does not work properly");
+			return null;
 		}
 	}
 
-	/**
-	 * Stops the work and saves the data.
-	 */
+
+
 	@Override
 	public void stop() {
-		run = false;
-		send("exit");
-		try {
-			if (myServer != null)
-				myServer.close();
-		} catch (IOException e2) {
-			this.setChanged();
-			this.notifyObservers("error while closing the connection.");
-		}
-
-		XMLEncoder e = null;
-		try {
-			e = new XMLEncoder(new FileOutputStream(
-					"resources/propertiesOnline.xml"));
-			e.writeObject(this.properties);
-			e.flush();
-			e.close();
-		} catch (FileNotFoundException e1) {
-			this.setChanged();
-			this.notifyObservers("error while saving the properties.");
-		}
+		System.out.println("save properties");
+		// save properties
+				XMLEncoder e = null;
+				try {
+					e = new XMLEncoder(new FileOutputStream("resources/propertiesOnline.xml"));
+				} catch (FileNotFoundException e1) {
+					this.setChanged();
+					this.notifyObservers("error while saving the properties.");
+				}
+				e.writeObject(this.properties);
+				e.flush();
+				e.close();
 	}
 
-	/**
-	 * Setting the current properties with an inputed PropertiesModel Object.
-	 */
-	public void setProperties(PropertiesModel prop) {
-		properties = (PropertiesModelOnline) prop;
-		try {
-			if (myServer != null)
-				myServer.close();
-			myServer = new Socket(properties.getIp(), properties.getPort());
-			writer = new PrintStream(myServer.getOutputStream());
-			reader = new BufferedReader(new InputStreamReader(
-					myServer.getInputStream()));
-		} catch (IOException e) {
-			System.out.println("can't connected to ip: " + properties.getIp()
-					+ " port: " + properties.getPort());
-		}
+	@Override
+	public void setProperties(PropertiesModel mproperties) {
+		properties=(PropertiesModelOnline) mproperties;
 	}
 
-	/**
-	 * Gets the clue(next cordinates) by the name of the maze and the current
-	 * cordinates.
-	 */
 	@Override
 	public String getClue(String arg) {
-		send("GetClue " + arg);
-
-		try {
-			synchronized (clueWaiter) {
-				clueWaiter.wait();
-			}
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-		return clue;
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
 	public boolean isonline() {
 		return true;
 	}
-} // Class close
+	
+	//helpers
+	private Socket connect(){
+		if(properties==null)
+			return null;
+		Socket s;
+		try {
+			s=new Socket(properties.ip, properties.port);
+		} catch (IOException e) {
+			this.notifyObservers("can't to connect to server(ip:"+properties.ip+",port:"+properties.port+")");
+			return null;
+		}
+		return s;
+	}
+	private void disconnect(Socket s){
+		if(s==null)
+			return;
+		try {
+			s.close();
+		} catch (IOException e) {
+			this.notifyObservers("can't to connect to server(ip:"+s.getInetAddress().getHostAddress()+",port:"+s.getPort()+")");
+		}
+	}
+
+	private void send(Socket s,String msg){
+		PrintWriter p = null;
+		if(s==null||msg==null)
+			return;
+		try {
+			p = new PrintWriter(s.getOutputStream());
+		} catch (IOException e) {
+			this.setChanged();
+			this.notifyObservers("can't to send message to server(ip:"+s.getInetAddress().getHostAddress()+",port:"+s.getPort()+")");
+		}
+		p.println(msg);
+		p.flush();
+	}
+	private String read(Socket s){
+		BufferedReader r;
+		String msg;
+		try {
+			r = new BufferedReader(new InputStreamReader(s.getInputStream()));
+			msg= r.readLine();
+		} catch (IOException e) {
+			this.notifyObservers("can't to recive message to server(ip:"+s.getInetAddress().getHostAddress()+",port:"+s.getPort()+")");
+			msg=null;
+		}
+		return msg;
+	}
+
+}

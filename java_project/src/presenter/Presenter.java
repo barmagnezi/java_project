@@ -67,8 +67,7 @@ public class Presenter implements Observer {
 				Mproperties = new PropertiesModelOffline(null);
 		}
 		model.setProperties(Mproperties);
-		if (!model.isonline())
-			view.getDiagsMode(((PropertiesModelOffline) Mproperties).isDiag());
+		view.getDiagsMode(Mproperties.isDiag());
 	}
 
 	@Override
