@@ -2,7 +2,7 @@ package view.viewGUI.mazeDisplayerAndCharecters;
 
 
 /**
-* The actual class(extends Canvas) that displayes the maze, and the character. (INSIDE WINDOW)
+* The actual class(extends Canvas) that displays the maze, and the character. (INSIDE WINDOW)
 * @author  Bar Magnezi and Senia Kalma
 * @version 1.0
 * @since 31.5.2015
@@ -18,17 +18,18 @@ import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Pattern;
 import org.eclipse.swt.graphics.RGB;
-import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
-
+import view.viewGUI.mazeViewWidjet.GameDisplayer;
 import algorithms.mazeGenerators.Cell;
 import algorithms.mazeGenerators.Maze;
 import algorithms.search.Solution;
 import algorithms.search.State;
 
-public class MazeDisplayerGUI extends Canvas {
+public class MazeDisplayerGUI extends GameDisplayer {
+	String Background;
 	String scrBackground;
 	String scrWalls;
+	
 	int charOp;
 	Maze maze;
 	GC lastPaint=null;
@@ -51,11 +52,13 @@ public class MazeDisplayerGUI extends Canvas {
 	TimerTask myTask;
 	Timer timer;
 	
-	public MazeDisplayerGUI(Composite parent, int style,String scrBackground,String scrwalls) {
+	public MazeDisplayerGUI(Composite parent, int style,String Background, String scrBackground,String scrWalls) {
+		
 		super(parent, style | SWT.DOUBLE_BUFFERED);
+		this.Background=Background;
 		this.scrBackground=scrBackground;
-		this.scrWalls=scrwalls;
-		setBackgroundImage(new Image(null, "resources/images/mazedisplayerbackground.png"));
+		this.scrWalls=scrWalls;
+		setBackgroundImage(new Image(null, Background));
 		charOp=1;
 		
 		addPaintListener(new PaintListener() {
@@ -113,50 +116,23 @@ public class MazeDisplayerGUI extends Canvas {
 		});
 		
 	}
+	/**
+	 * Setting the character of the maze by the charOp(int):
+	 * 1-Ball Character
+	 * 1001-Picture character as set in the path
+	 * 1002-Animation character as set in the path
+	 */
 	private void setCharacter(int x,int y){
-		/**
-		 * Setting the character of the maze by the charOp(int):
-		 * 1-Ball Character
-		 * 2-Picutre Character as Mario(MarioChar.png)
-		 * 989-Picture Character as Senia Kalma(Senia.png)
-		 * 999-Picture Character as Bar Magnezi(Bar.png)
-		 * 1001-Picture character as set in the path
-		 */
 		if(charOp==1){
 			character=new BallCharacter(x, y);
 			if(Color!=null)
 				character.setColor(Color);
 			character.setAnimation(false);
 		}
-		if(charOp==2){
-			character=new PicCharacter(x, y);
-			character.setAnimation(false);
-			character.setPath("resources/images/MarioChar.png");
-		}
-		if(charOp==989){
-			character=new PicCharacter(x, y);
-			character.setAnimation(false);
-			character.setPath("resources/images/Senia.png");
-		}
-		if(charOp==999){
-			character=new PicCharacter(x, y);
-			character.setAnimation(false);
-			character.setPath("resources/images/Bar.png");
-		}
 		if(charOp==1001){	//1001 is a code in SelectPic for an image selected by user
 			character=new PicCharacter(x, y);
 			character.setAnimation(false);
 			character.setPath(path);
-		}
-		if(charOp==3){
-			character=new AnimCharacter(x, y);
-			character.setAnimation(true);
-			character.setLoader("resources/images/marioAnimation.gif");
-		}
-		if(charOp==4){
-			character=new AnimCharacter(x, y);
-			character.setAnimation(true);
-			character.setLoader("resources/images/dogAnimation.gif");
 		}
 		if(charOp==1002){	//1002 is a code in SelectAnim for an Animation selected by user
 			character=new AnimCharacter(x, y);
@@ -170,14 +146,22 @@ public class MazeDisplayerGUI extends Canvas {
 			startAnimation(character.getLoader().data[frame].delayTime);
 	}
 	}
+	/**
+	 * Set the character to be on x,y
+	 * @param x coordinates
+	 * @param y coordinates
+	 */
 	public void mark(int x,int y){
 		character.setRealx(x);
 		character.setRealy(y);
 		solveFlag=true;
 		redraw();
-
 	}
 	
+	/**
+	 * Set the animation to run.
+	 * @param delay the delay between each frame of the animation.
+	 */
 	public void startAnimation(long delay){
 		myTask = new TimerTask() {
 			@Override
@@ -234,10 +218,15 @@ public class MazeDisplayerGUI extends Canvas {
 	public void changeBackDesign(String scrBackground,String scrWalls){
 		this.scrBackground=scrBackground;
 		this.scrWalls=scrWalls;
-		if(maze!=null)
-			showMaze(maze, false);
+		if(maze!=null){
+			Game g = new Game(maze);
+			showMaze(g, false);
+		}
 	}
-	public void Startover(Maze m){
+	/**
+	 * Start the game all over.
+	 */
+	public void Startover(){
 		if(character!=null){
 			this.character.setRealx(0);
 			this.character.setRealy(0);
@@ -248,10 +237,10 @@ public class MazeDisplayerGUI extends Canvas {
 	}
 	
 	/**
-	 * Function for changing the character design, used by the MazeViewWidget.
-	 * @param charOption as the charOp integer containing the number representing the wanted char.
-	 * @param nColor as the color if a Ball Character selected.
-	 * @param path as the path for a picture/animation if one of them selected.
+	 * Function for changing the character design.
+	 * @param charOption type of the wanter char: 1-Ball,1001-Picture,1002-Animation.
+	 * @param nColor Color if a ball Character selected.
+	 * @param Path for setting a picture/animation character.
 	 */
 	public void changeCharacter(int charOption, RGB nColor, String path){
 		this.charOp=charOption;
@@ -263,24 +252,26 @@ public class MazeDisplayerGUI extends Canvas {
 			setCharacter(0,0);
 		else
 			setCharacter(this.character.getRealx(), this.character.getRealy());
-		if(maze!=null || character!=null)
-			showMaze(maze, true);
+		if(maze!=null || character!=null){
+			Game g = new Game(maze);
+			showMaze(g, true);
+		}
 	}
 	
 	/**
 	 * Updates the mazes show.
 	 * @param m The maze we want to display.
-	 * @param resetChar Used for resating the character when setting a new one.
+	 * @param resetChar Used for resetting the character when setting a new one(true=reset).
 	 */
-	public void showMaze(Maze m,boolean resetChar){
+	public void showMaze(Game m,boolean resetChar){
 		if(Moved==true){
 			Oldx=this.character.getRealx();
 			Oldy=this.character.getRealy();
 		}
 		if(resetChar==false){	//If Background changed
 			Moved=false;
-			if(m!=maze){
-				maze=m;
+			if(m.getMaze()!=maze){
+				maze=m.getMaze();
 			}
 			setBackgroundImage(new Image(null, scrBackground));
 			redraw();
@@ -296,7 +287,11 @@ public class MazeDisplayerGUI extends Canvas {
 			redraw();
 		}
 	}
-	
+	/**
+	 * @param pos - integer to code the move:
+	 * 1 for Right, 2 for Up, 3 for Left, 4 for Down
+	 * 5 for down-left,6 for down-Right,7 for up-left,8 for up-right
+	 */
 	public void CharMoved(int pos){			//1 for Right, 2 for Up, 3 for Left, 4 for Down
 											//5 for down-left,6 for down-Right,7 for up-left,8 for up-right
 		Moved=true;
@@ -330,7 +325,10 @@ public class MazeDisplayerGUI extends Canvas {
 		});
 	}
 				
-	//paint solution!!!!
+	/**
+	 * Print the solution provided.
+	 * @param the solution we want to draw.
+	 */
 	public void showSolution(Solution s){
 		this.sol=s;
 		this.printsol=true;

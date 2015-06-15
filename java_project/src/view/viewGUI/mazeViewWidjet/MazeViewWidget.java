@@ -1,7 +1,6 @@
 package view.viewGUI.mazeViewWidjet;
 
 import java.util.Observer;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
@@ -25,6 +24,7 @@ import org.eclipse.swt.widgets.MessageBox;
 import algorithms.mazeGenerators.Maze;
 import algorithms.search.Solution;
 import view.View;
+import view.viewGUI.mazeDisplayerAndCharecters.Game;
 import view.viewGUI.mazeDisplayerAndCharecters.MazeDisplayerGUI;
 
 /**
@@ -39,6 +39,7 @@ public class MazeViewWidget extends Canvas {
 
 	public String mazeName = "Not loaded maze";
 	Maze maze = null;
+	
 	int steps = 0;
 	int clue = 0;
 	ViewGUI ViewGUI = new ViewGUI(this);
@@ -97,7 +98,7 @@ public class MazeViewWidget extends Canvas {
 					public void run() {
 						System.out
 								.println("MazeDisplayer.showMaze(maze,true);");
-						MazeDisplayer.Startover(maze);
+						MazeDisplayer.Startover();
 						steps = 0;
 						clue = 0;
 						load();
@@ -176,7 +177,7 @@ public class MazeViewWidget extends Canvas {
 		 */
 
 		MazeDisplayer = new MazeDisplayerGUI(this, SWT.BORDER_SOLID,
-				"resources/images/grass.png", "resources/images/trees.png");
+				"resources/images/mazedisplayerbackground.png", "resources/images/grass.png", "resources/images/trees.png");
 		MazeDisplayer.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true,
 				true, 2, 1));
 		// if() animation set..
@@ -223,8 +224,14 @@ public class MazeViewWidget extends Canvas {
 							getDisplay(), MazeDisplayer.getCharOp());
 					SP.run();
 					if (SP.getStr() == null) {
-						MazeDisplayer.changeCharacter(SP.getChoise(), null,
-								null);
+						//1001 - Picture character by the path
+						if(SP.getChoise()==2)	//2=Mario => Picture - Mario
+							MazeDisplayer.changeCharacter(1001, null, "resources/images/MarioChar.png");
+						if(SP.getChoise()==989)	//989=Senia => Picture - Senia
+							MazeDisplayer.changeCharacter(1001, null, "resources/images/Senia.png");
+						if(SP.getChoise()==999)	//999=Bar => Pictre - Bar
+							MazeDisplayer.changeCharacter(1001, null, "resources/images/Bar.png");
+						//MazeDisplayer.changeCharacter(SP.getChoise(), null,null);
 					} else
 						MazeDisplayer.changeCharacter(1001, null, SP.getStr());
 					MazeDisplayer.setFocus();
@@ -259,11 +266,13 @@ public class MazeViewWidget extends Canvas {
 					SelectAnim SP = new SelectAnim("Select an animation", 250,
 							200, getDisplay(), MazeDisplayer.getCharOp());
 					SP.run();
-					// System.out.println(SP.getStr());
-					// System.out.println(SP.getChoise());
 					if (SP.getStr() == null) {
-						MazeDisplayer.changeCharacter(SP.getChoise(), null,
-								null);
+						// 1002 - Animation character by the path.
+						if(SP.getChoise()==3)	//3=Mario => Animation - Mario
+							MazeDisplayer.changeCharacter(1002, null, "resources/images/marioAnimation.gif");
+						if(SP.getChoise()==4)	//4=Dog => Animation - Dog
+							MazeDisplayer.changeCharacter(1002, null, "resources/images/dogAnimation.gif");
+						//MazeDisplayer.changeCharacter(SP.getChoise(), null,null);
 					} else
 						MazeDisplayer.changeCharacter(1002, null, SP.getStr());
 					MazeDisplayer.setFocus();
@@ -627,7 +636,8 @@ public class MazeViewWidget extends Canvas {
 		maze = m;
 		clue = 0;
 		steps = 0;
-		MazeDisplayer.showMaze(m, false);
+		Game g = new Game(m);
+		MazeDisplayer.showMaze(g, false);
 	}
 
 	/*
