@@ -5,11 +5,14 @@ import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 
+import view.viewGUI.mazeDisplayerAndCharecters.CommonCharacter;
 import view.viewGUI.mazeDisplayerAndCharecters.Game;
 import algorithms.search.Solution;
 
 public abstract class GameDisplayer extends Canvas {
 	Game game;
+	public CommonCharacter character;
+	int charOp;		//Current character option.
 	
 	public GameDisplayer(Composite parent, int style){
 		super(parent,style);
@@ -70,5 +73,36 @@ public abstract class GameDisplayer extends Canvas {
 	 * @param delay the delay between each frame of the animation.
 	 */
 	abstract public void startAnimation(long delay);
+	
+	/**
+	 * Stop the work.
+	 */
+	public void stop() {
+	}
+	
+	public Game getGame() {
+		return game;
+	}
+
+	public void setGame(Game game) {
+		this.game = game;
+	}
+
+	public CommonCharacter getCharacter() {
+		return character;
+	}
+
+	public void setCharacter(CommonCharacter character) {
+		this.character = character;
+	}
+
+	public int getCharOp() {
+		return charOp;
+	}
+
+	public void setCharOp(int charOp) {
+		this.charOp = charOp;
+	}
+
 	
 }

@@ -33,8 +33,7 @@ public class SelectAnim extends BasicWindow {
 
 	MazeViewWidget mazeView;
 
-	public SelectAnim(String title, int width, int height, Display disp,
-			int CurChoise) {
+	public SelectAnim(String title, int width, int height, Display disp, int CurChoise) {
 		super(title, width, height, disp);
 		this.witdh = width;
 		this.hight = height;

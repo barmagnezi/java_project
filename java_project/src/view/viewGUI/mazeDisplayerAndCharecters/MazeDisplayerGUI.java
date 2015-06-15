@@ -33,7 +33,7 @@ public class MazeDisplayerGUI extends GameDisplayer {
 	int charOp;
 	Maze maze;
 	GC lastPaint=null;
-	public CommonCharacter character;
+	//public CommonCharacter character;15.06
 	public int wallWidth = 0, wallHeight = 0;
 	
 	boolean printsol=false; //for paint sol
@@ -201,8 +201,8 @@ public class MazeDisplayerGUI extends GameDisplayer {
 		timer = new Timer();
 		timer.scheduleAtFixedRate(myTask, 0, delay);
 	}
-	public void start(){
-	}
+	//public void start(){
+	//}
 	public void stop(){
 		if(myTask!=null && timer!=null){
 			myTask.cancel();

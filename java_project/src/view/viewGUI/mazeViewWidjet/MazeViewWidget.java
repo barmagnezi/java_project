@@ -53,7 +53,8 @@ public class MazeViewWidget extends Canvas {
 	Button Bstartover;
 	Button BshowSolution;
 	Button BgiveClue;
-	MazeDisplayerGUI MazeDisplayer;
+	
+	GameDisplayer MazeDisplayer;
 	Group GroupCharacters;
 	Button[] CharactersButtons;
 	Group GroupBackgroundMaze;
@@ -181,7 +182,7 @@ public class MazeViewWidget extends Canvas {
 		MazeDisplayer.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true,
 				true, 2, 1));
 		// if() animation set..
-		MazeDisplayer.start();
+		//MazeDisplayer.start();	//Senia 15.06
 		// === Character Settings ===
 		GroupCharacters = new Group(this, SWT.SHADOW_OUT);
 		GroupCharacters.setText("Characters");
@@ -220,8 +221,7 @@ public class MazeViewWidget extends Canvas {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
 				if (CharactersButtons[1].getSelection() == true) {
-					SelectPic SP = new SelectPic("Select a picture", 300, 230,
-							getDisplay(), MazeDisplayer.getCharOp());
+					SelectPic SP = new SelectPic("Select a picture", 300, 230, getDisplay(), MazeDisplayer.getCharOp());
 					SP.run();
 					if (SP.getStr() == null) {
 						//1001 - Picture character by the path
@@ -263,8 +263,7 @@ public class MazeViewWidget extends Canvas {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
 				if (CharactersButtons[2].getSelection() == true) {
-					SelectAnim SP = new SelectAnim("Select an animation", 250,
-							200, getDisplay(), MazeDisplayer.getCharOp());
+					SelectAnim SP = new SelectAnim("Select an animation", 250, 200, getDisplay(), MazeDisplayer.getCharOp());
 					SP.run();
 					if (SP.getStr() == null) {
 						// 1002 - Animation character by the path.
@@ -512,8 +511,10 @@ public class MazeViewWidget extends Canvas {
 					 */
 					// System.out.println((MazeDisplayer.getCharacter().getRealx()*5+1)*MazeDisplayer.wallWidth);
 					// System.out.println((MazeDisplayer.getCharacter().getRealy()*5+1)*MazeDisplayer.wallHeight);
-					int CharStartx = ((MazeDisplayer.getCharacter().getRealx() * 5 + 1) * MazeDisplayer.wallWidth);
-					int CharStarty = ((MazeDisplayer.getCharacter().getRealy() * 5 + 1) * MazeDisplayer.wallHeight);
+					
+					// TODO VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV SENIA 15.06
+					int CharStartx = ((MazeDisplayer.getCharacter().getRealx() * 5 + 1) );//* MazeDisplayer.wallWidth);
+					int CharStarty = ((MazeDisplayer.getCharacter().getRealy() * 5 + 1) );//* MazeDisplayer.wallHeight);
 					// System.out.println("Char start,x: "+CharStartx+",y: "+CharStarty);
 					if (CharStartx < Newx && CharStarty < Newy) {
 						// if(CharStartx+(MazeDisplayer.wallWidth*4)>Newx &&
