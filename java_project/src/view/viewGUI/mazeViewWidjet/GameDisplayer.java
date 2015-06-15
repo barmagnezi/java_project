@@ -11,6 +11,7 @@ import algorithms.search.Solution;
 
 public abstract class GameDisplayer extends Canvas {
 	Game game;
+	
 	public CommonCharacter character;
 	int charOp;		//Current character option.
 	
