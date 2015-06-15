@@ -15,5 +15,19 @@
     <int>5401</int>
    </void>
   </void>
+  <void class="presenter.PropertiesModelOnline" method="getField">
+   <string>AllowedThreads</string>
+   <void method="set">
+    <object idref="PropertiesModelOnline0"/>
+    <int>5</int>
+   </void>
+  </void>
+  <void class="presenter.PropertiesModelOnline" method="getField">
+   <string>Diag</string>
+   <void method="set">
+    <object idref="PropertiesModelOnline0"/>
+    <boolean>true</boolean>
+   </void>
+  </void>
  </object>
 </java>

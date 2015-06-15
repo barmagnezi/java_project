@@ -1,5 +1,7 @@
 package presenter;
 
-public interface PropertiesModel {
+import java.io.InputStream;
 
+public interface PropertiesModel {
+	boolean isDiag();
 }

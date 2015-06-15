@@ -9,6 +9,9 @@ public class PropertiesModelOnline implements Serializable, PropertiesModel {
 	private static final long serialVersionUID = 1L;
 	public String ip; // "localhost"
 	public Integer port; // 5400
+	public Integer AllowedThreads;
+	public Boolean Diag;
+
 
 	public PropertiesModelOnline() {
 	}
@@ -19,6 +22,8 @@ public class PropertiesModelOnline implements Serializable, PropertiesModel {
 	private void copyConstructor(PropertiesModelOnline prop) {
 		ip = prop.ip;
 		port = prop.port;
+		AllowedThreads=prop.AllowedThreads;
+		Diag=prop.Diag;
 	}
 
 	/**
@@ -39,13 +44,16 @@ public class PropertiesModelOnline implements Serializable, PropertiesModel {
 							+ "after exit command the properties save in resources/propertiesOnline.xml");
 			this.setIp("localhost");
 			this.setPort(5401);
+			this.setAllowedThreads(5);
+			this.setDiag(true);
 		} finally {
 
 		}
 	}
 
 	// setters getters
-
+	
+	
 	public String getIp() {
 		return ip;
 	}
@@ -54,12 +62,32 @@ public class PropertiesModelOnline implements Serializable, PropertiesModel {
 		this.ip = ip;
 	}
 
-	public int getPort() {
+	public Integer getPort() {
 		return port;
 	}
 
-	public void setPort(int port) {
+	public void setPort(Integer port) {
 		this.port = port;
 	}
+
+	public Integer getAllowedThreads() {
+		return AllowedThreads;
+	}
+
+	public void setAllowedThreads(Integer allowedThreads) {
+		AllowedThreads = allowedThreads;
+	}
+
+
+	public void setDiag(Boolean diag) {
+		Diag = diag;
+	}
+
+	@Override
+	public boolean isDiag() {
+		return Diag;
+	}
+
+
 
 }
