@@ -1,0 +1,12 @@
+NotUsed
+boot
+hibernate
+junit
+model
+presenter
+view
+view.viewCLI
+view.viewGUI.GameWidget
+view.viewGUI.mazeDisplayerAndCharecters
+view.viewGUI.mazeViewWidjet
+view.viewGUICharecteres
