@@ -37,6 +37,7 @@ public class OnlineModelWithoutMVP extends Observable implements Model {
 	@Override
 	public void start() {
 		try {
+			System.out.println("START ONLINE ASENIAESNAESNIAESNASEAES");
 			if (myServer != null)
 			System.out.println(myServer.getInetAddress().getHostAddress()+"=?"+properties.ip);
 			if (myServer != null&&
@@ -81,7 +82,7 @@ public class OnlineModelWithoutMVP extends Observable implements Model {
 			if (myServer != null)
 				myServer.close();
 		} catch (IOException e) {
-			this.notifyObservers("can't unconnect from the server");
+			this.notifyObservers("can't disconnect from the server");
 		}
 		writer = null;
 		reader = null;

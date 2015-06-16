@@ -41,7 +41,7 @@ public class MazeDisplayerGUI extends GameDisplayer {
 	
 	int Oldx=0,Oldy=0;	//For saving data when changing the Character
 	
-	boolean solveFlag=false; 
+	//boolean solveFlag=false; 
 	
 	RGB Color;	//For changing the character
 	String path;
@@ -152,9 +152,10 @@ public class MazeDisplayerGUI extends GameDisplayer {
 	 * @param y coordinates
 	 */
 	public void mark(int x,int y){
+		printsol=false;
 		character.setRealx(x);
 		character.setRealy(y);
-		solveFlag=true;
+		//solveFlag=true;
 		redraw();
 	}
 	
@@ -173,8 +174,8 @@ public class MazeDisplayerGUI extends GameDisplayer {
 			    		public void run() {
 			    			if(!character.isAnimation()){
 			    				//myTask.cancel();
-			    				timer.cancel();
-			    				timer=null;
+			    				//timer.cancel();
+			    				//timer=null;
 			    				frame=0;
 			    				//return;
 			    			}
@@ -264,6 +265,7 @@ public class MazeDisplayerGUI extends GameDisplayer {
 	 * @param resetChar Used for resetting the character when setting a new one(true=reset).
 	 */
 	public void showGame(Game m,boolean resetChar){
+		printsol=false;
 		if(Moved==true){
 			Oldx=this.character.getRealx();
 			Oldy=this.character.getRealy();
@@ -295,6 +297,7 @@ public class MazeDisplayerGUI extends GameDisplayer {
 	public void CharMoved(int pos){			//1 for Right, 2 for Up, 3 for Left, 4 for Down
 											//5 for down-left,6 for down-Right,7 for up-left,8 for up-right
 		Moved=true;
+		printsol=false;
 		getDisplay().syncExec(new Runnable() {
 			@Override
 			public void run() {
@@ -341,26 +344,30 @@ public class MazeDisplayerGUI extends GameDisplayer {
 	 * @param Height
 	 */
 	private void paintsolution(PaintEvent arg0, int Width,int Height) {
-		Stack<State> stack = new Stack<State>();
-		stack.addAll(sol.getSol());
-		/*long time;
-		if(stack.size()*200<7000)
-			 time=200;
-		else
-			time=7000/stack.size();
-			*/
-		while(!stack.isEmpty()){
-			/*try {
-				Thread.sleep(time);
-			} catch (InterruptedException e) {
-				System.out.println("error by Threads");
-			}*/
+		if(sol!=null){
+			Stack<State> stack = new Stack<State>();
+			stack.addAll(sol.getSol());
+			/*long time;
+			if(stack.size()*200<7000)
+				 time=200;
+			else
+				time=7000/stack.size();
+				*/
+			while(!stack.isEmpty()){
+				/*try {
+					Thread.sleep(time);
+				} catch (InterruptedException e) {
+					System.out.println("error by Threads");
+				}*/
+				
+				String[] rowCol=stack.pop().getState().split("x");
+				int row=Integer.parseInt(rowCol[0]);
+				int col=Integer.parseInt(rowCol[1]);	
+				arg0.gc.fillRectangle((col*5+1)*Width/4, (row*5+1)*Height/4, Width, Height);
+			}
+		}else
+			System.out.println("Error in solving the maze");
 			
-			String[] rowCol=stack.pop().getState().split("x");
-			int row=Integer.parseInt(rowCol[0]);
-			int col=Integer.parseInt(rowCol[1]);	
-			arg0.gc.fillRectangle((col*5+1)*Width/4, (row*5+1)*Height/4, Width, Height);
-		}
 	}
 	//!!!!!!!!!!!
 	public CommonCharacter getCharacter() {
@@ -369,4 +376,132 @@ public class MazeDisplayerGUI extends GameDisplayer {
 	public int getCharOp() {
 		return charOp;
 	}
+	public boolean checkwin(int x, int y) {
+		if (x == maze.getCols() - 1 && y == maze.getRows() - 1)
+			return true;
+		return false;
+	}
+
+	public boolean CheckMotion(int CurrentX, int CurrentY, int nextX, int nextY) {
+		boolean flag = true;
+		// System.out.println();
+		if (nextX < 0 || nextY < 0 || nextX == maze.getCols()
+				|| nextY == maze.getRows())
+			return false;
+		if (!(nextX != CurrentX && CurrentY != nextY)) {
+			if (CurrentX + 1 == nextX)
+				flag = flag
+						&& (!maze.getCell(CurrentY, CurrentX).getRightWall()
+								.isExist());
+			if (CurrentX - 1 == nextX)
+				flag = flag
+						&& (!maze.getCell(nextY, nextX).getRightWall()
+								.isExist());
+			if (CurrentY + 1 == nextY)
+				flag = flag
+						&& (!maze.getCell(CurrentY, CurrentX).getBottomWall()
+								.isExist());
+			if (CurrentY - 1 == nextY)
+				flag = flag
+						&& (!maze.getCell(nextY, nextX).getBottomWall()
+								.isExist());
+			return flag;
+		} else {
+			//if (Diagonals == true) {
+				int col = CurrentX;
+				int row = CurrentY;
+				// right-up
+				if (CurrentX + 1 == nextX && CurrentY - 1 == nextY) {
+					if (maze.getCell(row - 1, col).getRightWall().isExist() && // |_
+							maze.getCell(row - 1, col + 1).getBottomWall()
+									.isExist())// .
+						flag = false;
+					if (maze.getCell(row, col).getRightWall().isExist() && // |
+							maze.getCell(row - 1, col).getRightWall().isExist()) // .|
+						flag = false;
+					if (maze.getCell(row - 1, col).getBottomWall().isExist() && // _
+																				// _
+							maze.getCell(row - 1, col + 1).getBottomWall()
+									.isExist()) // .
+						flag = false;
+					if (maze.getCell(row - 1, col).getBottomWall().isExist() && // /corner
+																				// like
+																				// ._|
+							maze.getCell(row, col).getRightWall().isExist())
+						flag = false;
+					return flag;
+				}
+				// right-down
+				if (CurrentX + 1 == nextX && CurrentY + 1 == nextY) {
+					if (maze.getCell(row + 1, col).getRightWall().isExist() && // .
+							maze.getCell(row, col + 1).getBottomWall()
+									.isExist())// |-
+						flag = false;
+					if (maze.getCell(row, col).getRightWall().isExist() && // .
+																			// |
+							maze.getCell(row + 1, col).getRightWall().isExist()) // |
+						flag = false;
+					if (maze.getCell(row, col).getBottomWall().isExist() && // .
+							maze.getCell(row, col + 1).getBottomWall()
+									.isExist()) // --
+						flag = false;
+					if (maze.getCell(row, col).getBottomWall().isExist() && // /corner
+																			// like
+																			// ._|
+							maze.getCell(row, col).getRightWall().isExist())
+						flag = false;
+					return flag;
+				}
+				// left-down
+				if (CurrentX - 1 == nextX && CurrentY + 1 == nextY) {
+					if (maze.getCell(row + 1, col - 1).getRightWall().isExist()
+							&& // .
+							maze.getCell(row, col - 1).getBottomWall()
+									.isExist()) // -|
+						flag = false;
+					if (maze.getCell(row, col - 1).getRightWall().isExist() && // |.
+							maze.getCell(row + 1, col - 1).getRightWall()
+									.isExist()) // |
+						flag = false;
+					if (maze.getCell(row, col).getBottomWall().isExist() && // .
+							maze.getCell(row, col - 1).getBottomWall()
+									.isExist()) // --
+						flag = false;
+					if (maze.getCell(row, col).getBottomWall().isExist() && // /corner
+																			// like
+																			// ._|
+							maze.getCell(row, col - 1).getRightWall().isExist())
+						flag = false;
+					return flag;
+				}
+				// left-up
+				if (CurrentX - 1 == nextX && CurrentY - 1 == nextY) {
+					if (maze.getCell(row - 1, col - 1).getRightWall().isExist()
+							&& // _|
+							maze.getCell(row - 1, col - 1).getBottomWall()
+									.isExist()) // .
+						flag = false;
+					if (maze.getCell(row, col - 1).getRightWall().isExist() && // |
+							maze.getCell(row - 1, col - 1).getRightWall()
+									.isExist()) // |.
+						flag = false;
+					if (maze.getCell(row - 1, col).getBottomWall().isExist() && // _
+																				// _
+							maze.getCell(row - 1, col - 1).getBottomWall()
+									.isExist()) // .
+						flag = false;
+					if (maze.getCell(row - 1, col).getBottomWall().isExist() && // /corner
+																				// like
+																				// ._|
+							maze.getCell(row, col - 1).getRightWall().isExist())
+						flag = false;
+					return flag;
+				}
+			//} else
+			//	return false;
+		}
+		return false;
+
+	}
+
 }

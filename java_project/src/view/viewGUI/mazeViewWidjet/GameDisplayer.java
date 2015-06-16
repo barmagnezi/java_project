@@ -65,6 +65,13 @@ public abstract class GameDisplayer extends Canvas {
 	public abstract void CharMoved(int pos);
 	
 	/**
+	 * Checks if the (x,y) is the winning coordinates.
+	 * @param x
+	 * @param y
+	 * @return
+	 */
+	public abstract boolean checkwin(int x, int y);
+	/**
 	 * Start the game all over.
 	 */
 	public abstract void Startover();
@@ -75,6 +82,15 @@ public abstract class GameDisplayer extends Canvas {
 	 */
 	abstract public void startAnimation(long delay);
 	
+	/**
+	 * Checks if we can move from Current (x,y) to next (x,y)
+	 * @param CurrentX
+	 * @param CurrentY
+	 * @param nextX
+	 * @param nextY
+	 * @return
+	 */
+	public abstract boolean CheckMotion(int CurrentX, int CurrentY, int nextX, int nextY);
 	/**
 	 * Stop the work.
 	 */

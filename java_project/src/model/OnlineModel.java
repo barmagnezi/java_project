@@ -21,7 +21,7 @@ import algorithms.mazeGenerators.Maze;
 import algorithms.search.Solution;
 
 public class OnlineModel extends Observable implements Model {
-
+	
 	public PropertiesModelOnline properties;
 	
 	@Override
@@ -35,6 +35,7 @@ public class OnlineModel extends Observable implements Model {
 			
 			@Override
 			public void run() {
+				//System.out.println("OnlineModel,maybe here?VVV");
 				Socket s=connect();
 				if(s==null)
 					return;
@@ -50,20 +51,24 @@ public class OnlineModel extends Observable implements Model {
 	@Override
 	public Maze getMaze(String name) {
 		Socket s = null;
+		//System.out.println("OnlineMode,getMaze,First Connect will be here VVV");
 		s=connect();
 		if(s==null)
 			return null;
 		send(s,"getMaze " + name);
 		String msg=read(s);
-		System.out.println(msg);
-		if(msg==null){
+		//System.out.println(msg);
+		String[] parts=msg.split("!");
+		/*if(msg==null){	-Dead code ?
 			this.setChanged();
 			this.notifyObservers("The server does not work properly");
 			return null;
-		}
+		}*/
+		msg=parts[0];	//sentMaze
 		if(msg.equals("sentMaze")){
-			msg=read(s);
-			System.out.println(msg);
+			//msg=read(s);
+			msg=parts[1];	//mazeNotFound or Actual Maze as string
+			//System.out.println(msg);
 			if(msg==null){
 				this.setChanged();
 				this.notifyObservers("The server does not work properly");
@@ -74,7 +79,7 @@ public class OnlineModel extends Observable implements Model {
 				this.setChanged();
 				this.notifyObservers("maze " + name + " not found.");
 			}else{
-				System.out.println("the maze is:"+msg);
+				//System.out.println("the maze is:"+msg);
 				m=StringMaze.StringToMaze(msg);
 			}
 			return m;
@@ -112,10 +117,13 @@ public class OnlineModel extends Observable implements Model {
 		send(s,"getSolution " + name);
 		
 		String msg=read(s);
-		System.out.println("The server send:(need to be sentSolution)->"+msg);
+		//System.out.println("The server send:(need to be sentSolution)->"+msg);
+		String[] parts = msg.split("!");
+		msg=parts[0];	//sentSolution
 		if(msg!=null && msg.equals("sentSolution")){
-			msg=read(s);
-			System.out.println(msg);
+			//msg=read(s);
+			msg=parts[1];	//solutionNotFound or Actual solution as string
+			//System.out.println(msg);
 			if(msg==null){
 				this.setChanged();
 				this.notifyObservers("The server does not work properly");
@@ -132,8 +140,8 @@ public class OnlineModel extends Observable implements Model {
 				return null;
 			}
 			else{
-				System.out.print("The sol is111:");
-				System.out.println(msg);
+				//System.out.print("The sol is111:");
+				//System.out.println(msg);
 				sol=StringSolution.StringToSolution(msg);
 			}
 			return sol;
@@ -152,26 +160,32 @@ public class OnlineModel extends Observable implements Model {
 		send(s,"GetClue " + arg);
 		
 		String msg=read(s);
-		System.out.println("The server send:(need to be sentclue)->"+msg);
+		String parts[]=msg.split("!");
+		msg=parts[0];	//sentclue
+		//System.out.println("The server send:(need to be sentclue)->"+msg);
 		if(msg!=null && msg.equals("sentClue")){
-			msg=read(s);
-			System.out.println(msg);
-			if(msg==null){
-				this.setChanged();
+			//msg=read(s);
+			msg=parts[1];	//x,y
+			//System.out.println(msg);
+			if(msg==null || msg=="" || !msg.contains(",")){
+				/*this.setChanged();
 				this.notifyObservers("The server does not work properly");
-				return null;
+				return null;*/
+				msg=getClue(arg);
 			}
-			return msg;
+			else
+				return msg;
 		}else{
 			this.setChanged();
 			this.notifyObservers("The server does not work properly");
 			return null;
 		}
+		return msg;
 	}
 
 	@Override
 	public void stop() {
-		System.out.println("save properties");
+		System.out.println("saving the properties");
 		// save properties
 				XMLEncoder e = null;
 				try {
@@ -199,6 +213,7 @@ public class OnlineModel extends Observable implements Model {
 	
 	//helpers
 	private Socket connect(){
+		//System.out.println("OnlineModel, connectingnagngni ===============");
 		if(properties==null)
 			return null;
 		Socket s;
@@ -229,7 +244,7 @@ public class OnlineModel extends Observable implements Model {
 			p = new PrintWriter(s.getOutputStream());
 		} catch (IOException e) {
 			this.setChanged();
-			this.notifyObservers("can't to send message to server(ip:"+s.getInetAddress().getHostAddress()+",port:"+s.getPort()+")");
+			this.notifyObservers("can't send message to server(ip:"+s.getInetAddress().getHostAddress()+",port:"+s.getPort()+")");
 		}
 		p.println(msg);
 		p.flush();

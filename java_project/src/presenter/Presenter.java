@@ -73,7 +73,7 @@ public class Presenter implements Observer {
 	@Override
 	public void update(Observable o, Object arg) {
 		if (arg != null && ((String) arg).equals("start")) {
-			System.out.println("model.start()");
+			System.out.println("-started-");
 			model.start();
 			// view.displayString("\nIf you run the program first time use the 'help -h' command to see how to use this command line interface\n");
 			return;
@@ -144,7 +144,7 @@ public class Presenter implements Observer {
 	public class displaymazeCommand implements Command {
 		@Override
 		public void doCommand(String arg, PrintStream out) {
-			if (model.getMaze(arg) != null)
+			//if (model.getMaze(arg) != null)
 				view.displayMaze(model.getMaze(arg), arg);
 		}
 	}
@@ -177,10 +177,10 @@ public class Presenter implements Observer {
 	public class displaysolutionCommand implements Command {
 		@Override
 		public void doCommand(String arg, PrintStream out) {
-			if (model.getSolution(arg) != null)
+			//if (model.getSolution(arg) != null)
 				view.displaySolution(model.getSolution(arg));
-			else
-				view.displayString("Such solution was not found.");
+			//else
+				//view.displayString("Such solution was not found.");
 
 		}
 	}
@@ -188,7 +188,7 @@ public class Presenter implements Observer {
 	public class exitCommand implements Command {
 		@Override
 		public void doCommand(String arg, PrintStream out) {
-			System.out.println("exit");
+			System.out.println("Exiting");
 			model.stop();
 			// close all we need
 		}
