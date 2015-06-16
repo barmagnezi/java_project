@@ -67,6 +67,7 @@ public class Presenter implements Observer {
 				Mproperties = new PropertiesModelOffline(null);
 		}
 		model.setProperties(Mproperties);
+		System.out.println(Mproperties.isDiag());
 		view.getDiagsMode(Mproperties.isDiag());
 	}
 

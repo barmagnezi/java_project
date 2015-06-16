@@ -19,7 +19,13 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Pattern;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.widgets.Composite;
+
+import view.viewGUI.mazeViewWidjet.CommonGame;
 import view.viewGUI.mazeViewWidjet.GameDisplayer;
+import view.viewGUICharecteres.AnimCharacter;
+import view.viewGUICharecteres.BallCharacter;
+import view.viewGUICharecteres.CommonCharacter;
+import view.viewGUICharecteres.PicCharacter;
 import algorithms.mazeGenerators.Cell;
 import algorithms.mazeGenerators.Maze;
 import algorithms.search.Solution;
@@ -28,7 +34,7 @@ import algorithms.search.State;
 public class MazeDisplayerGUI extends GameDisplayer {
 	String Background;
 	String scrBackground;
-	String scrWalls;
+	String scrWall;
 	
 	int charOp;
 	Maze maze;
@@ -52,12 +58,17 @@ public class MazeDisplayerGUI extends GameDisplayer {
 	TimerTask myTask;
 	Timer timer;
 	
+	private boolean Diagonals;
+	
+
+
+
 	public MazeDisplayerGUI(Composite parent, int style,String Background, String scrBackground,String scrWalls) {
 		
 		super(parent, style | SWT.DOUBLE_BUFFERED);
 		this.Background=Background;
 		this.scrBackground=scrBackground;
-		this.scrWalls=scrWalls;
+		this.scrWall=scrWalls;
 		setBackgroundImage(new Image(null, Background));
 		charOp=1;
 		
@@ -72,7 +83,7 @@ public class MazeDisplayerGUI extends GameDisplayer {
 				if(lastPaint!=null)
 					lastPaint.dispose();
 				lastPaint=arg0.gc;
-				arg0.gc.setBackgroundPattern(new Pattern(null, new Image(null, System.getProperty("user.dir")+"/"+scrWalls)));
+				arg0.gc.setBackgroundPattern(new Pattern(null, new Image(null, System.getProperty("user.dir")+"/"+scrWall)));
 				wallWidth=(int) Math.floor((double)getSize().x/width);
 				wallHeight=(int) Math.floor(((double)getSize().y)/(double)height);
 				wallWidth=getSize().x/width;
@@ -116,6 +127,8 @@ public class MazeDisplayerGUI extends GameDisplayer {
 		});
 		
 	}
+	
+	
 	/**
 	 * Setting the character of the maze by the charOp(int):
 	 * 1-Ball Character
@@ -218,9 +231,9 @@ public class MazeDisplayerGUI extends GameDisplayer {
 	 */
 	public void changeBackDesign(String scrBackground,String scrWalls){
 		this.scrBackground=scrBackground;
-		this.scrWalls=scrWalls;
+		this.scrWall=scrWalls;
 		if(maze!=null){
-			Game g = new Game(maze);
+			MazeGame g = new MazeGame(maze);
 			showGame(g, false);
 		}
 	}
@@ -254,7 +267,7 @@ public class MazeDisplayerGUI extends GameDisplayer {
 		else
 			setCharacter(this.character.getRealx(), this.character.getRealy());
 		if(maze!=null || character!=null){
-			Game g = new Game(maze);
+			MazeGame g = new MazeGame(maze);
 			showGame(g, true);
 		}
 	}
@@ -264,7 +277,8 @@ public class MazeDisplayerGUI extends GameDisplayer {
 	 * @param m The maze we want to display.
 	 * @param resetChar Used for resetting the character when setting a new one(true=reset).
 	 */
-	public void showGame(Game m,boolean resetChar){
+	@Override
+	public void showGame(CommonGame m,boolean resetChar){
 		printsol=false;
 		if(Moved==true){
 			Oldx=this.character.getRealx();
@@ -272,8 +286,8 @@ public class MazeDisplayerGUI extends GameDisplayer {
 		}
 		if(resetChar==false){	//If Background changed
 			Moved=false;
-			if(m.getMaze()!=maze){
-				maze=m.getMaze();
+			if(m.getGame()!=maze){
+				maze=(Maze) m.getGame();
 			}
 			setBackgroundImage(new Image(null, scrBackground));
 			redraw();
@@ -407,7 +421,7 @@ public class MazeDisplayerGUI extends GameDisplayer {
 								.isExist());
 			return flag;
 		} else {
-			//if (Diagonals == true) {
+			if (Diagonals == true) {
 				int col = CurrentX;
 				int row = CurrentY;
 				// right-up
@@ -497,11 +511,27 @@ public class MazeDisplayerGUI extends GameDisplayer {
 						flag = false;
 					return flag;
 				}
-			//} else
-			//	return false;
+			} else
+				return false;
 		}
 		return false;
 
 	}
+	@Override
+	public boolean CharecterAtTheEnd() {
+		if (character.getRealx() == maze.getCols() - 1
+				&& character.getRealy() == maze.getRows() - 1)
+			return true;
+		return false;
+	}
+	public boolean isDiagonals() {
+		return Diagonals;
+	}
+
+	@Override
+	public void setDiagonals(boolean diagonals) {
+		Diagonals = diagonals;
+	}
+
 
 }

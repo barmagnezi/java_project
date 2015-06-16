@@ -14,9 +14,13 @@ import java.net.Socket;
 import java.util.Observable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.zip.ZipInputStream;
+import java.util.zip.ZipOutputStream;
 
 import presenter.PropertiesModel;
 import presenter.PropertiesModelOnline;
+import algorithms.compression.HuffmanReader;
+import algorithms.compression.HuffmanWriter;
 import algorithms.mazeGenerators.Maze;
 import algorithms.search.Solution;
 
@@ -232,6 +236,7 @@ public class OnlineModel extends Observable implements Model {
 		try {
 			s.close();
 		} catch (IOException e) {
+			this.setChanged();
 			this.notifyObservers("can't to connect to server(ip:"+s.getInetAddress().getHostAddress()+",port:"+s.getPort()+")");
 		}
 	}
@@ -242,10 +247,13 @@ public class OnlineModel extends Observable implements Model {
 			return;
 		try {
 			p = new PrintWriter(s.getOutputStream());
+			//for compress data
+			//p = new PrintWriter(new ZipOutputStream(s.getOutputStream()));
 		} catch (IOException e) {
 			this.setChanged();
-			this.notifyObservers("can't send message to server(ip:"+s.getInetAddress().getHostAddress()+",port:"+s.getPort()+")");
+			this.notifyObservers("error with the server(ip:"+s.getInetAddress().getHostAddress()+",port:"+s.getPort()+")");
 		}
+		
 		p.println(msg);
 		p.flush();
 	}
@@ -253,7 +261,9 @@ public class OnlineModel extends Observable implements Model {
 		BufferedReader r;
 		String msg;
 		try {
-			r = new BufferedReader(new InputStreamReader(s.getInputStream()));
+			r=new BufferedReader(new InputStreamReader(s.getInputStream()));
+			//for compress data
+			//r=new BufferedReader(new InputStreamReader(new ZipInputStream(s.getInputStream())));
 			msg= r.readLine();
 		} catch (IOException e) {
 			this.notifyObservers("can't to recive message to server(ip:"+s.getInetAddress().getHostAddress()+",port:"+s.getPort()+")");

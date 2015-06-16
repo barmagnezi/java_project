@@ -1,6 +1,7 @@
 package view.viewGUI.mazeViewWidjet;
 
 import java.util.Observer;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
@@ -21,6 +22,7 @@ import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.MessageBox;
+
 import algorithms.mazeGenerators.Maze;
 import algorithms.search.Solution;
 import view.View;
@@ -35,10 +37,10 @@ import view.viewGUI.mazeDisplayerAndCharecters.MazeDisplayerGUI;
  * @version 1.0
  * @since 31.5.2015
  */
-public class MazeViewWidget extends Canvas {
+public class GameViewWidget extends Canvas{
 
-	public String gameName = "Not loaded maze";
-	Maze maze = null;
+	public String gameName="Not loaded game";
+	CommonGame game = null;
 	
 	int steps = 0;
 	int clue = 0;
@@ -53,7 +55,7 @@ public class MazeViewWidget extends Canvas {
 	Button BshowSolution;
 	Button BgiveClue;
 	
-	GameDisplayer gameDisplayer;
+	GameDisplayer GameDisplayer;
 	Group GroupCharacters;
 	Button[] CharactersButtons;
 	Group GroupBackgroundGame;
@@ -70,7 +72,7 @@ public class MazeViewWidget extends Canvas {
 		ViewGUI.addObserver(presenter);
 	}
 
-	public MazeViewWidget(Composite parent, int style) {
+	public GameViewWidget(Composite parent, int style) {
 		super(parent, style);
 		this.setLayout(new GridLayout(2, false));
 		getShell().setBackgroundMode(SWT.INHERIT_FORCE);
@@ -96,11 +98,11 @@ public class MazeViewWidget extends Canvas {
 				getParent().getDisplay().syncExec(new Runnable() {
 					@Override
 					public void run() {
-						gameDisplayer.Startover();
+						GameDisplayer.Startover();
 						steps = 0;
 						clue = 0;
 						load();
-						gameDisplayer.setFocus();
+						GameDisplayer.setFocus();
 					}
 				});
 			}
@@ -127,7 +129,7 @@ public class MazeViewWidget extends Canvas {
 
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				gameDisplayer.setFocus();
+				GameDisplayer.setFocus();
 				ViewGUI.displaySolution(gameName);
 			}
 
@@ -153,11 +155,11 @@ public class MazeViewWidget extends Canvas {
 
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				if (maze != null)
-					clue(maze);
+				if (game != null)
+					clue(game);
 				// ViewGUI.getclue(MazeDisplayer.getCharacter().getRealx(),
 				// MazeDisplayer.getCharacter().getRealy());
-				gameDisplayer.setFocus();
+				GameDisplayer.setFocus();
 			}
 
 			@Override
@@ -174,9 +176,9 @@ public class MazeViewWidget extends Canvas {
 		 * MazeDisplayer.setFocus(); } });
 		 */
 
-		gameDisplayer = new MazeDisplayerGUI(this, SWT.BORDER_SOLID,
+		GameDisplayer = new MazeDisplayerGUI(this, SWT.BORDER_SOLID,
 				"resources/images/mazedisplayerbackground.png", "resources/images/grass.png", "resources/images/trees.png");
-		gameDisplayer.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true,
+		GameDisplayer.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true,
 				true, 2, 1));
 		// if() animation set..
 		//MazeDisplayer.start();	//Senia 15.06
@@ -204,7 +206,7 @@ public class MazeViewWidget extends Canvas {
 					cd.setText("ColorDialog Demo");
 					cd.setRGB(new RGB(255, 255, 255));
 					RGB col = cd.open();
-					gameDisplayer.changeCharacter(1, col, null);
+					GameDisplayer.changeCharacter(1, col, null);
 				}
 			}
 
@@ -218,20 +220,20 @@ public class MazeViewWidget extends Canvas {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
 				if (CharactersButtons[1].getSelection() == true) {
-					SelectPic SP = new SelectPic("Select a picture", 300, 230, getDisplay(), gameDisplayer.getCharOp());
+					SelectPic SP = new SelectPic("Select a picture", 300, 230, getDisplay(), GameDisplayer.getCharOp());
 					SP.run();
 					if (SP.getStr() == null) {
 						//1001 - Picture character by the path
 						if(SP.getChoise()==2)	//2=Mario => Picture - Mario
-							gameDisplayer.changeCharacter(1001, null, "resources/images/MarioChar.png");
+							GameDisplayer.changeCharacter(1001, null, "resources/images/MarioChar.png");
 						if(SP.getChoise()==989)	//989=Senia => Picture - Senia
-							gameDisplayer.changeCharacter(1001, null, "resources/images/Senia.png");
+							GameDisplayer.changeCharacter(1001, null, "resources/images/Senia.png");
 						if(SP.getChoise()==999)	//999=Bar => Pictre - Bar
-							gameDisplayer.changeCharacter(1001, null, "resources/images/Bar.png");
+							GameDisplayer.changeCharacter(1001, null, "resources/images/Bar.png");
 						//MazeDisplayer.changeCharacter(SP.getChoise(), null,null);
 					} else
-						gameDisplayer.changeCharacter(1001, null, SP.getStr());
-					gameDisplayer.setFocus();
+						GameDisplayer.changeCharacter(1001, null, SP.getStr());
+					GameDisplayer.setFocus();
 				}
 			}
 
@@ -260,18 +262,18 @@ public class MazeViewWidget extends Canvas {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
 				if (CharactersButtons[2].getSelection() == true) {
-					SelectAnim SP = new SelectAnim("Select an animation", 250, 200, getDisplay(), gameDisplayer.getCharOp());
+					SelectAnim SP = new SelectAnim("Select an animation", 250, 200, getDisplay(), GameDisplayer.getCharOp());
 					SP.run();
 					if (SP.getStr() == null) {
 						// 1002 - Animation character by the path.
 						if(SP.getChoise()==3)	//3=Mario => Animation - Mario
-							gameDisplayer.changeCharacter(1002, null, "resources/images/marioAnimation.gif");
+							GameDisplayer.changeCharacter(1002, null, "resources/images/marioAnimation.gif");
 						if(SP.getChoise()==4)	//4=Dog => Animation - Dog
-							gameDisplayer.changeCharacter(1002, null, "resources/images/dogAnimation.gif");
+							GameDisplayer.changeCharacter(1002, null, "resources/images/dogAnimation.gif");
 						//MazeDisplayer.changeCharacter(SP.getChoise(), null,null);
 					} else
-						gameDisplayer.changeCharacter(1002, null, SP.getStr());
-					gameDisplayer.setFocus();
+						GameDisplayer.changeCharacter(1002, null, SP.getStr());
+					GameDisplayer.setFocus();
 				}
 			}
 
@@ -296,7 +298,7 @@ public class MazeViewWidget extends Canvas {
 
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				gameDisplayer.changeBackDesign("resources/images/grass.png",
+				GameDisplayer.changeBackDesign("resources/images/grass.png",
 						"resources/images/trees.png");
 				GroupBackgroundGame.setBackgroundImage(new Image(null,
 						"resources/images/grass.png"));
@@ -311,7 +313,7 @@ public class MazeViewWidget extends Canvas {
 
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				gameDisplayer.changeBackDesign("resources/images/desert.jpg",
+				GameDisplayer.changeBackDesign("resources/images/desert.jpg",
 						"resources/images/brick_texture.jpg");
 				GroupBackgroundGame.setBackgroundImage(new Image(null,
 						"resources/images/desert.jpg"));
@@ -326,7 +328,7 @@ public class MazeViewWidget extends Canvas {
 
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				gameDisplayer.changeBackDesign("resources/images/white.png",
+				GameDisplayer.changeBackDesign("resources/images/white.png",
 						"resources/images/black.png");
 				GroupBackgroundGame.setBackgroundImage(new Image(null,
 						"resources/images/white.png"));
@@ -341,7 +343,7 @@ public class MazeViewWidget extends Canvas {
 		GroupBackgroundGame.setBackgroundImage(new Image(null,
 				"resources/images/grass.png"));
 
-		gameDisplayer.addKeyListener(new KeyListener() {
+		GameDisplayer.addKeyListener(new KeyListener() {
 
 			@Override
 			public void keyReleased(KeyEvent arg0) {
@@ -350,79 +352,79 @@ public class MazeViewWidget extends Canvas {
 			@Override
 			public void keyPressed(KeyEvent arg0) {
 				if (arg0.keyCode == 16777220) { // right
-					int currentX = gameDisplayer.getCharacter().getRealx();
-					int currentY = gameDisplayer.getCharacter().getRealy();
-					if (gameDisplayer.CheckMotion(currentX, currentY, currentX + 1, currentY)) {
-						gameDisplayer.CharMoved(1);
+					int currentX = GameDisplayer.getCharacter().getRealx();
+					int currentY = GameDisplayer.getCharacter().getRealy();
+					if (GameDisplayer.CheckMotion(currentX, currentY, currentX + 1, currentY)) {
+						GameDisplayer.CharMoved(1);
 						steps++;
 						checkwin(currentX + 1, currentY);
 					}
 				}
 				if (arg0.keyCode == 16777219) { // left
-					int currentX = gameDisplayer.getCharacter().getRealx();
-					int currentY = gameDisplayer.getCharacter().getRealy();
-					if (gameDisplayer.CheckMotion(currentX, currentY, currentX - 1, currentY)) {
-						gameDisplayer.CharMoved(3);
+					int currentX = GameDisplayer.getCharacter().getRealx();
+					int currentY = GameDisplayer.getCharacter().getRealy();
+					if (GameDisplayer.CheckMotion(currentX, currentY, currentX - 1, currentY)) {
+						GameDisplayer.CharMoved(3);
 						steps++;
 						checkwin(currentX - 1, currentY);
 					}
 				}
 				if (arg0.keyCode == 16777217) { // up
-					int currentX = gameDisplayer.getCharacter().getRealx();
-					int currentY = gameDisplayer.getCharacter().getRealy();
-					if (gameDisplayer.CheckMotion(currentX, currentY, currentX, currentY - 1)) {
-						gameDisplayer.CharMoved(2);
+					int currentX = GameDisplayer.getCharacter().getRealx();
+					int currentY = GameDisplayer.getCharacter().getRealy();
+					if (GameDisplayer.CheckMotion(currentX, currentY, currentX, currentY - 1)) {
+						GameDisplayer.CharMoved(2);
 						steps++;
 						checkwin(currentX, currentY - 1);
 					}
 				}
 				if (arg0.keyCode == 16777218) { // down
-					int currentX = gameDisplayer.getCharacter().getRealx();
-					int currentY = gameDisplayer.getCharacter().getRealy();
-					if (gameDisplayer.CheckMotion(currentX, currentY, currentX, currentY + 1)) {
-						gameDisplayer.CharMoved(4);
+					int currentX = GameDisplayer.getCharacter().getRealx();
+					int currentY = GameDisplayer.getCharacter().getRealy();
+					if (GameDisplayer.CheckMotion(currentX, currentY, currentX, currentY + 1)) {
+						GameDisplayer.CharMoved(4);
 						steps++;
 						checkwin(currentX, currentY + 1);
 					}
 				}
 				// diag
 				if (arg0.character == '1') { // down-left
-					int currentX = gameDisplayer.getCharacter().getRealx();
-					int currentY = gameDisplayer.getCharacter().getRealy();
-					if (gameDisplayer.CheckMotion(currentX, currentY, currentX - 1,
+					int currentX = GameDisplayer.getCharacter().getRealx();
+					int currentY = GameDisplayer.getCharacter().getRealy();
+					if (GameDisplayer.CheckMotion(currentX, currentY, currentX - 1,
 							currentY + 1)) {
-						gameDisplayer.CharMoved(5);
+						GameDisplayer.CharMoved(5);
 						steps++;
 						checkwin(currentX - 1, currentY + 1);
 					}
 				}
 
 				if (arg0.character == '2') { // down-right
-					int currentX = gameDisplayer.getCharacter().getRealx();
-					int currentY = gameDisplayer.getCharacter().getRealy();
-					if (gameDisplayer.CheckMotion(currentX, currentY, currentX + 1,
+					int currentX = GameDisplayer.getCharacter().getRealx();
+					int currentY = GameDisplayer.getCharacter().getRealy();
+					if (GameDisplayer.CheckMotion(currentX, currentY, currentX + 1,
 							currentY + 1)) {
-						gameDisplayer.CharMoved(6);
+						GameDisplayer.CharMoved(6);
 						steps++;
 						checkwin(currentX + 1, currentY + 1);
 					}
 				}
 				if (arg0.character == '4') { // up-left
-					int currentX = gameDisplayer.getCharacter().getRealx();
-					int currentY = gameDisplayer.getCharacter().getRealy();
-					if (gameDisplayer.CheckMotion(currentX, currentY, currentX - 1,
+					int currentX = GameDisplayer.getCharacter().getRealx();
+					int currentY = GameDisplayer.getCharacter().getRealy();
+					if (GameDisplayer.CheckMotion(currentX, currentY, currentX - 1,
 							currentY - 1)) {
-						gameDisplayer.CharMoved(7);
+						GameDisplayer.CharMoved(7);
 						steps++;
 						checkwin(currentX - 1, currentY - 1);
 					}
 				}
 				if (arg0.character == '5') { // up-right
-					int currentX = gameDisplayer.getCharacter().getRealx();
-					int currentY = gameDisplayer.getCharacter().getRealy();
-					if (gameDisplayer.CheckMotion(currentX, currentY, currentX + 1,
+					int currentX = GameDisplayer.getCharacter().getRealx();
+					int currentY = GameDisplayer.getCharacter().getRealy();
+					if (GameDisplayer.CheckMotion(currentX, currentY, currentX + 1,
 							currentY - 1)) {
-						gameDisplayer.CharMoved(8);
+						GameDisplayer.CharMoved(8);
 						steps++;
 						checkwin(currentX + 1, currentY - 1);
 					}
@@ -454,7 +456,7 @@ public class MazeViewWidget extends Canvas {
 							return;
 						setProperties(fd.getFilterPath() + "/"
 								+ fd.getFileName());
-						gameDisplayer.setFocus();
+						GameDisplayer.setFocus();
 					}
 				});
 			}
@@ -463,9 +465,8 @@ public class MazeViewWidget extends Canvas {
 			public void widgetDefaultSelected(SelectionEvent arg0) {
 			}
 		});
-		
-		gameDisplayer.addMouseListener(new MouseListener() {
-			final Point[] offset = new Point[1];
+		final Point[] offset = new Point[1];
+		GameDisplayer.addMouseListener(new MouseListener() {
 			@Override
 			public void mouseDown(MouseEvent e) {
 				Point pt1 = parent.toDisplay(0, 0);
@@ -496,9 +497,9 @@ public class MazeViewWidget extends Canvas {
 				 * .wallWidth/4<offset[0].x ){
 				 * System.out.println("bigger then char x start"); }
 				 */
-				if (gameDisplayer.character != null) {
-					currentX = gameDisplayer.getCharacter().getRealx();
-					currentY = gameDisplayer.getCharacter().getRealy();
+				if (GameDisplayer.character != null) {
+					currentX = GameDisplayer.getCharacter().getRealx();
+					currentY = GameDisplayer.getCharacter().getRealy();
 					/*
 					 * System.out.println(
 					 * "=========================================");
@@ -511,8 +512,8 @@ public class MazeViewWidget extends Canvas {
 					// System.out.println((MazeDisplayer.getCharacter().getRealy()*5+1)*MazeDisplayer.wallHeight);
 					
 					// TODO VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV SENIA 15.06
-					int CharStartx = ((gameDisplayer.getCharacter().getRealx() * 5 + 1) );//* MazeDisplayer.wallWidth);
-					int CharStarty = ((gameDisplayer.getCharacter().getRealy() * 5 + 1) );//* MazeDisplayer.wallHeight);
+					int CharStartx = ((GameDisplayer.getCharacter().getRealx() * 5 + 1) );//* MazeDisplayer.wallWidth);
+					int CharStarty = ((GameDisplayer.getCharacter().getRealy() * 5 + 1) );//* MazeDisplayer.wallHeight);
 					// System.out.println("Char start,x: "+CharStartx+",y: "+CharStarty);
 					if (CharStartx < Newx && CharStarty < Newy) {
 						// if(CharStartx+(MazeDisplayer.wallWidth*4)>Newx &&
@@ -522,32 +523,32 @@ public class MazeViewWidget extends Canvas {
 							if (Math.abs(Newx - offset[0].x) > Math.abs(Newy
 									- offset[0].y)) {
 								if ((Newx - offset[0].x) > 0) { // Moved right
-									if (gameDisplayer.CheckMotion(currentX, currentY,
+									if (GameDisplayer.CheckMotion(currentX, currentY,
 											currentX + 1, currentY)) {
-										gameDisplayer.CharMoved(1);
+										GameDisplayer.CharMoved(1);
 										steps++;
 										checkwin(currentX + 1, currentY);
 									}
 								} else { // Moved left
-									if (gameDisplayer.CheckMotion(currentX, currentY,
+									if (GameDisplayer.CheckMotion(currentX, currentY,
 											currentX - 1, currentY)) {
-										gameDisplayer.CharMoved(3);
+										GameDisplayer.CharMoved(3);
 										steps++;
 										checkwin(currentX - 1, currentY);
 									}
 								}
 							} else {
 								if ((Newy - offset[0].y) > 0) { // Moved down
-									if (gameDisplayer.CheckMotion(currentX, currentY,
+									if (GameDisplayer.CheckMotion(currentX, currentY,
 											currentX, currentY + 1)) {
-										gameDisplayer.CharMoved(4);
+										GameDisplayer.CharMoved(4);
 										steps++;
 										checkwin(currentX, currentY + 1);
 									}
 								} else { // Moved up
-									if (gameDisplayer.CheckMotion(currentX, currentY,
+									if (GameDisplayer.CheckMotion(currentX, currentY,
 											currentX, currentY - 1)) {
-										gameDisplayer.CharMoved(2);
+										GameDisplayer.CharMoved(2);
 										steps++;
 										checkwin(currentX, currentY - 1);
 									}
@@ -572,7 +573,10 @@ public class MazeViewWidget extends Canvas {
 	}
 
 	public void load() {
-		LBgameName.setText("Maze name: " + gameName);
+		if(gameName==null)
+			gameName="Not loaded game";
+		System.out.println(gameName);
+		LBgameName.setText("Game name: " + gameName);
 		LBsteps.setText("Number of steps: " + String.valueOf(steps)
 				+ "\tNumber of clues: " + String.valueOf(clue));
 
@@ -584,9 +588,9 @@ public class MazeViewWidget extends Canvas {
 
 	public void loadMaze(String name) {
 		ViewGUI.displaymaze(name);
-		if (gameDisplayer.character != null) {
-			gameDisplayer.character.setRealx(0);
-			gameDisplayer.character.setRealy(0);
+		if (GameDisplayer.character != null) {
+			GameDisplayer.character.setRealx(0);
+			GameDisplayer.character.setRealy(0);
 		}
 		clue = 0;
 		steps = 0;
@@ -597,13 +601,12 @@ public class MazeViewWidget extends Canvas {
 		ViewGUI.solveMaze(name);
 	}
 
-	public void clue(Maze maze) {
+	public void clue(CommonGame maze) {
 		// System.out.println("clue");
 
-		int x = gameDisplayer.character.getRealx();
-		int y = gameDisplayer.character.getRealy();
-		if (gameDisplayer.character.getRealx() == maze.getCols() - 1
-				&& gameDisplayer.character.getRealy() == maze.getRows() - 1)
+		int x = GameDisplayer.character.getRealx();
+		int y = GameDisplayer.character.getRealy();
+		if (GameDisplayer.CharecterAtTheEnd())
 			return;
 		ViewGUI.getclue(y, x);
 		/*
@@ -625,18 +628,18 @@ public class MazeViewWidget extends Canvas {
 		String[] rowCol = clue.split(",");
 		int Cluex = Integer.parseInt(rowCol[1]);
 		int Cluey = Integer.parseInt(rowCol[0]);
-		gameDisplayer.mark(Cluey, Cluex);
+		GameDisplayer.mark(Cluey, Cluex);
 		load();
 		checkwin(Cluey, Cluex);
 		this.clue++;
 	}
 
-	public void displayMaze(algorithms.mazeGenerators.Maze m) {
-		maze = m;
+	public void displayMaze(CommonGame m) {
+		game = m;
 		clue = 0;
 		steps = 0;
-		MazeGame g = new MazeGame(m);
-		gameDisplayer.showGame(g, false);
+		CommonGame g = new MazeGame((Maze) m.getGame());
+		GameDisplayer.showGame(g, false);
 	}
 
 	/*
@@ -656,7 +659,7 @@ public class MazeViewWidget extends Canvas {
 	 * }
 	 */
 	public void displaySolution(Solution s) {
-		gameDisplayer.showSolution(s);
+		GameDisplayer.showSolution(s);
 	}
 
 	public void displayString(String msg) {
@@ -681,7 +684,7 @@ public class MazeViewWidget extends Canvas {
 
 	public void exit() {
 		ViewGUI.exit();
-		gameDisplayer.stop();
+		GameDisplayer.stop();
 	}
 
 	public void start() {
@@ -811,12 +814,10 @@ public class MazeViewWidget extends Canvas {
 	}*/
 
 	public void checkwin(int x, int y) {
-		if (gameDisplayer.checkwin(x, y))
+		if (GameDisplayer.checkwin(x, y))
 			new winnerPage("winner", 270, 240, getDisplay(), steps, clue).run();
 	}
-
 	public void setDiagonals(boolean diag) {
-		gameDisplayer.setDiagonals(diag);
+		GameDisplayer.setDiagonals(diag);
 	}
-
 }

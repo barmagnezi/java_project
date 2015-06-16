@@ -17,6 +17,7 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.MessageBox;
 
 import view.View;
+import view.viewGUI.mazeViewWidjet.GameViewWidget;
 import view.viewGUI.mazeViewWidjet.MazeViewWidget;
 
 /**
@@ -27,17 +28,17 @@ import view.viewGUI.mazeViewWidjet.MazeViewWidget;
  * @version 1.0
  * @since 31.5.2015
  */
-public class GameWidget extends BasicWindow {
+public class GameWindow extends BasicWindow {
 	MazeViewWidget gameView;
+
 	String filepath;
 
-	public GameWidget(String title, int width, int height) {
+	public GameWindow(String title, int width, int height) {
 		super(title, width, height);
 		gameView = new MazeViewWidget(shell, SWT.BORDER);
-
 	}
 
-	public GameWidget(String title, int width, int height, Display d) {
+	public GameWindow(String title, int width, int height, Display d) {
 		super(title, width, height, d);
 		gameView = new MazeViewWidget(shell, SWT.BORDER);
 

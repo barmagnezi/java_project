@@ -1,4 +1,4 @@
-package model;
+package model.NotUsed;
 
 import java.io.BufferedReader;
 import java.io.IOException;

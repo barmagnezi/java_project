@@ -5,13 +5,12 @@ import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 
-import view.viewGUI.mazeDisplayerAndCharecters.CommonCharacter;
-import view.viewGUI.mazeDisplayerAndCharecters.Game;
+import view.viewGUICharecteres.CommonCharacter;
 import algorithms.search.Solution;
 
 public abstract class GameDisplayer extends Canvas {
-	Game game;
 	
+	CommonGame game;
 	public CommonCharacter character;
 	int charOp;		//Current character option.
 	
@@ -49,7 +48,7 @@ public abstract class GameDisplayer extends Canvas {
 	 * @param m The Game we want to display.
 	 * @param resetChar Used for resetting the character when setting a new one(true=reset).
 	 */
-	public abstract void showGame(Game m,boolean resetChar);
+	public abstract void showGame(CommonGame m,boolean resetChar);
 	
 	/**
 	 * Print the solution provided.
@@ -94,14 +93,17 @@ public abstract class GameDisplayer extends Canvas {
 	/**
 	 * Stop the work.
 	 */
-	public void stop() {
-	}
+	public abstract void stop();
 	
-	public Game getGame() {
+	public abstract boolean CharecterAtTheEnd();
+	
+	public abstract void setDiagonals(boolean diagonals);
+	//getters setters
+	public CommonGame getGame() {
 		return game;
 	}
 
-	public void setGame(Game game) {
+	public void setGame(CommonGame game) {
 		this.game = game;
 	}
 

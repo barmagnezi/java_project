@@ -1,4 +1,4 @@
-package view.viewGUI.mazeDisplayerAndCharecters;
+package view.viewGUICharecteres;
 
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.graphics.ImageLoader;

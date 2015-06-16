@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<java version="1.8.0_45" class="java.beans.XMLDecoder">
+<java version="1.8.0_40" class="java.beans.XMLDecoder">
  <object class="presenter.PropertiesModelOffline" id="PropertiesModelOffline0">
   <void class="presenter.PropertiesModelOffline" method="getField">
    <string>AllowedThreads</string>
@@ -33,7 +33,7 @@
    <string>diag</string>
    <void method="set">
     <object idref="PropertiesModelOffline0"/>
-    <boolean>false</boolean>
+    <boolean>true</boolean>
    </void>
   </void>
   <void class="presenter.PropertiesModelOffline" method="getField">

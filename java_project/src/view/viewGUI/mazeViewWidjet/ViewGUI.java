@@ -9,6 +9,7 @@ import View.Command;
 import algorithms.mazeGenerators.Maze;
 import algorithms.search.Solution;
 import view.View;
+import view.viewGUI.mazeDisplayerAndCharecters.MazeGame;
 
 public class ViewGUI extends Observable implements View {
 
@@ -22,7 +23,7 @@ public class ViewGUI extends Observable implements View {
 		Widget = widget;
 		commandsList = new LinkedList<Command>();
 	}
-
+	
 	public void setCommands(HashMap<String, Command> commands) {
 		// System.out.println(commands.size());
 		this.commands = commands;
@@ -63,8 +64,7 @@ public class ViewGUI extends Observable implements View {
 	public void getclue(int row, int col) {
 		commandsList.add(commands.get("GetClue"));
 		this.setChanged();
-		this.notifyObservers(Widget.mazeName + " " + row + "," + col);
-
+		this.notifyObservers(Widget.gameName + " " + row + "," + col);
 	}
 
 	public void setproperties(String path) {
@@ -93,11 +93,12 @@ public class ViewGUI extends Observable implements View {
 		this.setChanged();
 		this.notifyObservers("start");
 	}
-
 	@Override
 	public void displayMaze(Maze m, String name) {
 		Widget.setMazeName(name);
+
 		Widget.displayMaze(m);
+
 	}
 
 	@Override
@@ -120,8 +121,8 @@ public class ViewGUI extends Observable implements View {
 
 	@Override
 	public void getDiagsMode(boolean diag) {
-		Widget.Diagonals = diag;
-
+		Widget.setDiagonals(diag);
+		
 	}
 
 	/*

@@ -8,7 +8,13 @@ import algorithms.demo.MazeSearchable;
 import algorithms.mazeGenerators.Cell;
 import algorithms.mazeGenerators.Maze;
 import algorithms.search.State;
-
+/**
+ * The class fixed bug in MazeSearchable in the function getAllPossibleStates
+ * 
+ * @author Bar Magnezi(209043827) and Senia Kalma(321969941)
+ * @version 1.0
+ * @since 17.5.2015
+ */
 public class MazeSearchableFixed extends MazeSearchable {
 
 	Maze maze;
