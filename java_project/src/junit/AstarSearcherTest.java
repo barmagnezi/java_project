@@ -9,7 +9,14 @@ import algorithms.mazeGenerators.Maze;
 import algorithms.search.Searchable;
 import algorithms.search.State;
 import algorithms.search.aStar.MazeAirDistance;
-
+/**
+ * The class test the Astar Searcher by few of checks
+ * 
+ * @author Bar Magnezi(209043827) and Senia Kalma(321969941)
+ * @version 1.0
+ * @since 16.6.2015
+ *
+ */
 public class AstarSearcherTest {
 
 	@Test

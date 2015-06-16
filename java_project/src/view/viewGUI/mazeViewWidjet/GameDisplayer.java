@@ -95,9 +95,9 @@ public abstract class GameDisplayer extends Canvas {
 	 */
 	public abstract void stop();
 	
-	public abstract boolean CharecterAtTheEnd();
-	
 	public abstract void setDiagonals(boolean diagonals);
+	
+	
 	//getters setters
 	public CommonGame getGame() {
 		return game;

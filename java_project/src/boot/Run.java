@@ -3,14 +3,14 @@ package boot;
 import org.eclipse.swt.graphics.DeviceData;
 import org.eclipse.swt.widgets.Display;
 
+import NotUsed.OnlineModelWithMVP;
+import NotUsed.OnlineModelWithoutMVP;
 import presenter.Presenter;
 import view.viewCLI.ClI_View;
 import view.viewGUI.GameWidget.GameWindow;
 import model.MazeSearchableFixed;
 import model.OffLineModel;
 import model.OnlineModel;
-import model.NotUsed.OnlineModelWithMVP;
-import model.NotUsed.OnlineModelWithoutMVP;
 
 /**
  * The class run the project online
@@ -21,8 +21,7 @@ import model.NotUsed.OnlineModelWithoutMVP;
  */
 public class Run {
 	public static void main(String[] args) {
-		run_GUI();
-		//run_GUI_online();
+		run_GUI_online();
 	}
 
 	public static void run_cli() {

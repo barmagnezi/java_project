@@ -33,7 +33,7 @@
    <string>diag</string>
    <void method="set">
     <object idref="PropertiesModelOffline0"/>
-    <boolean>true</boolean>
+    <boolean>false</boolean>
    </void>
   </void>
   <void class="presenter.PropertiesModelOffline" method="getField">

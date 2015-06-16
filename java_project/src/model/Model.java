@@ -74,5 +74,12 @@ public interface Model {
 
 	// public boolean checkMotion(String Mazename,int CurrentRow,int
 	// CurrentCol,int nextRow,int nextCol); not work
+	
+	
+	/**
+	 * This method return if the model run online or offline.
+	 * It used for the presenter know which properties send to model 
+	 * @return
+	 */
 	public boolean isonline();
 }

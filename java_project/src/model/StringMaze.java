@@ -7,10 +7,15 @@ import algorithms.mazeGenerators.Maze;
 * Saves and represents the maze as a string.
 * @author  Bar Magnezi and Senia Kalma
 * @version 1.0
-* @since 17.5.2015
+* @since 16.6.2015
 */
 public class StringMaze {
 	
+	/**
+	 * This is method that create string that express the maze 
+	 * @param maze The maze we want to convert to string.
+	 * @return The string that express the maze.
+	 */
 	public static String MazeToString(Maze maze){
 		String strMaze=maze.getRows()+","+maze.getCols()+"/";
 		for(int i=0;i<maze.getRows();i++)
@@ -25,6 +30,12 @@ public class StringMaze {
 			}
 		return strMaze;
 	}
+	
+	/**
+	 * This is method that create string that express the maze 
+	 * @param maze The string that express the maze.
+	 * @return The maze.
+	 */
 	public static Maze StringToMaze(String maze){
 		String[] rowcolAndCells=maze.split("/");
 		String[] rowAndcol=rowcolAndCells[0].split(",");

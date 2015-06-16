@@ -1,4 +1,4 @@
-package view.viewGUI.mazeViewWidjet;
+package NotUsed;
 
 import java.util.Observer;
 
@@ -28,6 +28,12 @@ import algorithms.search.Solution;
 import view.View;
 import view.viewGUI.mazeDisplayerAndCharecters.MazeGame;
 import view.viewGUI.mazeDisplayerAndCharecters.MazeDisplayerGUI;
+import view.viewGUI.mazeViewWidjet.CommonGame;
+import view.viewGUI.mazeViewWidjet.GameDisplayer;
+import view.viewGUI.mazeViewWidjet.SelectAnim;
+import view.viewGUI.mazeViewWidjet.SelectPic;
+import view.viewGUI.mazeViewWidjet.ViewGUI;
+import view.viewGUI.mazeViewWidjet.winnerPage;
 
 /**
  * Setting all the main features of our current gameView - as
@@ -601,12 +607,17 @@ public class GameViewWidget extends Canvas{
 		ViewGUI.solveMaze(name);
 	}
 
+	/**
+	 * check if the character at the end of the maze and if not generate clue
+	 * The character index take from GameDisplayer
+	 * @param maze the maze we want to find clue
+	 */
 	public void clue(CommonGame maze) {
 		// System.out.println("clue");
 
 		int x = GameDisplayer.character.getRealx();
 		int y = GameDisplayer.character.getRealy();
-		if (GameDisplayer.CharecterAtTheEnd())
+		if (GameDisplayer.checkwin(x, y))
 			return;
 		ViewGUI.getclue(y, x);
 		/*
@@ -621,9 +632,11 @@ public class GameViewWidget extends Canvas{
 		 * MazeDisplayer.mark(Cluey, Cluex); load(); checkwin(Cluey , Cluex); }
 		 * else{ checkwin(maze.getCols()-1 , maze.getRows()-1); }
 		 */
-
 	}
-
+	/**
+	 * send the clue to GameDisplayer that show it to user
+	 * @param clue The clue
+	 */
 	public void displayClue(String clue) {
 		String[] rowCol = clue.split(",");
 		int Cluex = Integer.parseInt(rowCol[1]);
@@ -634,6 +647,10 @@ public class GameViewWidget extends Canvas{
 		this.clue++;
 	}
 
+	/**
+	 * send the game to GameDisplayer that show it to user
+	 * @param m The clue
+	 */
 	public void displayMaze(CommonGame m) {
 		game = m;
 		clue = 0;

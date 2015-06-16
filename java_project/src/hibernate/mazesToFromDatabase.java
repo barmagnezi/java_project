@@ -14,8 +14,6 @@ import algorithms.search.Solution;
 
 public class mazesToFromDatabase {
 
-	
-
 	public void writeToDatabase(HashMap<String, Maze> nameMaze,HashMap<Maze, Solution> MazeSol){
 		
 		SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory(); 

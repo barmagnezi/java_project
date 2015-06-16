@@ -24,15 +24,32 @@ import algorithms.compression.HuffmanWriter;
 import algorithms.mazeGenerators.Maze;
 import algorithms.search.Solution;
 
+/**
+ * The OnlineModel class extends Observable and implements Model. This class connected to 
+ * server that save in the properties and send to him requests and return the answers to the user 
+ * like all models.
+ * 
+ * @author Bar Magnezi and Senia Kalma
+ * @version 1.0
+ * @since 16.6.2015
+ */
 public class OnlineModel extends Observable implements Model {
 	
 	public PropertiesModelOnline properties;
 	
+	/**
+	 * This methods start to run the model
+	 */
 	@Override
 	public void start() {
 	}
 	
 
+	
+	
+	/* (non-Javadoc)
+	 * @see model.Model#generateMaze(java.lang.String, int, int)
+	 */
 	@Override
 	public void generateMaze(String name, int rows, int cols) {
 		new Thread(new Runnable() {
@@ -52,6 +69,9 @@ public class OnlineModel extends Observable implements Model {
 
 	}
 
+	/* (non-Javadoc)
+	 * @see model.Model#getMaze(java.lang.String)
+	 */
 	@Override
 	public Maze getMaze(String name) {
 		Socket s = null;
@@ -112,6 +132,9 @@ public class OnlineModel extends Observable implements Model {
 
 	}
 
+	/* (non-Javadoc)
+	 * @see model.Model#getSolution(java.lang.String)
+	 */
 	@Override
 	public Solution getSolution(String name) {
 		Socket s = null;
@@ -156,6 +179,9 @@ public class OnlineModel extends Observable implements Model {
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see model.Model#getClue(java.lang.String)
+	 */
 	@Override
 	public String getClue(String arg) {
 		Socket s=connect();
@@ -187,6 +213,9 @@ public class OnlineModel extends Observable implements Model {
 		return msg;
 	}
 
+	/* (non-Javadoc)
+	 * @see model.Model#stop()
+	 */
 	@Override
 	public void stop() {
 		System.out.println("saving the properties");
@@ -203,6 +232,9 @@ public class OnlineModel extends Observable implements Model {
 				e.close();
 	}
 
+	/* (non-Javadoc)
+	 * @see model.Model#setProperties(presenter.PropertiesModel)
+	 */
 	@Override
 	public void setProperties(PropertiesModel mproperties) {
 		properties=(PropertiesModelOnline) mproperties;
@@ -210,6 +242,9 @@ public class OnlineModel extends Observable implements Model {
 
 
 
+	/* (non-Javadoc)
+	 * @see model.Model#isonline()
+	 */
 	@Override
 	public boolean isonline() {
 		return true;

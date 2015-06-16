@@ -16,8 +16,8 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.MessageBox;
 
+import NotUsed.GameViewWidget;
 import view.View;
-import view.viewGUI.mazeViewWidjet.GameViewWidget;
 import view.viewGUI.mazeViewWidjet.MazeViewWidget;
 
 /**

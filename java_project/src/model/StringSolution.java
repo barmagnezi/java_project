@@ -9,9 +9,14 @@ import algorithms.search.State;
 * Saves and represents the solution as a string.
 * @author  Bar Magnezi and Senia Kalma
 * @version 1.0
-* @since 17.5.2015
+* @since 16.6.2015
 */
 public class StringSolution {
+	/**
+	 * This method convert the solution to string
+	 * @param solution The solution that convert
+	 * @return The string that express the solution
+	 */
 	public static String SolutionToString(Solution solution){
 		String strsol="";
 		Stack<State> sol=new Stack<State>();
@@ -22,6 +27,11 @@ public class StringSolution {
 		}
 		return strsol;
 	}
+	/**
+	 * This method convert the string that create with this class to Solution
+	 * @param solution The string that convert
+	 * @return The solution that express the string
+	 */
 	public static Solution StringToSolution(String solution){
 		Stack<State> sol=new Stack<State>();
 		String[] sizeSol=solution.split("/");

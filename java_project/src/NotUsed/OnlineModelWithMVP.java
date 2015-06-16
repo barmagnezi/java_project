@@ -1,4 +1,4 @@
-package model.NotUsed;
+package NotUsed;
 
 import java.beans.XMLEncoder;
 import java.io.BufferedReader;

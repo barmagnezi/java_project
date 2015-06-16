@@ -2,7 +2,7 @@ package view.viewGUI.mazeDisplayerAndCharecters;
 
 
 /**
-* The actual class(extends Canvas) that displays the maze, and the character. (INSIDE WINDOW)
+* The actual class that displays the maze, and the character. (INSIDE WINDOW)
 * @author  Bar Magnezi and Senia Kalma
 * @version 1.0
 * @since 31.5.2015
@@ -383,19 +383,14 @@ public class MazeDisplayerGUI extends GameDisplayer {
 			System.out.println("Error in solving the maze");
 			
 	}
-	//!!!!!!!!!!!
-	public CommonCharacter getCharacter() {
-		return character;
-	}
-	public int getCharOp() {
-		return charOp;
-	}
-	public boolean checkwin(int x, int y) {
-		if (x == maze.getCols() - 1 && y == maze.getRows() - 1)
-			return true;
-		return false;
-	}
-
+	/**
+	 * check if charecter can move from Current to next		(x,y) 
+	 * @param CurrentX The current x
+	 * @param CurrentY The current y
+	 * @param nextX	The next x after the Motion
+	 * @param nextY The next y after the Motion
+	 */
+	@Override
 	public boolean CheckMotion(int CurrentX, int CurrentY, int nextX, int nextY) {
 		boolean flag = true;
 		// System.out.println();
@@ -517,13 +512,26 @@ public class MazeDisplayerGUI extends GameDisplayer {
 		return false;
 
 	}
+	/**
+	 * Check if the x and y in the end of the game
+	 * @param x	the current x 
+	 * @param y	the current y 
+	 */
 	@Override
-	public boolean CharecterAtTheEnd() {
-		if (character.getRealx() == maze.getCols() - 1
-				&& character.getRealy() == maze.getRows() - 1)
+	public boolean checkwin(int x, int y) {
+		if (x == maze.getCols() - 1 && y == maze.getRows() - 1)
 			return true;
 		return false;
 	}
+
+	//setters getters
+	public CommonCharacter getCharacter() {
+		return character;
+	}
+	public int getCharOp() {
+		return charOp;
+	}
+	
 	public boolean isDiagonals() {
 		return Diagonals;
 	}
