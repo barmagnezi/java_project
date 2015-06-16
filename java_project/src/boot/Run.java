@@ -1,14 +1,8 @@
 package boot;
 
-import org.eclipse.swt.graphics.DeviceData;
-import org.eclipse.swt.widgets.Display;
-
-import NotUsed.OnlineModelWithMVP;
-import NotUsed.OnlineModelWithoutMVP;
 import presenter.Presenter;
 import view.viewCLI.ClI_View;
 import view.viewGUI.GameWidget.GameWindow;
-import model.MazeSearchableFixed;
 import model.OffLineModel;
 import model.OnlineModel;
 

@@ -397,8 +397,7 @@ public class OffLineModel extends Observable implements Model {
 	public void readHashmapsFromHIB() {
 		Session session = this.factory.openSession();
 
-		ArrayList<HibernateClass> qu = (ArrayList<HibernateClass>) session
-				.createQuery("from HibernateClass").list();
+		ArrayList<HibernateClass> qu = (ArrayList<HibernateClass>) session.createQuery("from HibernateClass").list();
 
 		Iterator<HibernateClass> it = qu.iterator();
 		HibernateClass HC;

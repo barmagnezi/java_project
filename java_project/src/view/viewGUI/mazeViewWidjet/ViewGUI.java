@@ -4,12 +4,10 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Observable;
 import java.util.Queue;
-
+import view.View;
 import View.Command;
 import algorithms.mazeGenerators.Maze;
 import algorithms.search.Solution;
-import view.View;
-import view.viewGUI.mazeDisplayerAndCharecters.MazeGame;
 
 public class ViewGUI extends Observable implements View {
 

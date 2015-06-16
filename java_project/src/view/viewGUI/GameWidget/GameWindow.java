@@ -1,7 +1,6 @@
 package view.viewGUI.GameWidget;
 
 import java.util.Observer;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.HelpEvent;
 import org.eclipse.swt.events.HelpListener;
@@ -15,8 +14,6 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.MessageBox;
-
-import NotUsed.GameViewWidget;
 import view.View;
 import view.viewGUI.mazeViewWidjet.MazeViewWidget;
 

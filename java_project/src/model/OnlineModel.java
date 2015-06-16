@@ -5,22 +5,12 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
-import java.io.Reader;
 import java.net.Socket;
 import java.util.Observable;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.zip.ZipInputStream;
-import java.util.zip.ZipOutputStream;
-
 import presenter.PropertiesModel;
 import presenter.PropertiesModelOnline;
-import algorithms.compression.HuffmanReader;
-import algorithms.compression.HuffmanWriter;
 import algorithms.mazeGenerators.Maze;
 import algorithms.search.Solution;
 
