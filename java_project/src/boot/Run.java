@@ -1,10 +1,12 @@
 package boot;
 
 import presenter.Presenter;
+import view.View;
 import view.viewCLI.ClI_View;
 import view.viewGUI.GameWidget.GameWindow;
-import model.OffLineModel;
-import model.OnlineModel;
+import model.Model;
+import model.modelOffline.OffLineModel;
+import model.modelOnline.OnlineModel;
 
 /**
  * The class run the project online

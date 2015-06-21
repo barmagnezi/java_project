@@ -1,4 +1,4 @@
-package model;
+package model.modelOffline;
 
 import hibernate.HibernateClass;
 
@@ -18,6 +18,8 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+
+import model.Model;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;

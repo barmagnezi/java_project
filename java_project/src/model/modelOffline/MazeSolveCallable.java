@@ -1,4 +1,4 @@
-package model;
+package model.modelOffline;
 
 import java.util.concurrent.Callable;
 

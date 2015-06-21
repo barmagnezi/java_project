@@ -9,9 +9,10 @@ import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.net.Socket;
 import java.util.Observable;
+
 import model.Model;
-import model.StringMaze;
-import model.StringSolution;
+import model.modelOffline.StringMaze;
+import model.modelOffline.StringSolution;
 import presenter.PropertiesModel;
 import presenter.PropertiesModelOnline;
 import algorithms.mazeGenerators.Maze;

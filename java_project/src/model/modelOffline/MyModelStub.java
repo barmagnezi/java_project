@@ -1,7 +1,8 @@
-package model;
+package model.modelOffline;
 
 import java.util.Observable;
 
+import model.Model;
 import presenter.PropertiesModel;
 import algorithms.mazeGenerators.Maze;
 import algorithms.search.Solution;

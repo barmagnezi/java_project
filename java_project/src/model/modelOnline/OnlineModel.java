@@ -1,4 +1,4 @@
-package model;
+package model.modelOnline;
 
 import java.beans.XMLEncoder;
 import java.io.BufferedReader;
@@ -9,6 +9,10 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Observable;
+
+import model.Model;
+import model.modelOffline.StringMaze;
+import model.modelOffline.StringSolution;
 import presenter.PropertiesModel;
 import presenter.PropertiesModelOnline;
 import algorithms.mazeGenerators.Maze;

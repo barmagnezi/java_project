@@ -1,9 +1,13 @@
 package junit;
 
 import static org.junit.Assert.*;
+
 import java.util.Stack;
-import model.MazeSearchableFixed;
+
+import model.modelOffline.MazeSearchableFixed;
+
 import org.junit.Test;
+
 import algorithms.mazeGenerators.DFSMazeGenerator;
 import algorithms.mazeGenerators.Maze;
 import algorithms.search.Searchable;

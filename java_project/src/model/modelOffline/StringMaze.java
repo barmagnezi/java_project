@@ -1,4 +1,4 @@
-package model;
+package model.modelOffline;
 
 import algorithms.mazeGenerators.Cell;
 import algorithms.mazeGenerators.Maze;

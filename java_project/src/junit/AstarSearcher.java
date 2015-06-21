@@ -79,6 +79,9 @@ public class AstarSearcher extends CommonSearcher {
 		return sol;
 	}
 
+	
+	
+	
 	private Solution backTrace(State start, State end, Searchable searchable) {
 		Solution s = new Solution();
 		Stack<State> total_path = new Stack<State>();
