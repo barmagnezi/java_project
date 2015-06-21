@@ -32,6 +32,7 @@ import algorithms.mazeGenerators.Maze;
 import algorithms.search.*;
 import presenter.PropertiesModel;
 import presenter.PropertiesModelOffline;
+import algorithms.search.Searcher;
 import algorithms.search.Solution;
 //For temp fix:
 import algorithms.search.BFSSearcher;
@@ -221,7 +222,7 @@ public class OffLineModel extends Observable implements Model {
 			AnnotationConfiguration config = new AnnotationConfiguration();
 			config.addAnnotatedClass(HibernateClass.class);
 			config.configure();
-			//	new SchemaExport(config).create(true, true);					//<========== IF HIBERNATE ERROR OCCURS
+			// new SchemaExport(config).create(true, true);
 			this.factory = config.buildSessionFactory();
 			readHashmapsFromHIB();
 		} else
@@ -358,8 +359,9 @@ public class OffLineModel extends Observable implements Model {
 		Searchable ME = new MazeSearchableFixed(maze, maze.getCell(row, col),
 				maze.getCell(maze.getRows() - 1, maze.getCols() - 1),
 				properties.isDiag(), 10, 15);
+		Searcher Solver=null;
 		if (properties.getNameSolver().equals("BFS"))
-			this.Solver = new BFSSearcher();
+			Solver = new BFSSearcher();
 		else
 			Solver = new AstarSearcher(new MazeAirDistance());
 		Solution Sol = Solver.search(ME);
