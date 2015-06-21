@@ -8,7 +8,6 @@ import model.modelOnline.OnlineModel;
 
 /**
  * The class run the project online
- * 
  * @author Bar Magnezi(209043827) and Senia Kalma(321969941)
  * @version 1.0
  * @since 17.5.2015
