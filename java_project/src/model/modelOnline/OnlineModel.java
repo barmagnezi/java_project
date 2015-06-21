@@ -28,18 +28,7 @@ import algorithms.search.Solution;
  * @since 16.6.2015
  */
 public class OnlineModel extends Observable implements Model {
-	
 	public PropertiesModelOnline properties;
-	
-	/**
-	 * This methods start to run the model
-	 */
-	@Override
-	public void start() {
-	}
-	
-
-	
 	
 	/* (non-Javadoc)
 	 * @see model.Model#generateMaze(java.lang.String, int, int)
@@ -60,7 +49,13 @@ public class OnlineModel extends Observable implements Model {
 				disconnect(s);
 			}
 		}).start();
-
+	}
+	
+	/**
+	 * This methods start to run the model
+	 */
+	@Override
+	public void start() {
 	}
 
 	/* (non-Javadoc)
@@ -233,8 +228,6 @@ public class OnlineModel extends Observable implements Model {
 	public void setProperties(PropertiesModel mproperties) {
 		properties=(PropertiesModelOnline) mproperties;
 	}
-
-
 
 	/* (non-Javadoc)
 	 * @see model.Model#isonline()

@@ -22,6 +22,14 @@ public class ViewGUI extends Observable implements View {
 		commandsList = new LinkedList<Command>();
 	}
 	
+	public void generateMaze(String name, int rows, int cols) {
+		if (commands.get("generateMaze") == null)
+			System.out.println("error");
+		commandsList.add(commands.get("generateMaze"));
+		this.setChanged();
+		this.notifyObservers(name + " " + rows + "," + cols);
+	}
+	
 	public void setCommands(HashMap<String, Command> commands) {
 		// System.out.println(commands.size());
 		this.commands = commands;
@@ -29,16 +37,6 @@ public class ViewGUI extends Observable implements View {
 
 	public Command getUserCommand() {
 		return commandsList.poll();
-	}
-
-	// /////////////////////////////////////////////////
-
-	public void generateMaze(String name, int rows, int cols) {
-		if (commands.get("generateMaze") == null)
-			System.out.println("error");
-		commandsList.add(commands.get("generateMaze"));
-		this.setChanged();
-		this.notifyObservers(name + " " + rows + "," + cols);
 	}
 
 	public void solveMaze(String name) {
@@ -124,7 +122,7 @@ public class ViewGUI extends Observable implements View {
 	}
 
 	/*
-	 * not work
+	 * wont work
 	 * 
 	 * @Override public void getData(Object Data, String details) {
 	 * if(details.equals("checkMotion")) Widget.checkMotionFlag=(Boolean) Data;

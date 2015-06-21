@@ -47,30 +47,7 @@ public class Presenter implements Observer {
 		else
 			setNewProperties("resources/properties.xml");
 	}
-
-	public void setNewProperties(String path) {
-		InputStream from = null;
-		PropertiesModel Mproperties;
-		try {
-			from = new FileInputStream(path);
-			if (model.isonline())
-				Mproperties = new PropertiesModelOnline(from);
-			else
-				Mproperties = new PropertiesModelOffline(from);
-		} catch (Exception e) {
-			view.displayString(path + " not found");
-			File theDir = new File("resources");
-			theDir.mkdirs();
-			if (model.isonline())
-				Mproperties = new PropertiesModelOnline(null);
-			else
-				Mproperties = new PropertiesModelOffline(null);
-		}
-		model.setProperties(Mproperties);
-		System.out.println(Mproperties.isDiag());
-		view.getDiagsMode(Mproperties.isDiag());
-	}
-
+	
 	@Override
 	public void update(Observable o, Object arg) {
 		if (arg != null && ((String) arg).equals("start")) {
@@ -96,6 +73,29 @@ public class Presenter implements Observer {
 				}
 			}
 		}
+	}
+	
+	public void setNewProperties(String path) {
+		InputStream from = null;
+		PropertiesModel Mproperties;
+		try {
+			from = new FileInputStream(path);
+			if (model.isonline())
+				Mproperties = new PropertiesModelOnline(from);
+			else
+				Mproperties = new PropertiesModelOffline(from);
+		} catch (Exception e) {
+			view.displayString(path + " not found");
+			File theDir = new File("resources");
+			theDir.mkdirs();
+			if (model.isonline())
+				Mproperties = new PropertiesModelOnline(null);
+			else
+				Mproperties = new PropertiesModelOffline(null);
+		}
+		model.setProperties(Mproperties);
+		System.out.println(Mproperties.isDiag());
+		view.getDiagsMode(Mproperties.isDiag());
 	}
 
 	// create commands

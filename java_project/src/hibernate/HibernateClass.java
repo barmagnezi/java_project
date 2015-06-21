@@ -16,6 +16,7 @@ import javax.persistence.TableGenerator;
  * @version 1.0
  * @since 17.5.2015
  */
+
 @Entity
 @Table(name = "mazesinfo")
 public class HibernateClass {
