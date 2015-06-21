@@ -50,6 +50,7 @@ public class GameViewWidget extends Canvas{
 	
 	int steps = 0;
 	int clue = 0;
+	
 	ViewGUI ViewGUI = new ViewGUI(this);
 
 	public Boolean checkMotionFlag = new Boolean(false); // for check motion
