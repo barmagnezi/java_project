@@ -7,7 +7,7 @@ import model.modelOffline.OffLineModel;
 import model.modelOnline.OnlineModel;
 
 /**
- * The class run the project online
+ * The class runs the Client side of the project.
  * @author Bar Magnezi(209043827) and Senia Kalma(321969941)
  * @version 1.0
  * @since 17.5.2015
