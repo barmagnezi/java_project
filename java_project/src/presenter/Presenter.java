@@ -116,7 +116,6 @@ public class Presenter implements Observer {
 
 	// the argument must be (name) (int rows),(int cols)
 	public class generateMazeCommand implements Command {
-
 		@Override
 		/**
 		 * Disassembling the generateMaze received command, setting parameters and calling for the function.

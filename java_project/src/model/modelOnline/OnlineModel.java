@@ -36,7 +36,6 @@ public class OnlineModel extends Observable implements Model {
 	@Override
 	public void generateMaze(String name, int rows, int cols) {
 		new Thread(new Runnable() {
-			
 			@Override
 			public void run() {
 				//System.out.println("OnlineModel,maybe here?VVV");
